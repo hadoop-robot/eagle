@@ -18,13 +18,14 @@ package org.apache.eagle.stream.dsl.scheduler
 
 import akka.actor._
 import akka.routing.RoundRobinRouter
+import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity
 import org.apache.eagle.stream.dsl.AppConstants
 import org.apache.eagle.stream.dsl.dao.AppEntityDaoImpl
 
 import org.apache.eagle.stream.dsl.entity.{AppDefinitionEntity, AppCommandEntity}
-import org.apache.eagle.stream.dsl.StreamBuilder._
+import org.apache.eagle.stream.dsl.scheduler.impl.StreamAppManagerImpl
 import scala.collection.JavaConverters._
 
 object StreamAppConstants {
@@ -32,19 +33,15 @@ object StreamAppConstants {
   val SCHEDULE_INTERVAL = 1000
   val SCHEDULE_NUM_WORKERS = 3
   val SERVICE_TIMEOUT = 5
-  val HOST = "localhost"
-  val PORT = 9098
-  val SERVICE_NAME = "admin"
-  val SERVICE_PASSWD = "secret"
 }
 
-private[execution] class ScheduleEvent
-private[execution] case class InitializationEvent() extends ScheduleEvent
-private[execution] case class TerminatedEvent() extends ScheduleEvent
-private[execution] case class CommandLoaderEvent() extends ScheduleEvent
-private[execution] case class CommandExecuteEvent(appCommandEntity: AppCommandEntity) extends ScheduleEvent
-private[execution] case class HealthCheckerEvent() extends ScheduleEvent
-private[execution] case class ResultCountEvent(value: Int) extends ScheduleEvent
+private[scheduler] class ScheduleEvent
+private[scheduler] case class InitializationEvent() extends ScheduleEvent
+private[scheduler] case class TerminatedEvent() extends ScheduleEvent
+private[scheduler] case class CommandLoaderEvent() extends ScheduleEvent
+private[scheduler] case class CommandExecuteEvent(appCommandEntity: AppCommandEntity) extends ScheduleEvent
+private[scheduler] case class HealthCheckerEvent() extends ScheduleEvent
+private[scheduler] case class ResultCountEvent(value: Int) extends ScheduleEvent
 
 case class EagleServiceUnavailableException(message:String) extends Exception(message)
 case class DuplicatedDefinitionException(message:String) extends Exception(message)
@@ -55,22 +52,22 @@ case class DuplicatedDefinitionException(message:String) extends Exception(messa
  * 2. Coordinate command to different actor
  * 3. Actor execute command as requested
  */
-private[execution] class StreamAppScheduler(conf: String) {
-
-  val config = ConfigFactory.parseString(conf)
+private[scheduler] class StreamAppScheduler() {
+  //System.setProperty("config.resource", "/application.local.conf")
+  val config = ConfigFactory.load("eagle-scheduler.conf")
 
   def start():Unit = {
     val system = ActorSystem(StreamAppConstants.SCHEDULE_SYSTEM, config)
     system.log.info(s"Started actor system: $system")
 
-    val coordinator = system.actorOf(Props[StreamAppCoordinator])
+    val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
     coordinator ! InitializationEvent
 
   }
 }
 
-private[execution] class StreamAppCoordinator extends Actor with ActorLogging {
-  private val loader: ActorRef = context.actorOf(Props[StreamAppCommandLoader], "command-loader")
+private[scheduler] class StreamAppCoordinator(config: Config) extends Actor with ActorLogging {
+  private val loader: ActorRef = context.actorOf(Props(new StreamAppCommandLoader(config)), "command-loader")
 
   override def receive = {
     case InitializationEvent => {
@@ -85,10 +82,10 @@ private[execution] class StreamAppCoordinator extends Actor with ActorLogging {
   }
 }
 
-private[execution] class StreamAppCommandLoader extends Actor with ActorLogging {
+private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor with ActorLogging {
 
   def loadCommands(): GenericServiceAPIResponseEntity[_] = {
-    val dao = new AppEntityDaoImpl(StreamAppConstants.HOST, StreamAppConstants.PORT, StreamAppConstants.SERVICE_NAME, StreamAppConstants.SERVICE_PASSWD)
+    val dao = new AppEntityDaoImpl(config)
     val query = "AppCommandService[@status=\"%s\"]{*}".format(AppCommandEntity.Status.INITIALIZED)
     dao.search(query, Int.MaxValue)
   }
@@ -112,12 +109,11 @@ private[execution] class StreamAppCommandLoader extends Actor with ActorLogging 
         val appCommands = commands.toList
         for(command <- appCommands) {
           val cmd = command.asInstanceOf[AppCommandEntity]
-          cmd.setStatus(AppCommandEntity.Status.PENDING)
+          cmd.setCommandStatus(AppCommandEntity.Status.PENDING)
           workerRouter ! CommandExecuteEvent(cmd)
         }
       }
     }
-
     case TerminatedEvent =>
       context.stop(self)
 
@@ -125,8 +121,9 @@ private[execution] class StreamAppCommandLoader extends Actor with ActorLogging 
   }
 }
 
-private[execution] class StreamAppCommandExecutor extends Actor with ActorLogging {
-  val dao = new AppEntityDaoImpl(StreamAppConstants.HOST, StreamAppConstants.PORT, StreamAppConstants.SERVICE_NAME, StreamAppConstants.SERVICE_PASSWD)
+private[scheduler] class StreamAppCommandExecutor(config: Config) extends Actor with ActorLogging {
+  val dao = new AppEntityDaoImpl(config)
+  val streamAppManager = new StreamAppManagerImpl()
 
   def loadAppDefinition(appName: String, site: String): GenericServiceAPIResponseEntity[_] = {
     val query = "AppDefinitionService[@name=\"%s\" AND @site=\"%s\"]{*}".format(appName, site)
@@ -140,51 +137,34 @@ private[execution] class StreamAppCommandExecutor extends Actor with ActorLoggin
   }
 
   def changeCommandStatus(cmd: AppCommandEntity, newStatus: String): Unit = {
-    cmd.setStatus(newStatus)
+    cmd.setCommandStatus(newStatus)
     dao.update(cmd, AppConstants.APP_COMMAND_SERVICE)
   }
 
-  def startCommand(appDefinition: AppDefinitionEntity, appCommand: AppCommandEntity) {
-    val code = appDefinition.getDefinition.stripMargin
+  def updateCompletedStatus(ret: Boolean, appDefinition: AppDefinitionEntity, appCommand: AppCommandEntity) = {
     var newAppStatus: String = AppDefinitionEntity.STATUS.UNKNOWN
     var newCmdStatus: String = AppCommandEntity.Status.PENDING
-    try {
-      changeAppStatus(appDefinition, AppDefinitionEntity.STATUS.STARTING)
-      val ret = StreamEvaluator(code).evaluate[storm]
-
-      ret match {
-        case true => {
-          newAppStatus = AppDefinitionEntity.STATUS.RUNNING
-          newCmdStatus = AppCommandEntity.Status.RUNNING
-        }
-        case m@_ => {
-          newAppStatus = AppDefinitionEntity.STATUS.STOPPED
-          newCmdStatus = AppCommandEntity.Status.DOWN
-        }
+    ret match {
+      case true => {
+        newAppStatus = AppDefinitionEntity.STATUS.RUNNING
+        newCmdStatus = AppCommandEntity.Status.RUNNING
       }
-    } catch {
-      case e: Throwable => {
+      case m@_ => {
         newAppStatus = AppDefinitionEntity.STATUS.STOPPED
         newCmdStatus = AppCommandEntity.Status.DOWN
       }
     }
     changeAppStatus(appDefinition, newAppStatus)
     changeCommandStatus(appCommand, newCmdStatus)
-
   }
 
-  def stopCommand(appDefinition: AppDefinitionEntity, command: AppCommandEntity): Unit = {
-    //TODO
-  }
-
-  def restartCommand(appDefinition: AppDefinitionEntity, command: AppCommandEntity): Unit = {
-    //TODO
-  }
 
   override def receive = {
     case CommandExecuteEvent(command) => {
-      val appName = command.getAppName
-      val site = command.getTags().get("site")
+      val streamAppExecution = AppCommandEntity.toModel(command)
+      val appName = streamAppExecution.appName
+      val site = streamAppExecution.site
+
       val result = loadAppDefinition(appName, site)
       println("result=" + result.getObj.toString)
 
@@ -199,21 +179,17 @@ private[execution] class StreamAppCommandExecutor extends Actor with ActorLoggin
       }
 
       val appDefinition = definitions.get(0).asInstanceOf[AppDefinitionEntity]
-      command.getTags.get("type") match {
-        case AppCommandEntity.Type.START => {
-          startCommand(appDefinition, command)
-        }
-        case AppCommandEntity.Type.STOP => {
-          stopCommand(appDefinition, command)
-        }
-        case AppCommandEntity.Type.RESTART => {
-          restartCommand(appDefinition, command)
-        }
-        case m@_ =>
-          log.warning("Unsupported operation $m")
+      val streamAppDefinition = AppDefinitionEntity.toModel(appDefinition)
+      var ret = true
+      try {
+        changeAppStatus(appDefinition, AppDefinitionEntity.STATUS.STARTING)
+        ret = streamAppManager.execute(streamAppDefinition, streamAppExecution)
+        updateCompletedStatus(ret, appDefinition, command)
+      } catch {
+        case e: Throwable =>
+          throw new UnsupportedOperationException(s"Execute command failed $e")
       }
     }
-
     case m@_ =>
       log.warning("Unsupported operation $m")
   }
@@ -221,12 +197,5 @@ private[execution] class StreamAppCommandExecutor extends Actor with ActorLoggin
 
 
 object StreamAppScheduler extends App {
-  val conf: String = """
-                          akka.loglevel = "DEBUG"
-                          akka.actor.debug {
-                            receive = on
-                            lifecycle = on
-                          }
-                     """
-  new StreamAppScheduler(conf).start()
+  new StreamAppScheduler().start()
 }

@@ -18,15 +18,16 @@ package org.apache.eagle.stream.dsl.scheduler
 
 import org.apache.eagle.stream.dsl.entity.AppDefinitionEntity
 import org.apache.eagle.stream.dsl.scheduler.impl.StreamAppManagerImpl
-import org.apache.eagle.stream.dsl.scheduler.model.StreamAppExecution
+import org.apache.eagle.stream.dsl.scheduler.model.{StreamAppDefinition, StreamAppExecution}
 
 /**
 * The actual function for stream app management
 */
 trait StreamAppManager {
-  def submit(app:AppDefinitionEntity):Boolean
-  def start(app:StreamAppExecution):Boolean
-  def stop(app:StreamAppExecution):Boolean
+  def submit(app:StreamAppDefinition):Boolean
+  def start(app:StreamAppDefinition):Boolean
+  def stop(app:StreamAppDefinition):Boolean
+  def execute(app:StreamAppDefinition, cmd: StreamAppExecution):Boolean
 }
 
 object StreamAppManager{

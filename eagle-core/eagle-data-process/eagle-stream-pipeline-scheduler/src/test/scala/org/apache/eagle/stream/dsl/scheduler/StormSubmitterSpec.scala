@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.stream.dsl.execution
+package org.apache.eagle.stream.dsl.scheduler
 
 import backtype.storm.StormSubmitter.ProgressListener
 import backtype.storm.topology.TopologyBuilder
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
 
 /**
- * Should build as jar firstly then run with `java -cp package.jar org.apache.eagle.stream.dsl.execution.StormSubmitterSpec`
+ * Should build as jar firstly then run with `java -cp package.jar StormSubmitterSpec`
  */
 object StormSubmitterSpec extends App{
   val runningJar = getClass.getProtectionDomain.getCodeSource.getLocation.getPath // should build as jar firstly

@@ -16,42 +16,67 @@
 */
 package org.apache.eagle.stream.dsl.scheduler.impl
 
-import org.apache.eagle.stream.dsl.entity.{AppCommandEntity, AppDefinitionEntity}
-import org.apache.eagle.stream.dsl.execution.StreamAppManager
+import org.apache.eagle.stream.dsl.entity.{AppCommandEntity}
 import org.apache.eagle.stream.dsl.StreamBuilder._
+import org.apache.eagle.stream.dsl.scheduler.model.{StreamAppExecution, StreamAppDefinition}
 import org.apache.eagle.stream.dsl.scheduler.{StreamEvaluator, StreamAppManager}
+import org.slf4j.LoggerFactory
 
-class StreamAppManagerImpl extends StreamAppManager{
-  override def submit(app: AppDefinitionEntity, cmd: AppCommandEntity): Boolean = {
-    val code = app.getDefinition.stripMargin
-    var newAppStatus: String = AppDefinitionEntity.STATUS.UNKNOWN
-    var newCmdStatus: String = AppCommandEntity.Status.PENDING
-    try {
-      changeAppStatus(app, AppDefinitionEntity.STATUS.STARTING)
-      val ret = StreamEvaluator(code).evaluate[storm]
+class StreamAppManagerImpl extends StreamAppManager {
+  private val logger = LoggerFactory.getLogger(classOf[StreamAppManagerImpl])
 
-      ret match {
-        case true => {
-          newAppStatus = AppDefinitionEntity.STATUS.RUNNING
-          newCmdStatus = AppCommandEntity.Status.RUNNING
-        }
-        case m@_ => {
-          newAppStatus = AppDefinitionEntity.STATUS.STOPPED
-          newCmdStatus = AppCommandEntity.Status.DOWN
+  def execute(streamAppDefinition:StreamAppDefinition, streamAppExecution: StreamAppExecution): Boolean = {
+    var ret = true
+    val commandType = streamAppExecution.CommandType
+    commandType match {
+      case AppCommandEntity.Type.START => {
+        try {
+          ret = start(streamAppDefinition)
+        } catch {
+          case e: Throwable => {
+            ret = false
+          }
         }
       }
-    } catch {
-      case e: Throwable => {
-        newAppStatus = AppDefinitionEntity.STATUS.STOPPED
-        newCmdStatus = AppCommandEntity.Status.DOWN
+      case AppCommandEntity.Type.STOP => {
+        try {
+          ret = stop(streamAppDefinition)
+        } catch {
+          case e: Throwable => {
+            ret = false
+          }
+        }
       }
+      case AppCommandEntity.Type.RESTART => {
+        try {
+          ret = start(streamAppDefinition)
+        } catch {
+          case e: Throwable => {
+            ret = false
+          }
+        }
+      }
+      case m@_ =>
+        logger.warn("Unsupported operation $m")
+        ret = false
     }
-    changeAppStatus(appDefinition, newAppStatus)
-    changeCommandStatus(appCommand, newCmdStatus)
-
+    ret
   }
 
-  override def stop(app: AppDefinitionEntity, cmd: AppCommandEntity): Boolean = ???
+  override def submit(app: StreamAppDefinition): Boolean = {
+    return true
+  }
 
-  override def start(app: AppDefinitionEntity, cmd: AppCommandEntity): Boolean = ???
+  override def stop(app: StreamAppDefinition): Boolean = {
+    return true
+  }
+
+  override def start(app: StreamAppDefinition): Boolean = {
+    val definition: String = app.definition.stripMargin
+    val configuration: String = app.configuration
+
+    val ret = StreamEvaluator(definition).evaluate[storm]
+    return true
+  }
+
 }

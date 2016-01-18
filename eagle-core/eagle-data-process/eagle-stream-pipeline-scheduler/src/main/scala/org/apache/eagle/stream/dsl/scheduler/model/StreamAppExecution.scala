@@ -22,6 +22,6 @@ import org.apache.eagle.stream.dsl.entity.AppCommandEntity
 case class StreamAppExecution(site: String, uuid: String, CommandType: String, appName: String, commandStatus: String,
                          updateTimestamp: Long, createTimestamp: Long)
   extends EntityConversion[AppCommandEntity]{
-  override def toEntity: AppCommandEntity = ???
-  override def fromEntity(entity: AppCommandEntity): Unit = ???
+  override def toEntity: AppCommandEntity = AppCommandEntity.fromModel(this)
+  override def fromEntity(entity: AppCommandEntity): Unit = AppCommandEntity.toModel(entity)
 }

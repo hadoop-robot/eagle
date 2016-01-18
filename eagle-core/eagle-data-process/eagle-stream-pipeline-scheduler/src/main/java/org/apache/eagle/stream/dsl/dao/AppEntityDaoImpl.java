@@ -18,9 +18,12 @@
 
 package org.apache.eagle.stream.dsl.dao;
 
+import com.typesafe.config.Config;
+import org.apache.eagle.common.config.EagleConfigConstants;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
+import org.apache.eagle.stream.dsl.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +44,13 @@ public class AppEntityDaoImpl implements AppEntityDao {
         this.eagleServicePort = eagleServicePort;
         this.username = username;
         this.password = password;
+    }
+
+    public AppEntityDaoImpl(Config config) {
+        this.eagleServiceHost = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.HOST);
+        this.eagleServicePort = config.getInt(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.PORT);
+        this.username = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.USERNAME);
+        this.password = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.PASSWORD);
     }
 
     public AppEntityDaoImpl(String eagleServiceHost, int eagleServicePort) {

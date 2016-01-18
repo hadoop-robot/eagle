@@ -25,6 +25,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import scala.collection.JavaConversions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -51,7 +52,7 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
     @Column("e")
     private String executionStatus;
     @Column("f")
-    private String executionCluster;
+    private List<String> executionCluster;
     @Column("g")
     private long updateTimestamp;
     @Column("h")
@@ -120,11 +121,11 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
         valueChanged("executionStatus");
     }
 
-    public String getExecutionCluster() {
+    public List<String> getExecutionCluster() {
         return executionCluster;
     }
 
-    public void setExecutionCluster(String executionCluster) {
+    public void setExecutionCluster(List<String> executionCluster) {
         this.executionCluster = executionCluster;
         valueChanged("executionCluster");
     }
@@ -152,7 +153,7 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
                 entity.getDescription(),
                 entity.getCreator(),
                 entity.getExecutionStatus(),
-                entity.getExecutionCluster(),
+                scala.collection.JavaConversions.asScalaBuffer(entity.executionCluster),
                 entity.getUpdateTimestamp(),
                 entity.getCreateTimestamp());
         return model;
@@ -164,7 +165,7 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
         entity.setConfiguration(model.configuration());
         entity.setDescription(model.description());
         entity.setCreator(model.creator());
-        entity.setExecutionCluster(model.executionCluster());
+        entity.setExecutionCluster(JavaConversions.asJavaList(model.executionCluster()));
         entity.setExecutionStatus(model.executionStatus());
         Map<String,String> tags = new HashMap<String,String>(){{
             put(AppConstants.SITE_TAG, model.site());

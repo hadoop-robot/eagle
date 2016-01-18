@@ -94,7 +94,6 @@ public class AppCommandEntity extends TaggedLogAPIEntity {
     }
 
     public static StreamAppExecution toModel(final AppCommandEntity entity){
-        //return null;
         StreamAppExecution model = new StreamAppExecution(
                 entity.getTags().get(AppConstants.SITE_TAG),
                 entity.getTags().get(AppConstants.COMMAND_ID_TAG),
@@ -108,14 +107,16 @@ public class AppCommandEntity extends TaggedLogAPIEntity {
 
     public static AppCommandEntity fromModel(final StreamAppExecution model){
         AppCommandEntity entity = new AppCommandEntity();
-        entity.setCmdTypes(JavaConversions.asJavaList(model.cmdTypes()));
-        entity.setCmdMatrix(model.matrix().getData());
+        entity.setAppName(model.appName());
+        entity.setCommandStatus(model.commandStatus());
         Map<String,String> tags = new HashMap<String,String>(){{
-            put(UserProfileConstants.SITE_TAG,model.site());
-            put(UserProfileConstants.USER_TAG,model.uuid());
+            put(AppConstants.SITE_TAG,model.site());
+            put(AppConstants.COMMAND_ID_TAG,model.uuid());
+            put(AppConstants.COMMAND_TYPE_TAG, model.CommandType());
 
         }};
-        entity.setTimestamp(model.timestamp());
+        entity.setUpdateTimestamp(model.updateTimestamp());
+        entity.setCreateTimestamp(model.createTimestamp());
         entity.setTags(tags);
         return entity;
     }

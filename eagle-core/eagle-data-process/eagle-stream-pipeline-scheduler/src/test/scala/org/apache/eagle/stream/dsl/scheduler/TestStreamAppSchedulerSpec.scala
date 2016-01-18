@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.stream.dsl.execution
+package org.apache.eagle.stream.dsl.scheduler
 
 import org.apache.eagle.stream.dsl.scheduler.{StreamAppCoordinator, StreamAppScheduler, CommandLoaderEvent, StreamAppConstants}
 import org.scalatest.{MustMatchers, BeforeAndAfterAll, WordSpecLike}
@@ -56,5 +56,5 @@ object TestStreamAppScheduler extends App {
                             lifecycle = on
                           }
                      """
-  new StreamAppScheduler(conf).start()
+  new StreamAppScheduler().start()
 }
