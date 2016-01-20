@@ -16,7 +16,7 @@
  */
 package org.apache.eagle.stream.pipeline.scheduler.model
 
-import org.apache.eagle.stream.pipeline.entity.AppCommandEntity
+import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 
 
 case class StreamAppExecution(site: String, uuid: String, CommandType: String, appName: String, commandStatus: String,

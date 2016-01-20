@@ -16,11 +16,9 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import org.apache.eagle.stream.pipeline.StreamBuilder
-import StreamBuilder._
-import org.apache.eagle.stream.pipeline.entity.AppCommandEntity
-import org.apache.eagle.stream.pipeline.scheduler.{StreamEvaluator, StreamAppManager}
+import org.apache.eagle.stream.pipeline.scheduler.{StreamAppManager}
 import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppExecution, StreamAppDefinition}
+import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 import org.slf4j.LoggerFactory
 
 class StreamAppManagerImpl extends StreamAppManager {
@@ -73,10 +71,6 @@ class StreamAppManagerImpl extends StreamAppManager {
   }
 
   override def start(app: StreamAppDefinition): Boolean = {
-    val definition: String = app.definition.stripMargin
-    val configuration: String = app.configuration
-
-    val ret = StreamEvaluator(definition).evaluate[storm]
     return true
   }
 

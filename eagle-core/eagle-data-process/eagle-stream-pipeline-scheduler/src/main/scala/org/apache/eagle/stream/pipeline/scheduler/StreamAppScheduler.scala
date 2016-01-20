@@ -21,11 +21,10 @@ import akka.routing.RoundRobinRouter
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity
-
-import org.apache.eagle.stream.pipeline.AppConstants
-import org.apache.eagle.stream.pipeline.dao.AppEntityDaoImpl
-import org.apache.eagle.stream.pipeline.entity.{AppCommandEntity, AppDefinitionEntity}
 import org.apache.eagle.stream.pipeline.scheduler.impl.StreamAppManagerImpl
+import org.apache.eagle.stream.scheduler.AppConstants
+import org.apache.eagle.stream.scheduler.dao.AppEntityDaoImpl
+import org.apache.eagle.stream.scheduler.entity.{AppCommandEntity, AppDefinitionEntity}
 import scala.collection.JavaConverters._
 
 object StreamAppConstants {

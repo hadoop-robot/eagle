@@ -16,7 +16,7 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler.model
 
-import org.apache.eagle.stream.pipeline.entity.AppDefinitionEntity
+import org.apache.eagle.stream.scheduler.entity.AppDefinitionEntity
 
 case class StreamAppDefinition(site: String, name: String, definition: String, configuration: String, description: String,
   creator: String, executionStatus: String, executionCluster: Seq[String], updateTimestamp: Long, createTimestamp: Long)
