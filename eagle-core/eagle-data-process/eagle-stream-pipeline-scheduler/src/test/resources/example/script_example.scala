@@ -15,7 +15,9 @@
 # limitations under the License.
 exec scala -classpath "/Users/hchen9/Workspace/incubator-eagle/eagle-topology-assembly/target/eagle-topology-0.3.0-assembly.jar" "$0" "$@"
 !#
-import org.apache.eagle.stream.dsl.StreamBuilder._
+
+import org.apache.eagle.stream.pipeline.StreamBuilder
+import StreamBuilder._
 
 init[storm](args)
 
