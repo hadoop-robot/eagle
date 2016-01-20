@@ -16,28 +16,14 @@
  *
  */
 
-package org.apache.eagle.stream.dsl.dao;
-
-import org.apache.eagle.stream.pipeline.dao.AppEntityDaoImpl;
-import org.apache.eagle.stream.pipeline.entity.AppCommandEntity;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
+package org.apache.eagle.stream.pipeline.entity;
 
 
-public class TestAppEntityDaoImpl {
-    private final static Logger LOG = LoggerFactory.getLogger(TestAppEntityDaoImpl.class);
+import org.apache.eagle.log.entity.repo.EntityRepository;
 
-    @Test
-    public void testSearch(){
-        AppEntityDaoImpl dao = new AppEntityDaoImpl("localhost", 9098, "admin", "secret");
-        String query = "AppCommandService[@status=\"UNKNOWN\"]{*}";
-        List<AppCommandEntity> result = dao.search(query, Integer.MAX_VALUE).getObj();
-        assertTrue(result != null);
-        LOG.debug(result.toString());
+public class AppEntityRepository  extends EntityRepository {
+    public AppEntityRepository() {
+        entitySet.add(AppCommandEntity.class);
+        entitySet.add(AppDefinitionEntity.class);
     }
 }
