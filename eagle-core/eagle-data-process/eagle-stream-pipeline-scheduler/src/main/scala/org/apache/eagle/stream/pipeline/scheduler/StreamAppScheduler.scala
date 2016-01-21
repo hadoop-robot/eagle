@@ -21,18 +21,11 @@ import akka.routing.RoundRobinRouter
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity
-import org.apache.eagle.stream.pipeline.scheduler.impl.StreamAppManagerImpl
 import org.apache.eagle.stream.scheduler.AppConstants
 import org.apache.eagle.stream.scheduler.dao.AppEntityDaoImpl
 import org.apache.eagle.stream.scheduler.entity.{AppCommandEntity, AppDefinitionEntity}
 import scala.collection.JavaConverters._
 
-object StreamAppConstants {
-  val SCHEDULE_SYSTEM = "stream-app-scheduler"
-  val SCHEDULE_INTERVAL = 1000
-  val SCHEDULE_NUM_WORKERS = 3
-  val SERVICE_TIMEOUT = 5
-}
 
 private[scheduler] class ScheduleEvent
 private[scheduler] case class InitializationEvent() extends ScheduleEvent
@@ -53,10 +46,10 @@ case class DuplicatedDefinitionException(message:String) extends Exception(messa
  */
 private[scheduler] class StreamAppScheduler() {
   //System.setProperty("config.resource", "/application.local.conf")
-  val config = ConfigFactory.load("eagle-scheduler.conf")
+  val config = ConfigFactory.load(AppConstants.EAGLE_CONFIG_FILE)
 
   def start():Unit = {
-    val system = ActorSystem(StreamAppConstants.SCHEDULE_SYSTEM, config)
+    val system = ActorSystem(config.getString(AppConstants.SCHEDULE_SYSTEM), config)
     system.log.info(s"Started actor system: $system")
 
     val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
@@ -91,7 +84,7 @@ private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor wi
 
   var progressListener: Option[ActorRef] = None
   val workerRouter = context.actorOf(
-    Props(new StreamAppCommandExecutor(config)).withRouter(RoundRobinRouter(StreamAppConstants.SCHEDULE_NUM_WORKERS)), name = "command-executor")
+    Props(new StreamAppCommandExecutor(config)).withRouter(RoundRobinRouter(config.getInt(AppConstants.SCHEDULE_NUM_WORKERS))), name = "command-executor")
 
   override def receive = {
     case InitializationEvent if progressListener.isEmpty =>
@@ -122,7 +115,7 @@ private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor wi
 
 private[scheduler] class StreamAppCommandExecutor(config: Config) extends Actor with ActorLogging {
   val dao = new AppEntityDaoImpl(config)
-  val streamAppManager = new StreamAppManagerImpl()
+  val streamAppManager = StreamAppManager.apply()
 
   def loadAppDefinition(appName: String, site: String): GenericServiceAPIResponseEntity[_] = {
     val query = "AppDefinitionService[@name=\"%s\" AND @site=\"%s\"]{*}".format(appName, site)

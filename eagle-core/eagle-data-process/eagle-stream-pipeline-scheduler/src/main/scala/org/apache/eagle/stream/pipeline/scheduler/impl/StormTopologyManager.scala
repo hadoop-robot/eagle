@@ -17,27 +17,57 @@
 
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import backtype.storm.{StormSubmitter, Config}
-import backtype.storm.utils.NimbusClient
+import com.typesafe.config.Config
+import backtype.storm.{Config, StormSubmitter}
+import backtype.storm.utils.{Utils, NimbusClient}
 import org.apache.eagle.stream.pipeline.scheduler.StreamTopologyManager
+import org.apache.eagle.stream.scheduler.AppConstants
+import org.slf4j.LoggerFactory
 
 
-class StormTopologyManager extends StreamTopologyManager {
+class StormTopologyManager(schedulerConfig: com.typesafe.config.Config) extends StreamTopologyManager {
+  val LOG = LoggerFactory.getLogger(classOf[StormTopologyManager])
   private var _nimbusClientOpt: Option[NimbusClient] = _
-
   private var _nimbusClient: NimbusClient = _
+  private val _eagleSchedulerConfig = schedulerConfig
+  private var _targetClusterConfig: com.typesafe.config.Config = _
 
-  private def initNimbusClient(stormConfig: Map[String, Object]) {
-    _nimbusClient = _nimbusClientOpt match {
-      case Some(nc) => nc
-      case None     => getNimbusClient(stormConfig)
+  private def getNimbusClient(): NimbusClient = {
+    val conf = Utils.readStormConfig().asInstanceOf[java.util.HashMap[String, Object]]
+    conf.putAll(Utils.readCommandLineOpts().asInstanceOf[java.util.HashMap[String, Object]])
+    conf.put(backtype.storm.Config.NIMBUS_HOST, _targetClusterConfig.getString(AppConstants.EAGLE_STORM_NIMBUS))
+    NimbusClient.getConfiguredClient(conf)
+  }
+
+  override def start(topologyName: String, targetCluster: String): Boolean = {
+    var ret = true
+    val targetClusterConfigPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + targetCluster
+    if(_eagleSchedulerConfig.hasPath(targetClusterConfigPath)) {
+      _targetClusterConfig = _eagleSchedulerConfig.getConfig(targetClusterConfigPath)
     }
+    try {
+      val (topologyName, conf, topology) = WordCountTopology.createWordCountTopology()
+      conf.put(backtype.storm.Config.NIMBUS_HOST, _targetClusterConfig.getString(AppConstants.EAGLE_STORM_NIMBUS))
+      System.setProperty("storm.jar", _targetClusterConfig.getString(AppConstants.EAGLE_STORM_JARFILE))
+      StormSubmitter.submitTopology(topologyName, conf, topology)
+    } catch {
+      case e: Throwable =>
+        ret = false
+        LOG.error(e.toString)
+    }
+    ret
   }
 
-  override def updateTopology(appInput: String, stormConfig: Map[String, Object]): Unit = ???
-
-  override def submitTopology(topologyName: String): Unit = {
-    val (topologyName, conf, topology) = WordCountTopology.createWordCountTopology()
-    StormSubmitter.submitTopology(topologyName, conf, topology)
+  override def stop(topology: String): Boolean = {
+    var ret = true
+    try {
+      getNimbusClient().getClient.killTopology(topology)
+    } catch {
+      case e: Throwable =>
+        ret = false
+        LOG.error(e.toString)
+    }
+    ret
   }
+
 }

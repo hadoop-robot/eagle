@@ -16,21 +16,28 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import org.apache.eagle.stream.pipeline.scheduler.{StreamAppManager}
+import com.typesafe.config.{Config}
+import org.apache.eagle.stream.pipeline.scheduler.{StreamTopologyManager, StreamAppManager}
 import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppExecution, StreamAppDefinition}
 import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 import org.slf4j.LoggerFactory
 
-class StreamAppManagerImpl extends StreamAppManager {
+class StreamAppManagerImpl(config: Config) extends StreamAppManager {
   private val logger = LoggerFactory.getLogger(classOf[StreamAppManagerImpl])
+  private var manager: StreamTopologyManager = _
+
+  def getManager(streamAppDefinition:StreamAppDefinition): StreamTopologyManager = {
+    return new StormTopologyManager(config)
+  }
 
   def execute(streamAppDefinition:StreamAppDefinition, streamAppExecution: StreamAppExecution): Boolean = {
     var ret = true
+    manager = getManager(streamAppDefinition)
     val commandType = streamAppExecution.CommandType
     commandType match {
       case AppCommandEntity.Type.START => {
         try {
-          ret = start(streamAppDefinition)
+          ret = manager.start("test", "storm-lvs")
         } catch {
           case e: Throwable => {
             ret = false
@@ -39,16 +46,7 @@ class StreamAppManagerImpl extends StreamAppManager {
       }
       case AppCommandEntity.Type.STOP => {
         try {
-          ret = stop(streamAppDefinition)
-        } catch {
-          case e: Throwable => {
-            ret = false
-          }
-        }
-      }
-      case AppCommandEntity.Type.RESTART => {
-        try {
-          ret = start(streamAppDefinition)
+          //ret = manager.stop("test", Map.empty[String, Object])
         } catch {
           case e: Throwable => {
             ret = false
@@ -60,18 +58,6 @@ class StreamAppManagerImpl extends StreamAppManager {
         ret = false
     }
     ret
-  }
-
-  override def submit(app: StreamAppDefinition): Boolean = {
-    return true
-  }
-
-  override def stop(app: StreamAppDefinition): Boolean = {
-    return true
-  }
-
-  override def start(app: StreamAppDefinition): Boolean = {
-    return true
   }
 
 }

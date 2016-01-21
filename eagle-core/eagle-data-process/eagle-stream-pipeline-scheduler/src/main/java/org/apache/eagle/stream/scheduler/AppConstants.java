@@ -22,9 +22,19 @@ package org.apache.eagle.stream.scheduler;
 public class AppConstants {
     public final static String APP_COMMAND_SERVICE = "AppCommandService";
     public final static String APP_DEFINITION_SERVICE = "AppDefinitionService";
+
     public final static String SITE_TAG = "site";
     public final static String APP_NAME_TAG = "name";
     public final static String COMMAND_TYPE_TAG = "commandType";
     public final static String COMMAND_ID_TAG = "UUID";
+
+    public final static String EAGLE_CONFIG_FILE = "eagle-scheduler.conf";
     public final static String EAGLE_SERVICE = "eagle.service";
+    public final static String EAGLE_SCHEDULER_CONFIG = "eagle.scheduler";
+    public final static String EAGLE_STORM_JARFILE = "storm.jar";
+    public final static String EAGLE_STORM_NIMBUS = "nimbus.host";
+    public final static String SCHEDULE_SYSTEM = "scheduleSystem";
+    public final static String SCHEDULE_INTERVAL = "scheduleInterval";
+    public final static String SCHEDULE_NUM_WORKERS = "scheduleNumWorkers";
+    public final static String SERVICE_TIMEOUT = "serviceWaitTimeOut";
 }
