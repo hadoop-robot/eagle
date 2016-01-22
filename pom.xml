@@ -133,6 +133,7 @@
         <module>eagle-topology-assembly</module>
         <module>eagle-samples</module>
         <module>eagle-gc</module>
+        <module>eagle-hadoop-metric</module>
     </modules>
     <properties>
         <!-- General Properties -->
@@ -198,6 +199,7 @@
         <quartz.version>2.2.1</quartz.version>
         <scopt.version>3.3.0</scopt.version>
         <akka.actor.version>2.3.14</akka.actor.version>
+        <reflections.version>0.9.10</reflections.version>
 
         <!-- Streaming -->
         <kafka.version>0.8.1.2.2.0.0-2041</kafka.version>
@@ -227,7 +229,7 @@
         <jaxb-impl.version>2.2.6</jaxb-impl.version>
         <stax-api.version>1.0.1</stax-api.version>
         <org.mortbay.jetty.version>6.1.26</org.mortbay.jetty.version>
-                
+
         <!-- servlet  -->
         <servlet-api.version>2.5</servlet-api.version>
 
@@ -369,6 +371,12 @@
                 <groupId>com.github.scopt</groupId>
                 <artifactId>scopt_${scala.version}</artifactId>
                 <version>${scopt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
 
             <!-- Serialization -->
@@ -874,6 +882,7 @@
                                 <exclude>.gitignore</exclude>
                                 <!-- IDE specific files-->
                                 <exclude>**/.idea/</exclude>
+                                <exclude>**/.cache-main</exclude>
                                 <exclude>**/.scalastyle/</exclude>
                                 <exclude>**/*.iml</exclude>
                                 <exclude>**/nb-configuration.xml</exclude>
@@ -918,11 +927,11 @@
                                 <exclude>**/webapp/**</exclude>
 
                             </excludes>
-                         </configuration>
-                     </execution>
-                 </executions>
-             </plugin>
-         </plugins>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     <repositories>
         <repository>

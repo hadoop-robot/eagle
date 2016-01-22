@@ -37,7 +37,11 @@ class StreamInfo  extends Serializable{
    */
   var name: String = null
 
+  /**
+    * Output stream id, equals to name by default
+    */
   var streamId:String=null
+
   var parallelismNum: Int = 1
 
   /**
@@ -155,7 +159,7 @@ trait StreamProtocol[+T <: Any]{
 
   def aggregate(upStreamNames: java.util.List[String], executorId :String, strategy:PartitionStrategy): StreamProducer[T]
 
-  def aggregate(cql : String, strategy:PartitionStrategy): StreamProducer[T]
+  def aggregateDirect(upStreamNames: java.util.List[String], cql : String, strategy:PartitionStrategy): StreamProducer[T]
 
   def persist(executorId : String, storageType: StorageType.StorageType): StreamProducer[T]
   

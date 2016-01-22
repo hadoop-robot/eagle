@@ -1,5 +1,7 @@
 package org.apache.eagle.stream.pipeline.parser
 
+import java.io.File
+
 import com.typesafe.config.{Config, ConfigFactory}
 
 /**
@@ -71,13 +73,17 @@ trait PipelineParser{
 
     // Merge pipeline config over base config
     val baseConfig =ConfigFactory.load()
-    pConfig = if(pConfig!=null) baseConfig.withFallback(pConfig) else baseConfig
-
+    pConfig = if(pConfig!=null) pConfig.withFallback(baseConfig) else baseConfig
     new Pipeline(pConfig,pDataflow)
   }
 
   def parseString(config:String):Pipeline = parse(ConfigFactory.parseString(config))
   def parseResource(resource:String):Pipeline = {
-    parse(ConfigFactory.parseResourcesAnySyntax(getClass.getClassLoader,resource))
+    // TODO: Load environment, currently hard-code with storm
+    if(resource.startsWith("/") || resource.startsWith("./")){
+      parse(ConfigFactory.parseFile(new File(resource)))
+    } else{
+      parse(ConfigFactory.parseResourcesAnySyntax(getClass.getClassLoader,resource))
+    }
   }
 }

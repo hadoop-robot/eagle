@@ -47,3 +47,11 @@ object PipelineSpec_2 extends App{
 object PipelineSpec_3 extends App {
   Pipeline(args).submit[storm]("pipeline_3.conf")
 }
+
+object PipelineSpec_4 extends App {
+  Pipeline(args).submit[storm]("pipeline_4.conf")
+}
+
+object PipelineCLISpec extends App{
+  Pipeline.main(args)
+}
