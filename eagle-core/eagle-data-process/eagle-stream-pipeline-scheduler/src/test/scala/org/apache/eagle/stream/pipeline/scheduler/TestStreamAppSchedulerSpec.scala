@@ -18,11 +18,10 @@ package org.apache.eagle.stream.pipeline.scheduler
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{TestActorRef, TestKit}
-import org.apache.eagle.stream.scheduler.AppConstants
 import org.scalatest.{BeforeAndAfterAll, MustMatchers, WordSpecLike}
 
 
-class TestStreamAppSchedulerSpec extends TestKit(ActorSystem(AppConstants.SCHEDULE_SYSTEM))
+class TestStreamAppSchedulerSpec extends TestKit(ActorSystem("stream-app-scheduler"))
   with WordSpecLike with MustMatchers with BeforeAndAfterAll {
 
   "A Scheduler actor" must {

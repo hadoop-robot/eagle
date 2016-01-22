@@ -49,7 +49,7 @@ private[scheduler] class StreamAppScheduler() {
   val config = ConfigFactory.load(AppConstants.EAGLE_CONFIG_FILE)
 
   def start():Unit = {
-    val system = ActorSystem(config.getString(AppConstants.SCHEDULE_SYSTEM), config)
+    val system = ActorSystem(config.getString(AppConstants.EAGLE_SCHEDULER_CONFIG + "." + AppConstants.SCHEDULE_SYSTEM), config)
     system.log.info(s"Started actor system: $system")
 
     val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
@@ -83,8 +83,13 @@ private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor wi
   }
 
   var progressListener: Option[ActorRef] = None
+  val configPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + AppConstants.SCHEDULE_NUM_WORKERS
+  var numOfWorkers = 1
+  if(config.hasPath(configPath)) {
+    numOfWorkers = config.getInt(configPath)
+  }
   val workerRouter = context.actorOf(
-    Props(new StreamAppCommandExecutor(config)).withRouter(RoundRobinRouter(config.getInt(AppConstants.SCHEDULE_NUM_WORKERS))), name = "command-executor")
+    Props(new StreamAppCommandExecutor(config)).withRouter(RoundRobinRouter(numOfWorkers)), name = "command-executor")
 
   override def receive = {
     case InitializationEvent if progressListener.isEmpty =>
