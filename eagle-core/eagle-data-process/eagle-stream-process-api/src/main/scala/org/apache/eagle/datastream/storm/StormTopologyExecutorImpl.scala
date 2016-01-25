@@ -57,6 +57,16 @@ case class StormTopologyExecutorImpl(topology: StormTopology, config: com.typesa
       }
     }
 
+    if(config.hasPath(backtype.storm.Config.NIMBUS_HOST)) {
+      conf.put(backtype.storm.Config.NIMBUS_HOST, config.getString(backtype.storm.Config.NIMBUS_HOST))
+    }
+    if(config.hasPath(backtype.storm.Config.NIMBUS_THRIFT_PORT)) {
+      conf.put(backtype.storm.Config.NIMBUS_THRIFT_PORT, config.getString(backtype.storm.Config.NIMBUS_THRIFT_PORT))
+    }
+    if(config.hasPath("storm.jar")) {
+      System.setProperty("storm.jar", config.getString("storm.jar"))
+    }
+
     val topologyName = config.getString("envContextConfig.topologyName")
     if (!localMode) {
       LOG.info("Submitting as cluster mode")

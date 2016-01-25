@@ -17,9 +17,13 @@
 
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
+import backtype.storm.generated.StormTopology
 import com.typesafe.config.Config
 import backtype.storm.{Config, StormSubmitter}
 import backtype.storm.utils.{Utils, NimbusClient}
+import org.apache.eagle.datastream.ExecutionEnvironments
+import org.apache.eagle.datastream.core.StreamContext
+import org.apache.eagle.datastream.storm.StormExecutionEnvironment
 import org.apache.eagle.stream.pipeline.scheduler.StreamTopologyManager
 import org.apache.eagle.stream.scheduler.AppConstants
 import org.slf4j.LoggerFactory
@@ -27,29 +31,20 @@ import org.slf4j.LoggerFactory
 
 class StormTopologyManager(schedulerConfig: com.typesafe.config.Config) extends StreamTopologyManager {
   val LOG = LoggerFactory.getLogger(classOf[StormTopologyManager])
-  private var _nimbusClientOpt: Option[NimbusClient] = _
-  private var _nimbusClient: NimbusClient = _
-  private val _eagleSchedulerConfig = schedulerConfig
-  private var _targetClusterConfig: com.typesafe.config.Config = _
 
-  private def getNimbusClient(): NimbusClient = {
+  private def getNimbusClient(clusterConfig: com.typesafe.config.Config): NimbusClient = {
     val conf = Utils.readStormConfig().asInstanceOf[java.util.HashMap[String, Object]]
     conf.putAll(Utils.readCommandLineOpts().asInstanceOf[java.util.HashMap[String, Object]])
-    conf.put(backtype.storm.Config.NIMBUS_HOST, _targetClusterConfig.getString(AppConstants.EAGLE_STORM_NIMBUS))
+    conf.put(backtype.storm.Config.NIMBUS_HOST, clusterConfig.getString(AppConstants.EAGLE_STORM_NIMBUS))
     NimbusClient.getConfiguredClient(conf)
   }
 
-  override def start(topologyName: String, targetCluster: String): Boolean = {
+  override def start(stream: StreamContext, topologyName: String, clusterConfig: com.typesafe.config.Config): Boolean = {
     var ret = true
-    val targetClusterConfigPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + targetCluster
-    if(_eagleSchedulerConfig.hasPath(targetClusterConfigPath)) {
-      _targetClusterConfig = _eagleSchedulerConfig.getConfig(targetClusterConfigPath)
-    }
     try {
-      val (topologyName, conf, topology) = WordCountTopology.createWordCountTopology()
-      conf.put(backtype.storm.Config.NIMBUS_HOST, _targetClusterConfig.getString(AppConstants.EAGLE_STORM_NIMBUS))
-      System.setProperty("storm.jar", _targetClusterConfig.getString(AppConstants.EAGLE_STORM_JARFILE))
-      StormSubmitter.submitTopology(topologyName, conf, topology)
+      //val (topologyName, conf, topology) = WordCountTopology.createWordCountTopology()
+      val stormEnv = ExecutionEnvironments.getWithConfig[StormExecutionEnvironment](clusterConfig)
+      stream.submit(stormEnv)
     } catch {
       case e: Throwable =>
         ret = false
@@ -58,10 +53,10 @@ class StormTopologyManager(schedulerConfig: com.typesafe.config.Config) extends 
     ret
   }
 
-  override def stop(topology: String): Boolean = {
+  override def stop(topologyName: String, clusterConfig: com.typesafe.config.Config): Boolean = {
     var ret = true
     try {
-      getNimbusClient().getClient.killTopology(topology)
+      getNimbusClient(clusterConfig).getClient.killTopology(topologyName)
     } catch {
       case e: Throwable =>
         ret = false

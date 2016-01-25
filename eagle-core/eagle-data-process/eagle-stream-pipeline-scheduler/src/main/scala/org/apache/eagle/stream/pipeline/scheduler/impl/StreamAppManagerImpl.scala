@@ -17,8 +17,10 @@
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
 import com.typesafe.config.{Config}
+import org.apache.eagle.stream.pipeline.Pipeline
 import org.apache.eagle.stream.pipeline.scheduler.{StreamTopologyManager, StreamAppManager}
 import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppExecution, StreamAppDefinition}
+import org.apache.eagle.stream.scheduler.AppConstants
 import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 import org.slf4j.LoggerFactory
 
@@ -30,6 +32,14 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
     return new StormTopologyManager(config)
   }
 
+  def getClusterConfig(clusterName: String): Config = {
+    val clusterConfigPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + clusterName
+    if(!config.hasPath(clusterConfigPath)) {
+      throw new Exception(s"Cannot find configuration under path: $clusterName")
+    }
+    config.getConfig(clusterConfigPath)
+  }
+
   def execute(streamAppDefinition:StreamAppDefinition, streamAppExecution: StreamAppExecution): Boolean = {
     var ret = true
     manager = getManager(streamAppDefinition)
@@ -37,7 +47,10 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
     commandType match {
       case AppCommandEntity.Type.START => {
         try {
-          ret = manager.start("test", "storm-lvs")
+          val pipeline = Pipeline.parseString(streamAppDefinition.configuration + "\n" + streamAppDefinition.definition)
+          val stream = Pipeline.compile(pipeline)
+          val clusterConfig = getClusterConfig("storm-lvs")
+          ret = manager.start(stream, streamAppDefinition.name, clusterConfig)
         } catch {
           case e: Throwable => {
             ret = false
@@ -46,7 +59,8 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
       }
       case AppCommandEntity.Type.STOP => {
         try {
-          //ret = manager.stop("test", Map.empty[String, Object])
+          val clusterConfig = getClusterConfig("storm-lvs")
+          ret = manager.stop(streamAppDefinition.name, clusterConfig)
         } catch {
           case e: Throwable => {
             ret = false
