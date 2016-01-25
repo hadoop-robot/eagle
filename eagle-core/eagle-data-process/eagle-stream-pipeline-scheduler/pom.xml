@@ -103,6 +103,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>eagle</groupId>
+            <artifactId>eagle-stream-pipeline</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_${scala.version}</artifactId>
             <version>${akka.actor.version}</version>

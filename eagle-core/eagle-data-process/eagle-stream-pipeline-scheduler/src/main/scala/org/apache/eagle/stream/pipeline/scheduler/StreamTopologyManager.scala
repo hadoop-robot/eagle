@@ -17,12 +17,15 @@
 
 package org.apache.eagle.stream.pipeline.scheduler
 
+import com.typesafe.config.Config
+import org.apache.eagle.datastream.core.StreamContext
+
 
 trait StreamTopologyManager {
 
-  def start(topologyName: String, targetCluster: String): Boolean
+  def start(stream: StreamContext, appName: String, clusterConfig: Config): Boolean
 
   //TODO  give option for KillOption
-  def stop(topology: String): Boolean
+  def stop(appName: String, clusterConfig: Config): Boolean
 
 }
