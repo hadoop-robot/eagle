@@ -17,10 +17,7 @@
 
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import backtype.storm.generated.StormTopology
-import com.typesafe.config.Config
-import backtype.storm.{Config, StormSubmitter}
-import backtype.storm.utils.{Utils, NimbusClient}
+import backtype.storm.utils.{NimbusClient, Utils}
 import org.apache.eagle.datastream.ExecutionEnvironments
 import org.apache.eagle.datastream.core.StreamContext
 import org.apache.eagle.datastream.storm.StormExecutionEnvironment
@@ -39,10 +36,9 @@ class StormTopologyManager(schedulerConfig: com.typesafe.config.Config) extends 
     NimbusClient.getConfiguredClient(conf)
   }
 
-  override def start(stream: StreamContext, topologyName: String, clusterConfig: com.typesafe.config.Config): Boolean = {
+  override def start(stream: StreamContext, clusterConfig: com.typesafe.config.Config): Boolean = {
     var ret = true
     try {
-      //val (topologyName, conf, topology) = WordCountTopology.createWordCountTopology()
       val stormEnv = ExecutionEnvironments.getWithConfig[StormExecutionEnvironment](clusterConfig)
       stream.submit(stormEnv)
     } catch {

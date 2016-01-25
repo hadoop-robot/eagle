@@ -23,7 +23,7 @@ import org.apache.eagle.datastream.core.StreamContext
 
 trait StreamTopologyManager {
 
-  def start(stream: StreamContext, appName: String, clusterConfig: Config): Boolean
+  def start(stream: StreamContext, clusterConfig: Config): Boolean
 
   //TODO  give option for KillOption
   def stop(appName: String, clusterConfig: Config): Boolean

@@ -55,6 +55,16 @@ private[scheduler] class StreamAppScheduler() {
     val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
     coordinator ! InitializationEvent
 
+    /*
+     registerOnTermination is called when you have shut down the ActorSystem (system.shutdown),
+     and the callbacks will be executed after all actors have been stopped.
+     */
+    system.registerOnTermination(new Runnable {
+      override def run(): Unit = {
+        coordinator ! TerminatedEvent
+      }
+    })
+
   }
 }
 

@@ -24,7 +24,7 @@ class PipelineSpec extends FlatSpec with Matchers{
     val pipeline = Pipeline.parseResource("pipeline_1.conf")
     pipeline should not be null
   }
-z
+
   "Pipeline" should "compile successfully from pipeline_2.conf" in {
     val pipeline = Pipeline.parseResource("pipeline_2.conf")
     pipeline should not be null

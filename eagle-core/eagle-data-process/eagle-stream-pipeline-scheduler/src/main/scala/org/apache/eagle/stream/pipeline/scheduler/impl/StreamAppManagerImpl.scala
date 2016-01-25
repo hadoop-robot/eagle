@@ -16,10 +16,10 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import com.typesafe.config.{Config}
+import com.typesafe.config.{ConfigValueFactory, ConfigFactory, Config}
 import org.apache.eagle.stream.pipeline.Pipeline
-import org.apache.eagle.stream.pipeline.scheduler.{StreamTopologyManager, StreamAppManager}
-import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppExecution, StreamAppDefinition}
+import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppDefinition, StreamAppExecution}
+import org.apache.eagle.stream.pipeline.scheduler.{StreamAppManager, StreamTopologyManager}
 import org.apache.eagle.stream.scheduler.AppConstants
 import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 import org.slf4j.LoggerFactory
@@ -48,9 +48,19 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
       case AppCommandEntity.Type.START => {
         try {
           val pipeline = Pipeline.parseString(streamAppDefinition.configuration + "\n" + streamAppDefinition.definition)
+          val appName = streamAppDefinition.name
           val stream = Pipeline.compile(pipeline)
           val clusterConfig = getClusterConfig("storm-lvs")
-          ret = manager.start(stream, streamAppDefinition.name, clusterConfig)
+          var combinedClusterConfig = clusterConfig.withFallback(stream.getConfig)
+          // support old setting
+          if(combinedClusterConfig.hasPath("envContextConfig.topologyName")) {
+            combinedClusterConfig.withValue("envContextConfig.topologyName", ConfigValueFactory.fromAnyRef(appName))
+          } else {
+            val topologyNameConfig = ConfigFactory.parseString(s"envContextConfig.topologyName=$appName")
+            combinedClusterConfig = combinedClusterConfig.withFallback(topologyNameConfig)
+          }
+
+          ret = manager.start(stream, combinedClusterConfig)
         } catch {
           case e: Throwable => {
             ret = false
