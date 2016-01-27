@@ -16,16 +16,16 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler.impl
 
-import com.typesafe.config.{ConfigValueFactory, ConfigFactory, Config}
+import com.typesafe.config.Config
 import org.apache.eagle.stream.pipeline.Pipeline
 import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppDefinition, StreamAppExecution}
 import org.apache.eagle.stream.pipeline.scheduler.{StreamAppManager, StreamTopologyManager}
-import org.apache.eagle.stream.scheduler.AppConstants
+import org.apache.eagle.stream.scheduler.StreamAppConstants
 import org.apache.eagle.stream.scheduler.entity.AppCommandEntity
 import org.slf4j.LoggerFactory
 
 class StreamAppManagerImpl(config: Config) extends StreamAppManager {
-  private val logger = LoggerFactory.getLogger(classOf[StreamAppManagerImpl])
+  private val LOG = LoggerFactory.getLogger(classOf[StreamAppManagerImpl])
   private var manager: StreamTopologyManager = _
 
   def getManager(streamAppDefinition:StreamAppDefinition): StreamTopologyManager = {
@@ -33,7 +33,7 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
   }
 
   def getClusterConfig(clusterName: String): Config = {
-    val clusterConfigPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + clusterName
+    val clusterConfigPath = StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + clusterName
     if(!config.hasPath(clusterConfigPath)) {
       throw new Exception(s"Cannot find configuration under path: $clusterName")
     }
@@ -51,16 +51,8 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
           val appName = streamAppDefinition.name
           val stream = Pipeline.compile(pipeline)
           val clusterConfig = getClusterConfig("storm-lvs")
-          var combinedClusterConfig = clusterConfig.withFallback(stream.getConfig)
-          // support old setting
-          if(combinedClusterConfig.hasPath("envContextConfig.topologyName")) {
-            combinedClusterConfig.withValue("envContextConfig.topologyName", ConfigValueFactory.fromAnyRef(appName))
-          } else {
-            val topologyNameConfig = ConfigFactory.parseString(s"envContextConfig.topologyName=$appName")
-            combinedClusterConfig = combinedClusterConfig.withFallback(topologyNameConfig)
-          }
-
-          ret = manager.start(stream, combinedClusterConfig)
+          val combinedClusterConfig = clusterConfig.withFallback(stream.getConfig)
+          ret = manager.start(stream, appName, combinedClusterConfig)
         } catch {
           case e: Throwable => {
             ret = false
@@ -78,7 +70,7 @@ class StreamAppManagerImpl(config: Config) extends StreamAppManager {
         }
       }
       case m@_ =>
-        logger.warn("Unsupported operation: " + commandType)
+        LOG.warn("Unsupported operation: " + commandType)
         ret = false
     }
     ret

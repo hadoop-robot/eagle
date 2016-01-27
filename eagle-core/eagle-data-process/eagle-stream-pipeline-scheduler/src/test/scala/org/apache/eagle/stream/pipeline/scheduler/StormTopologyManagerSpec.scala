@@ -20,12 +20,11 @@ package org.apache.eagle.stream.pipeline.scheduler
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.eagle.stream.pipeline.Pipeline
 import org.apache.eagle.stream.pipeline.scheduler.impl.StormTopologyManager
-import org.apache.eagle.stream.scheduler.AppConstants
+import org.apache.eagle.stream.scheduler.StreamAppConstants
 
 
 object StormTopologyManagerSpec extends App {
-
-  val config = ConfigFactory.load(AppConstants.EAGLE_CONFIG_FILE)
+  val config = ConfigFactory.load(StreamAppConstants.EAGLE_CONFIG_FILE)
   val manager: StormTopologyManager = new StormTopologyManager(config)
 
   val dataFlow = "\u0009dataflow {\n\u0009\u0009KafkaSource.metricStream_1 {\n\u0009\u0009\u0009parallism = 1000\n\u0009\u0009\u0009topic = \"metric_event_1\"\n\u0009\u0009\u0009zkConnection = \"sandbox.hortonworks.com:2181\"\n\u0009\u0009\u0009zkConnectionTimeoutMS = 15000\n\u0009\u0009\u0009consumerGroupId = \"Consumer\"\n\u0009\u0009\u0009fetchSize = 1048586\n\u0009\u0009\u0009transactionZKServers = \"sandbox.hortonworks.com\"\n\u0009\u0009\u0009transactionZKPort = 2181\n\u0009\u0009\u0009transactionZKRoot = \"/consumers\"\n\u0009\u0009\u0009transactionStateUpdateMS = 2000\n\u0009\u0009\u0009deserializerClass = \"org.apache.eagle.datastream.storm.JsonMessageDeserializer\"\n\u0009\u0009}\n\n\u0009\u0009KafkaSource.metricStream_2 {\n\u0009\u0009\u0009parallism = 1000\n\u0009\u0009\u0009topic = \"metric_event_2\"\n\u0009\u0009\u0009zkConnection = \"sandbox.hortonworks.com:2181\"\n\u0009\u0009\u0009zkConnectionTimeoutMS = 15000\n\u0009\u0009\u0009consumerGroupId = \"Consumer\"\n\u0009\u0009\u0009fetchSize = 1048586\n\u0009\u0009\u0009transactionZKServers = \"sandbox.hortonworks.com\"\n\u0009\u0009\u0009transactionZKPort = 2181\n\u0009\u0009\u0009transactionZKRoot = \"/consumers\"\n\u0009\u0009\u0009transactionStateUpdateMS = 2000\n\u0009\u0009\u0009deserializerClass = \"org.apache.eagle.datastream.storm.JsonMessageDeserializer\"\n\u0009\u0009}\n\n\u0009\u0009KafkaSource.metricStream_3{\n\u0009\u0009\u0009parallism = 1000\n\u0009\u0009\u0009topic = \"metric_event_3\"\n\u0009\u0009\u0009zkConnection = \"sandbox.hortonworks.com:2181\"\n\u0009\u0009\u0009zkConnectionTimeoutMS = 15000\n\u0009\u0009\u0009consumerGroupId = \"Consumer\"\n\u0009\u0009\u0009fetchSize = 1048586\n\u0009\u0009\u0009transactionZKServers = \"sandbox.hortonworks.com\"\n\u0009\u0009\u0009transactionZKPort = 2181\n\u0009\u0009\u0009transactionZKRoot = \"/consumers\"\n\u0009\u0009\u0009transactionStateUpdateMS = 2000\n\u0009\u0009\u0009deserializerClass = \"org.apache.eagle.datastream.storm.JsonMessageDeserializer\"\n\u0009\u0009}\n\n\u0009\u0009Console.printer {}\n\n\u0009\u0009metricStream_1|metricStream_2|metricStream_3 -> printer {\n\u0009\u0009\u0009grouping = shuffle\n\u0009\u0009}\n\u0009}"
@@ -36,7 +35,7 @@ object StormTopologyManagerSpec extends App {
   val stream = Pipeline.compile(pipeline)
 
   def getClusterConfig(clusterName: String): Config = {
-    val clusterConfigPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + clusterName
+    val clusterConfigPath = StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + clusterName
     if(!config.hasPath(clusterConfigPath)) {
       throw new Exception(s"Cannot find configuration under path: $clusterName")
     }
@@ -45,6 +44,6 @@ object StormTopologyManagerSpec extends App {
 
   val clusterConfig = getClusterConfig("storm-lvs")
   val combinedClusterConfig = clusterConfig.withFallback(stream.getConfig)
-  val ret = manager.start(stream, combinedClusterConfig)
+  val ret = manager.start(stream, "test", combinedClusterConfig)
   println(ret)
 }

@@ -18,7 +18,7 @@ package org.apache.eagle.stream.scheduler.entity;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
-import org.apache.eagle.stream.scheduler.AppConstants;
+import org.apache.eagle.stream.scheduler.StreamAppConstants;
 import org.apache.eagle.stream.pipeline.scheduler.model.StreamAppDefinition;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -33,7 +33,7 @@ import java.util.Map;
 @Table("appDefinition")
 @ColumnFamily("f")
 @Prefix("appDefinition")
-@Service(AppConstants.APP_DEFINITION_SERVICE)
+@Service(StreamAppConstants.APP_DEFINITION_SERVICE)
 @TimeSeries(false)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Tags({"site", "name"})
@@ -147,8 +147,8 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
 
     public static StreamAppDefinition toModel(final AppDefinitionEntity entity){
         StreamAppDefinition model = new StreamAppDefinition(
-                entity.getTags().get(AppConstants.SITE_TAG),
-                entity.getTags().get(AppConstants.APP_NAME_TAG),
+                entity.getTags().get(StreamAppConstants.SITE_TAG),
+                entity.getTags().get(StreamAppConstants.APP_NAME_TAG),
                 entity.getDefinition(),
                 entity.getConfiguration(),
                 entity.getDescription(),
@@ -169,8 +169,8 @@ public class AppDefinitionEntity extends TaggedLogAPIEntity {
         entity.setExecutionCluster(JavaConversions.asJavaList(model.executionCluster()));
         entity.setExecutionStatus(model.executionStatus());
         Map<String,String> tags = new HashMap<String,String>(){{
-            put(AppConstants.SITE_TAG, model.site());
-            put(AppConstants.APP_NAME_TAG, model.name());
+            put(StreamAppConstants.SITE_TAG, model.site());
+            put(StreamAppConstants.APP_NAME_TAG, model.name());
         }};
         entity.setUpdateTimestamp(model.updateTimestamp());
         entity.setCreateTimestamp(model.createTimestamp());

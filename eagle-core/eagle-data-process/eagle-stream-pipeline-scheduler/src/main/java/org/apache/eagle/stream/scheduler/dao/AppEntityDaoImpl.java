@@ -23,7 +23,7 @@ import org.apache.eagle.common.config.EagleConfigConstants;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
-import org.apache.eagle.stream.scheduler.AppConstants;
+import org.apache.eagle.stream.scheduler.StreamAppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +47,10 @@ public class AppEntityDaoImpl implements AppEntityDao {
     }
 
     public AppEntityDaoImpl(Config config) {
-        this.eagleServiceHost = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.HOST);
-        this.eagleServicePort = config.getInt(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.PORT);
-        this.username = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.USERNAME);
-        this.password = config.getString(AppConstants.EAGLE_SERVICE + "." + EagleConfigConstants.PASSWORD);
+        this.eagleServiceHost = config.getString(StreamAppConstants.EAGLE_SERVICE_CONFIG + "." + EagleConfigConstants.HOST);
+        this.eagleServicePort = config.getInt(StreamAppConstants.EAGLE_SERVICE_CONFIG + "." + EagleConfigConstants.PORT);
+        this.username = config.getString(StreamAppConstants.EAGLE_SERVICE_CONFIG + "." + EagleConfigConstants.USERNAME);
+        this.password = config.getString(StreamAppConstants.EAGLE_SERVICE_CONFIG + "." + EagleConfigConstants.PASSWORD);
     }
 
     public AppEntityDaoImpl(String eagleServiceHost, int eagleServicePort) {

@@ -19,7 +19,7 @@
 package org.apache.eagle.stream.scheduler;
 
 
-public class AppConstants {
+public class StreamAppConstants {
     public final static String APP_COMMAND_SERVICE = "AppCommandService";
     public final static String APP_DEFINITION_SERVICE = "AppDefinitionService";
 
@@ -33,7 +33,7 @@ public class AppConstants {
     public final static String EAGLE_CLUSTER_TYPE = "type";
 
     public final static String EAGLE_CONFIG_FILE = "eagle-scheduler.conf";
-    public final static String EAGLE_SERVICE = "eagle.service";
+    public final static String EAGLE_SERVICE_CONFIG = "eagle.service";
     public final static String EAGLE_SCHEDULER_CONFIG = "eagle.scheduler";
     public final static String EAGLE_STORM_JARFILE = "storm.jar";
     public final static String EAGLE_STORM_NIMBUS = "nimbus.host";

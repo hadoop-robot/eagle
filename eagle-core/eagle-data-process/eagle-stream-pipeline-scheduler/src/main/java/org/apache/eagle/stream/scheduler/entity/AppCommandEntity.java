@@ -18,7 +18,7 @@ package org.apache.eagle.stream.scheduler.entity;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
-import org.apache.eagle.stream.scheduler.AppConstants;
+import org.apache.eagle.stream.scheduler.StreamAppConstants;
 import org.apache.eagle.stream.pipeline.scheduler.model.StreamAppExecution;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
@@ -30,7 +30,7 @@ import java.util.Map;
 @Table("appCommand")
 @ColumnFamily("f")
 @Prefix("appCommand")
-@Service(AppConstants.APP_COMMAND_SERVICE)
+@Service(StreamAppConstants.APP_COMMAND_SERVICE)
 @TimeSeries(false)
 @Tags({"site", "uuid", "commandType"})
 public class AppCommandEntity extends TaggedLogAPIEntity {
@@ -95,9 +95,9 @@ public class AppCommandEntity extends TaggedLogAPIEntity {
 
     public static StreamAppExecution toModel(final AppCommandEntity entity){
         StreamAppExecution model = new StreamAppExecution(
-                entity.getTags().get(AppConstants.SITE_TAG),
-                entity.getTags().get(AppConstants.COMMAND_ID_TAG),
-                entity.getTags().get(AppConstants.COMMAND_TYPE_TAG),
+                entity.getTags().get(StreamAppConstants.SITE_TAG),
+                entity.getTags().get(StreamAppConstants.COMMAND_ID_TAG),
+                entity.getTags().get(StreamAppConstants.COMMAND_TYPE_TAG),
                 entity.getAppName(),
                 entity.getStatus(),
                 entity.getUpdateTimestamp(),
@@ -110,9 +110,9 @@ public class AppCommandEntity extends TaggedLogAPIEntity {
         entity.setAppName(model.appName());
         entity.setStatus(model.commandStatus());
         Map<String,String> tags = new HashMap<String,String>(){{
-            put(AppConstants.SITE_TAG,model.site());
-            put(AppConstants.COMMAND_ID_TAG,model.uuid());
-            put(AppConstants.COMMAND_TYPE_TAG, model.CommandType());
+            put(StreamAppConstants.SITE_TAG,model.site());
+            put(StreamAppConstants.COMMAND_ID_TAG,model.uuid());
+            put(StreamAppConstants.COMMAND_TYPE_TAG, model.CommandType());
 
         }};
         entity.setUpdateTimestamp(model.updateTimestamp());

@@ -21,7 +21,7 @@ import akka.routing.RoundRobinRouter
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity
-import org.apache.eagle.stream.scheduler.AppConstants
+import org.apache.eagle.stream.scheduler.StreamAppConstants
 import org.apache.eagle.stream.scheduler.dao.AppEntityDaoImpl
 import org.apache.eagle.stream.scheduler.entity.{AppCommandEntity, AppDefinitionEntity}
 import scala.collection.JavaConverters._
@@ -46,10 +46,10 @@ case class DuplicatedDefinitionException(message:String) extends Exception(messa
  */
 private[scheduler] class StreamAppScheduler() {
   //System.setProperty("config.resource", "/application.local.conf")
-  val config = ConfigFactory.load(AppConstants.EAGLE_CONFIG_FILE)
+  val config = ConfigFactory.load(StreamAppConstants.EAGLE_CONFIG_FILE)
 
   def start():Unit = {
-    val system = ActorSystem(config.getString(AppConstants.EAGLE_SCHEDULER_CONFIG + "." + AppConstants.SCHEDULE_SYSTEM), config)
+    val system = ActorSystem(config.getString(StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + StreamAppConstants.SCHEDULE_SYSTEM), config)
     system.log.info(s"Started actor system: $system")
 
     val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
@@ -93,7 +93,7 @@ private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor wi
   }
 
   var progressListener: Option[ActorRef] = None
-  val configPath = AppConstants.EAGLE_SCHEDULER_CONFIG + "." + AppConstants.SCHEDULE_NUM_WORKERS
+  val configPath = StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + StreamAppConstants.SCHEDULE_NUM_WORKERS
   var numOfWorkers = 1
   if(config.hasPath(configPath)) {
     numOfWorkers = config.getInt(configPath)
@@ -140,12 +140,12 @@ private[scheduler] class StreamAppCommandExecutor(config: Config) extends Actor 
 
   def changeAppStatus(app: AppDefinitionEntity, newStatus: String): Unit = {
     app.setExecutionStatus(newStatus)
-    dao.update(app, AppConstants.APP_DEFINITION_SERVICE)
+    dao.update(app, StreamAppConstants.APP_DEFINITION_SERVICE)
   }
 
   def changeCommandStatus(cmd: AppCommandEntity, newStatus: String): Unit = {
     cmd.setStatus(newStatus)
-    dao.update(cmd, AppConstants.APP_COMMAND_SERVICE)
+    dao.update(cmd, StreamAppConstants.APP_COMMAND_SERVICE)
   }
 
   def updateCompletedStatus(ret: Boolean, appDefinition: AppDefinitionEntity, appCommand: AppCommandEntity) = {
