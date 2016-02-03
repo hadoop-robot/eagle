@@ -16,22 +16,24 @@
  */
 package org.apache.eagle.stream.pipeline.scheduler
 
+
 import akka.actor._
-import akka.routing.RoundRobinRouter
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
-import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity
+import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.eagle.stream.scheduler.StreamAppConstants
-import org.apache.eagle.stream.scheduler.dao.AppEntityDaoImpl
 import org.apache.eagle.stream.scheduler.entity.{AppCommandEntity, AppDefinitionEntity}
-import scala.collection.JavaConverters._
+
+import scala.collection.JavaConversions
+import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.util.{Failure, Success}
 
 
 private[scheduler] class ScheduleEvent
-private[scheduler] case class InitializationEvent() extends ScheduleEvent
+private[scheduler] case class InitializationEvent(config: Config) extends ScheduleEvent
 private[scheduler] case class TerminatedEvent() extends ScheduleEvent
 private[scheduler] case class CommandLoaderEvent() extends ScheduleEvent
 private[scheduler] case class CommandExecuteEvent(appCommandEntity: AppCommandEntity) extends ScheduleEvent
+private[scheduler] case class ExecutionCommand(command: AppCommandEntity) extends ScheduleEvent
 private[scheduler] case class HealthCheckerEvent() extends ScheduleEvent
 private[scheduler] case class ResultCountEvent(value: Int) extends ScheduleEvent
 
@@ -50,10 +52,16 @@ private[scheduler] class StreamAppScheduler() {
 
   def start():Unit = {
     val system = ActorSystem(config.getString(StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + StreamAppConstants.SCHEDULE_SYSTEM), config)
+
     system.log.info(s"Started actor system: $system")
 
-    val coordinator = system.actorOf(Props(new StreamAppCoordinator(config)))
-    coordinator ! InitializationEvent
+    import system.dispatcher
+
+    val coordinator = system.actorOf(Props[StreamAppCoordinator])
+
+    system.scheduler.scheduleOnce(1 seconds, coordinator, InitializationEvent(config))
+
+    system.scheduler.schedule(1.seconds, 5.seconds, coordinator, CommandExecuteEvent)
 
     /*
      registerOnTermination is called when you have shut down the ActorSystem (system.shutdown),
@@ -68,87 +76,88 @@ private[scheduler] class StreamAppScheduler() {
   }
 }
 
-private[scheduler] class StreamAppCoordinator(config: Config) extends Actor with ActorLogging {
-  private val loader: ActorRef = context.actorOf(Props(new StreamAppCommandLoader(config)), "command-loader")
+private[scheduler] class StreamAppCoordinator extends Actor with ActorLogging {
+
+  var commandLoader: ActorRef = null
+  var commandExecutor: ActorRef = null
+
+  override def preStart(): Unit = {
+    commandLoader = context.actorOf(Props[StreamAppCommandLoader], "command-loader")
+    commandExecutor = context.actorOf(Props[StreamAppCommandExecutor], "command-worker")
+  }
 
   override def receive = {
-    case InitializationEvent => {
-      loader ! InitializationEvent
-      loader ! CommandLoaderEvent
+    case InitializationEvent(config) => {
+      log.info(s"Config updated: $config")
+      commandLoader ! InitializationEvent(config)
+      commandExecutor ! InitializationEvent(config)
     }
-
+    case CommandLoaderEvent =>
+      commandLoader ! CommandExecuteEvent
+    case ExecutionCommand(command) =>
+      log.info(s"Executing comamnd: $command")
+      commandExecutor ! ExecutionCommand(command)
     case TerminatedEvent =>
+      log.info("Coordinator exit ...")
       context.stop(self)
-
-    case m@_ => throw new UnsupportedOperationException(s"Event not supported $m")
+    case m@_ =>
+      log.warning(s"Unsupported message: $m")
   }
 }
 
-private[scheduler] class StreamAppCommandLoader(config: Config) extends Actor with ActorLogging {
+private[scheduler] class StreamAppCommandLoader extends Actor with ActorLogging {
+  @volatile var _config: Config = null
+  @volatile var _dao: StreamAppServiceDao = null
 
-  def loadCommands(): GenericServiceAPIResponseEntity[_] = {
-    val dao = new AppEntityDaoImpl(config)
-    val query = "AppCommandService[@status=\"%s\"]{*}".format(AppCommandEntity.Status.INITIALIZED)
-    dao.search(query, Int.MaxValue)
-  }
-
-  var progressListener: Option[ActorRef] = None
-  val configPath = StreamAppConstants.EAGLE_SCHEDULER_CONFIG + "." + StreamAppConstants.SCHEDULE_NUM_WORKERS
-  var numOfWorkers = 1
-  if(config.hasPath(configPath)) {
-    numOfWorkers = config.getInt(configPath)
-  }
-  val workerRouter = context.actorOf(
-    Props(new StreamAppCommandExecutor(config)).withRouter(RoundRobinRouter(numOfWorkers)), name = "command-executor")
+  import context.dispatcher
 
   override def receive = {
-    case InitializationEvent if progressListener.isEmpty =>
-      progressListener = Some(sender())
+    case InitializationEvent(config: Config) =>
+      _config = config
+      _dao = new StreamAppServiceDao(config, context.dispatcher)
 
     case CommandLoaderEvent => {
-      val response = loadCommands()
-      //println("response" + response.getObj.toString)
-      if(response.getException != null)
-        throw new EagleServiceUnavailableException(s"Service is unavailable" + response.getException)
-
-      val commands = response.getObj().asScala
-      if(commands != null && commands.size != 0){
-        val appCommands = commands.toList
-        for(command <- appCommands) {
-          val cmd = command.asInstanceOf[AppCommandEntity]
-          cmd.setStatus(AppCommandEntity.Status.PENDING)
-          workerRouter ! CommandExecuteEvent(cmd)
-        }
+      val _sender = sender()
+      _dao.readNewInitializedCommandByType() onComplete {
+        case Success(optionalEntities) =>
+          optionalEntities match {
+            case Some(commands) =>
+              log.info(s"Load ${commands.size()} new commands")
+              JavaConversions.collectionAsScalaIterable(commands) foreach { command =>
+                _dao.updateCommandStatus(command, AppCommandEntity.Status.PENDING) onComplete {
+                  case Success(response) =>
+                    if(response.isSuccess) {
+                      _sender ! ExecutionCommand(command)
+                    } else {
+                      log.error(s"Got an exception to update command $command: ${response.getException}")
+                    }
+                  case Failure(ex) =>
+                    log.error(s"Got an exception to update command $command: ${ex.getMessage}")
+                }
+              }
+            case None =>
+              log.info("Load 0 new commands")
+          }
+        case Failure(ex) =>
+          log.error(s"Failed to get commands due to exception ${ex.getMessage}")
       }
     }
+
     case TerminatedEvent =>
       context.stop(self)
 
-    case m@_ => throw new UnsupportedOperationException(s"Event not supported $m")
+    case m@_ => throw new UnsupportedOperationException(s"Event is not supported $m")
   }
 }
 
 private[scheduler] class StreamAppCommandExecutor(config: Config) extends Actor with ActorLogging {
-  val dao = new AppEntityDaoImpl(config)
-  val streamAppManager = StreamAppManager.apply()
+  @volatile var _config: Config = _
+  @volatile var _dao: StreamAppServiceDao = _
+  @volatile var _streamAppManager: StreamAppManager = _
 
-  def loadAppDefinition(appName: String, site: String): GenericServiceAPIResponseEntity[_] = {
-    val query = "AppDefinitionService[@name=\"%s\" AND @site=\"%s\"]{*}".format(appName, site)
-    println(query)
-    dao.search(query, Integer.MAX_VALUE)
-  }
+  import context.dispatcher
 
-  def changeAppStatus(app: AppDefinitionEntity, newStatus: String): Unit = {
-    app.setExecutionStatus(newStatus)
-    dao.update(app, StreamAppConstants.APP_DEFINITION_SERVICE)
-  }
-
-  def changeCommandStatus(cmd: AppCommandEntity, newStatus: String): Unit = {
-    cmd.setStatus(newStatus)
-    dao.update(cmd, StreamAppConstants.APP_COMMAND_SERVICE)
-  }
-
-  def updateCompletedStatus(ret: Boolean, appDefinition: AppDefinitionEntity, appCommand: AppCommandEntity) = {
+  def updateCompletedStatus(ret: Boolean) = {
     var newAppStatus: String = AppDefinitionEntity.STATUS.UNKNOWN
     var newCmdStatus: String = AppCommandEntity.Status.PENDING
     ret match {
@@ -161,42 +170,55 @@ private[scheduler] class StreamAppCommandExecutor(config: Config) extends Actor 
         newCmdStatus = AppCommandEntity.Status.DOWN
       }
     }
-    changeAppStatus(appDefinition, newAppStatus)
-    changeCommandStatus(appCommand, newCmdStatus)
+    (newAppStatus, newCmdStatus)
   }
 
+  def execute(app: AppDefinitionEntity, command: AppCommandEntity) {
+    val streamAppDefinition = AppDefinitionEntity.toModel(app)
+    val streamAppCommand = AppCommandEntity.toModel(command)
+    val future = Future {
+      _streamAppManager.execute(streamAppDefinition, streamAppCommand)
+    }
+    future.onComplete {
+      case Success(value) =>
+        val (appStatus, commandStatus) = updateCompletedStatus(value)
+        _dao.updateDefinitionStatus(app, appStatus) recover {
+          case ex: Throwable => log.error(ex,s"Failed to update executed status of $app due to exception: ${ex.getMessage}")
+        }
+        _dao.updateCommandStatus(command, commandStatus) recover {
+          case ex: Throwable => log.error(ex,s"Failed to update executed status of $app due to exception: ${ex.getMessage}")
+        }
+      case Failure(ex) =>
+        log.error(ex,s"Failed to execute command $command on application $app due to exception: ${ex.getMessage}")
+    }
+  }
 
   override def receive = {
+    case InitializationEvent(config: Config) =>
+      _config = config
+      _dao = new StreamAppServiceDao(config, context.dispatcher)
+      _streamAppManager = StreamAppManager.apply(config)
+
     case CommandExecuteEvent(command) => {
       val streamAppExecution = AppCommandEntity.toModel(command)
       val appName = streamAppExecution.appName
       val site = streamAppExecution.site
 
-      val result = loadAppDefinition(appName, site)
-      println("result=" + result.getObj.toString)
+      _dao.readDefinitionByName(appName, site) onComplete {
+        case Success(appDefinition) =>
+          appDefinition match {
+            case Some(app) =>
+              _dao.updateDefinitionStatus(app, AppDefinitionEntity.STATUS.STARTING) onComplete {
+                case _ => execute(app, command)
+              }
 
-      if(result.getException != null) {
-        throw new EagleServiceUnavailableException("Service is not available" + result.getException)
-      }
+            case None =>
+              log.error(s"Failed to find application definition with applicationName=$appName and site=$site")
+          }
 
-      val definitions = result.getObj()
-      if(definitions != null && definitions.size != 1) {
-        log.error(s"The AppDefinitionService result searched by name $appName is not correct")
-        throw new DuplicatedDefinitionException(s"The AppDefinitionService result searched by name $appName is not correct")
-      }
-
-      val appDefinition = definitions.get(0).asInstanceOf[AppDefinitionEntity]
-      val streamAppDefinition = AppDefinitionEntity.toModel(appDefinition)
-      var ret = true
-      try {
-        changeAppStatus(appDefinition, AppDefinitionEntity.STATUS.STARTING)
-        ret = streamAppManager.execute(streamAppDefinition, streamAppExecution)
-        updateCompletedStatus(ret, appDefinition, command)
-      } catch {
-        case e: Throwable =>
-          throw new UnsupportedOperationException(s"Execute command failed $e")
       }
     }
+
     case m@_ =>
       log.warning("Unsupported operation $m")
   }

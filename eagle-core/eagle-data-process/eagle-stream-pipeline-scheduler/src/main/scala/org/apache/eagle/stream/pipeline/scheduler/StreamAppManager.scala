@@ -16,9 +16,9 @@
 */
 package org.apache.eagle.stream.pipeline.scheduler
 
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.Config
 import org.apache.eagle.stream.pipeline.scheduler.impl.StreamAppManagerImpl
-import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppExecution, StreamAppDefinition}
+import org.apache.eagle.stream.pipeline.scheduler.model.{StreamAppDefinition, StreamAppExecution}
 
 /**
 * The actual function for stream app management
@@ -27,9 +27,9 @@ trait StreamAppManager {
   def execute(app:StreamAppDefinition, cmd: StreamAppExecution):Boolean
 }
 
-object StreamAppManager{
-  def apply():StreamAppManager = {
-    val config = ConfigFactory.load("eagle-scheduler.conf")
-    new StreamAppManagerImpl(config)
+object StreamAppManager {
+  def apply(conf: Config):StreamAppManager = {
+    //val config = ConfigFactory.load("eagle-scheduler.conf")
+    new StreamAppManagerImpl(conf)
   }
 }
