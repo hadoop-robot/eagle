@@ -17,7 +17,6 @@
 package org.apache.eagle.policy.siddhi;
 
 import com.lmax.disruptor.ExceptionHandler;
-import com.lmax.disruptor.FatalExceptionHandler;
 import com.typesafe.config.Config;
 import org.apache.eagle.alert.entity.AbstractPolicyDefinitionEntity;
 import org.apache.eagle.alert.entity.AlertStreamSchemaEntity;
