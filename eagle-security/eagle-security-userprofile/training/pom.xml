@@ -69,6 +69,7 @@
             <groupId>eagle</groupId>
             <artifactId>eagle-security-userprofile-common</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- unit test -->

@@ -150,7 +150,7 @@
         <maven-assembly.version>2.5.5</maven-assembly.version>
         <maven-source.version>2.2</maven-source.version>
         <maven-compiler.version>2.0.2</maven-compiler.version>
-        <maven-dependency.version>2.1</maven-dependency.version>
+        <maven-dependency.version>2.0</maven-dependency.version>
         <maven-license.version>2.6</maven-license.version>
         <maven-surefire.version>2.6</maven-surefire.version>
         <maven-jar.version>2.6</maven-jar.version>
