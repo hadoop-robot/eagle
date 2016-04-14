@@ -29,5 +29,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>eagle-topology-example</module>
+        <module>eagle-hdfs-example</module>
     </modules>
 </project>
