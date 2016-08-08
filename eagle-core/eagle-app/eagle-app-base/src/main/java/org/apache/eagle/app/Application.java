@@ -91,8 +91,10 @@ public interface Application <
 
     default Conf getConfig(Config config){
         try {
-            return getConfigType().getConstructor(Config.class).newInstance(config);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            Conf instance =  getConfigType().newInstance();
+            instance.load(config);
+            return instance;
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException(e.getMessage(),e);
         }
     }
