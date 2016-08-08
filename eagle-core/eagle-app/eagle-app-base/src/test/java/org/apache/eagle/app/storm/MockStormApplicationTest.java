@@ -17,13 +17,10 @@
 package org.apache.eagle.app.storm;
 
 import com.typesafe.config.ConfigFactory;
-import org.apache.eagle.app.environment.impl.StormEnvironment;
 import org.apache.eagle.app.utils.DynamicJarPathFinder;
 import org.apache.eagle.metadata.model.ApplicationEntity;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 public class MockStormApplicationTest {
     @Test
@@ -39,7 +36,7 @@ public class MockStormApplicationTest {
 
     @Test
     public void testRunApplicationWithAppConfig() throws InterruptedException {
-        MockStormApplication.MockStormConfiguration appConfig = new MockStormApplication.MockStormConfiguration();
+        MockStormApplication.MockStormConfiguration appConfig = new MockStormApplication.MockStormConfiguration(ConfigFactory.load());
         appConfig.setJarPath(DynamicJarPathFinder.findPath(MockStormApplication.class));
         appConfig.setSiteId("test_site");
         appConfig.setAppId("test_application_storm_topology");

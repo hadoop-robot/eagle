@@ -35,20 +35,19 @@ import java.util.Map;
 public class TestStormApplication extends StormApplication<TestStormApplication.TestStormAppConfig>{
     @Override
     public StormTopology execute(TestStormAppConfig config, StormEnvironment environment){
-        return null;
-    }
-
-    @Override
-    public StormTopology execute(Config config, StormEnvironment environment) {
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("metric_spout", new RandomEventSpout(), config.getInt("spoutNum"));
-        builder.setBolt("sink_1",environment.getFlattenStreamSink("TEST_STREAM_1",config)).fieldsGrouping("metric_spout",new Fields("metric"));
-        builder.setBolt("sink_2",environment.getFlattenStreamSink("TEST_STREAM_2",config)).fieldsGrouping("metric_spout",new Fields("metric"));
+        builder.setSpout("metric_spout", new RandomEventSpout(), config.getSpoutNum());
+        builder.setBolt("sink_1",environment.getFlattenStreamSink("TEST_STREAM_1",config.getConfig())).fieldsGrouping("metric_spout",new Fields("metric"));
+        builder.setBolt("sink_2",environment.getFlattenStreamSink("TEST_STREAM_2",config.getConfig())).fieldsGrouping("metric_spout",new Fields("metric"));
         return builder.createTopology();
     }
 
     public final static class TestStormAppConfig extends Configuration{
         private int spoutNum = 1;
+
+        public TestStormAppConfig(Config config) {
+            super(config);
+        }
 
         public int getSpoutNum() {
             return spoutNum;

@@ -20,6 +20,7 @@ import com.typesafe.config.Config;
 import org.apache.eagle.app.environment.Environment;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -52,39 +53,49 @@ public interface Application <
      */
     Proc execute(Conf config, Env environment);
 
-    /**
-     * Execute with raw map-based configuration
-     *
-     * Management service oriented interface
-     *
-     * @param config application configuration
-     * @param environment  execution environment
-     * @return execution process
-     */
-    Proc execute(Map<String,Object> config, Env environment);
+//    /**
+//     * Execute with raw map-based configuration
+//     *
+//     * Management service oriented interface
+//     *
+//     * @param config application configuration
+//     * @param environment  execution environment
+//     * @return execution process
+//     */
+//    Proc execute(Map<String,Object> config, Env environment);
 
-    /**
-     * Execute with type-safe configuration
-     * @param config
-     * @param environment
-     * @return
-     */
-    Proc execute(Config config, Env environment);
+//    /**
+//     * Execute with type-safe configuration
+//     * @param config
+//     * @param environment
+//     * @return
+//     */
+    default Proc execute(Config config, Env environment){
+        return execute(getConfig(config),environment);
+    }
 
-    /**
-     * Execute with environment based configuration
-     *
-     * Light-weight Runner (dry-run/test purpose) oriented interface
-     *
-     * @param environment  execution environment
-     * @return execution process
-     */
-    Proc execute(Env environment);
+//    /**
+//     * Execute with environment based configuration
+//     *
+//     * Light-weight Runner (dry-run/test purpose) oriented interface
+//     *
+//     * @param environment  execution environment
+//     * @return execution process
+//     */
+//    Proc execute(Env environment);
 
     /**
      * @return application configuration type (POJO class)
      */
     Class<Conf> getConfigType();
+
+    default Conf getConfig(Config config){
+        try {
+            return getConfigType().getConstructor(Config.class).newInstance(config);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new IllegalStateException(e.getMessage(),e);
+        }
+    }
 
     /**
      * @return application environment type

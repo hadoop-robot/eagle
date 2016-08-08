@@ -45,14 +45,7 @@ public interface ApplicationTool<Conf extends Configuration> {
     /**
      * @param appConf
      */
-    void run(Conf appConf, Config envConfig);
-
-    /**
-     * @param appConf
-     */
-    default void run(Conf appConf){
-        run(appConf, ConfigFactory.load());
-    }
+    void run(Conf appConf);
 
     default void run(){
         run(ConfigFactory.load());

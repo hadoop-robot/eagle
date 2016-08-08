@@ -27,40 +27,40 @@ import java.util.Map;
 abstract class AbstractApplication<Conf extends Configuration,Env extends Environment,Proc> implements Application<Conf,Env,Proc>, ApplicationTool<Conf> {
     private Class<Conf> parametrizedConfigClass;
 
-    @Override
-    public Proc execute(Map<String, Object> config, Env env) {
-        return execute(ApplicationConfigHelper.convertFrom(config, getConfigType()),env);
-    }
-
-    @Override
-    public Proc execute(Config config, Env environment){
-        return null;
-    }
-    /**
-     *  Map application configuration from environment
-     *
-     * @param config
-     * @return
-     */
-    private Conf loadAppConfigFromEnv(Config config){
-        return ApplicationConfigHelper.convertFrom(ApplicationConfigHelper.unwrapFrom(config,getClass().getCanonicalName()), getConfigType());
-    }
+//    @Override
+//    public Proc execute(Map<String, Object> config, Env env) {
+//        return execute(ApplicationConfigHelper.convertFrom(config, getConfigType()),env);
+//    }
+//
+//    @Override
+//    public Proc execute(Config config, Env environment){
+//        return null;
+//    }
+//    /**
+//     *  Map application configuration from environment
+//     *
+//     * @param config
+//     * @return
+//     */
+//    private Conf loadAppConfigFromEnv(Config config){
+//        return ApplicationConfigHelper.convertFrom(ApplicationConfigHelper.unwrapFrom(config,getClass().getCanonicalName()), getConfigType());
+//    }
 
     @Override
     public void run(Config config) {
 //        ExecutionRuntimeManager.getInstance().getRuntime(getEnvironmentType(),config).start(this,loadAppConfigFromEnv(config));
-        ExecutionRuntimeManager.getInstance().getRuntime(getEnvironmentType(),config).start(this,config);
+        ExecutionRuntimeManager.getInstance().getRuntime(getEnvironmentType(),config).start(this,getConfig(config));
     }
 
     @Override
-    public void run(Configuration conf, Config config) {
-//        ExecutionRuntimeManager.getInstance().getRuntime(getEnvironmentType(), config).start(this,conf);
+    public void run(Configuration conf) {
+        ExecutionRuntimeManager.getInstance().getRuntime(getEnvironmentType(), conf.getConfig()).start(this,conf);
     }
 
-    @Override
-    public Proc execute(Env environment) {
-        return execute(loadAppConfigFromEnv(environment.config()),environment);
-    }
+//    @Override
+//    public Proc execute(Env environment) {
+//        return execute(loadAppConfigFromEnv(environment.config()),environment);
+//    }
 
     /**
      * @return Config class from Generic Type

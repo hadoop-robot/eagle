@@ -16,15 +16,30 @@
  */
 package org.apache.eagle.app;
 
+import com.typesafe.config.Config;
+import org.apache.eagle.app.annotation.Property;
 import org.apache.eagle.metadata.model.ApplicationEntity;
 
 import java.io.Serializable;
 
 public class Configuration implements Serializable {
+    @Property("mode")
     private ApplicationEntity.Mode mode;
+
+    @Property("siteId")
     private String siteId;
+
+    @Property("appId")
     private String appId;
+
+    @Property("jarPath")
     private String jarPath;
+
+    private final Config config;
+
+    public Configuration(Config config){
+        this.config = config;
+    }
 
     public ApplicationEntity.Mode getMode() {
         return mode;
@@ -56,5 +71,10 @@ public class Configuration implements Serializable {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
+    }
+
+    @Deprecated
+    public Config getConfig() {
+        return config;
     }
 }

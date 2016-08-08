@@ -16,12 +16,15 @@
  */
 package org.apache.eagle.app.example;
 
+import com.typesafe.config.ConfigFactory;
 import org.junit.Test;
 
 public class ExampleApplicationTest {
     @Test
     public void testRunWithAppTool(){
-        new ExampleStormApplication().run(new ExampleStormConfig("unittest_app_topology"));
+        ExampleStormConfig config = new ExampleStormConfig(ConfigFactory.load());
+        config.setAppId("unit_test_application");
+        new ExampleStormApplication().run(config);
     }
 
     /**

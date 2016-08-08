@@ -32,39 +32,30 @@ import storm.kafka.StringScheme;
 /**
  * Since 7/27/16.
  */
-public class HBaseAuditLogApplication extends StormApplication<HBaseAuditLogAppConf> {
-    public final static String SPOUT_TASK_NUM = "topology.numOfSpoutTasks";
-    public final static String PARSER_TASK_NUM = "topology.numOfParserTasks";
-    public final static String JOIN_TASK_NUM = "topology.numOfJoinTasks";
-    public final static String SINK_TASK_NUM = "topology.numOfSinkTasks";
-    @Override
-    public StormTopology execute(HBaseAuditLogAppConf config1, StormEnvironment environment) {
-        return null;
-    }
+public class HBaseAuditLogApplication extends StormApplication<HBaseAuditLogAppConfig> {
 
     @Override
-    public StormTopology execute(Config config, StormEnvironment environment) {
+    public StormTopology execute(HBaseAuditLogAppConfig appConfig, StormEnvironment environment) {
         TopologyBuilder builder = new TopologyBuilder();
         NewKafkaSourcedSpoutProvider provider = new NewKafkaSourcedSpoutProvider();
-        IRichSpout spout = provider.getSpout(config);
-
+        IRichSpout spout = provider.getSpout(appConfig.getConfig());
         HBaseAuditLogParserBolt bolt = new HBaseAuditLogParserBolt();
 
-        int numOfSpoutTasks = config.getInt(SPOUT_TASK_NUM);
-        int numOfParserTasks = config.getInt(PARSER_TASK_NUM);
-        int numOfJoinTasks = config.getInt(JOIN_TASK_NUM);
-        int numOfSinkTasks = config.getInt(SINK_TASK_NUM);
+//        int numOfSpoutTasks = config.getInt(SPOUT_TASK_NUM);
+//        int numOfParserTasks = config.getInt(PARSER_TASK_NUM);
+//        int numOfJoinTasks = config.getInt(JOIN_TASK_NUM);
+//        int numOfSinkTasks = config.getInt(SINK_TASK_NUM);
 
-        builder.setSpout("ingest", spout, numOfSpoutTasks);
-        BoltDeclarer boltDeclarer = builder.setBolt("parserBolt", bolt, numOfParserTasks);
+        builder.setSpout("ingest", spout, appConfig.getSpoutTaskNum());
+        BoltDeclarer boltDeclarer = builder.setBolt("parserBolt", bolt, appConfig.getParserTaskNum());
         boltDeclarer.fieldsGrouping("ingest", new Fields(StringScheme.STRING_SCHEME_KEY));
 
-        HbaseResourceSensitivityDataJoinBolt joinBolt = new HbaseResourceSensitivityDataJoinBolt(config);
-        BoltDeclarer joinBoltDeclarer = builder.setBolt("joinBolt", joinBolt, numOfJoinTasks);
+        HbaseResourceSensitivityDataJoinBolt joinBolt = new HbaseResourceSensitivityDataJoinBolt(appConfig.getConfig());
+        BoltDeclarer joinBoltDeclarer = builder.setBolt("joinBolt", joinBolt, appConfig.getJoinTaskNum());
         joinBoltDeclarer.fieldsGrouping("parserBolt", new Fields("f1"));
 
-        StormStreamSink sinkBolt = environment.getFlattenStreamSink("hbase_audit_log_stream",config);
-        BoltDeclarer kafkaBoltDeclarer = builder.setBolt("kafkaSink", sinkBolt, numOfSinkTasks);
+        StormStreamSink sinkBolt = environment.getFlattenStreamSink("hbase_audit_log_stream",appConfig.getConfig());
+        BoltDeclarer kafkaBoltDeclarer = builder.setBolt("kafkaSink", sinkBolt, appConfig.getSinkTaskNum());
         kafkaBoltDeclarer.fieldsGrouping("joinBolt", new Fields("user"));
         return builder.createTopology();
     }

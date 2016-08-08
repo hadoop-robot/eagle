@@ -19,7 +19,7 @@ package org.apache.eagle.app.example;
 import org.apache.eagle.app.spi.AbstractApplicationProvider;
 
 /**
- * Define application provider programmatically
+ * Define application provider pragmatically
  */
 public class ExampleApplicationProvider extends AbstractApplicationProvider<ExampleStormApplication> {
     public ExampleApplicationProvider() {

@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
  * </ul>
  */
 public class ApplicationContext implements Serializable, ApplicationLifecycle {
-    private final Config config;
     private final Application application;
+    private final Configuration configuration;
     private final ExecutionRuntime runtime;
     private final ApplicationEntity metadata;
 
@@ -55,23 +55,25 @@ public class ApplicationContext implements Serializable, ApplicationLifecycle {
      * @param metadata ApplicationEntity
      * @param application Application
      */
-    public ApplicationContext(Application application, ApplicationEntity metadata, Config config1){
+    public ApplicationContext(Application application, ApplicationEntity metadata, Config envConfig){
         Preconditions.checkNotNull(application,"Application is null");
         Preconditions.checkNotNull(metadata,"ApplicationEntity is null");
         this.application = application;
         this.metadata = metadata;
-        this.runtime = ExecutionRuntimeManager.getInstance().getRuntime(application.getEnvironmentType(),config1);
+        this.runtime = ExecutionRuntimeManager.getInstance().getRuntime(application.getEnvironmentType(),envConfig);
         Map<String,Object> applicationConfig = metadata.getConfiguration();
         if(applicationConfig == null) {
             applicationConfig = Collections.emptyMap();
         }
-        this.config = ConfigFactory.parseMap(applicationConfig);
+        // TODO: Merge applicationConfig map with environment config
+        Config appEnvConfig = ConfigFactory.parseMap(applicationConfig).withFallback(envConfig);
+        this.configuration = application.getConfig(appEnvConfig);
     }
 
     @Override
     public void onInstall() {
         List<StreamDesc> streamDescCollection = metadata.getDescriptor().getStreams().stream().map((streamDefinition -> {
-            StreamSinkConfig streamSinkConfig = this.runtime.environment().streamSink().getSinkConfig(streamDefinition.getStreamId(),this.config);
+            StreamSinkConfig streamSinkConfig = this.runtime.environment().streamSink().getSinkConfig(streamDefinition.getStreamId(),this.configuration.getConfig());
             StreamDesc streamDesc = new StreamDesc();
             streamDesc.setSchema(streamDefinition);
             streamDesc.setSink(streamSinkConfig);
@@ -88,12 +90,12 @@ public class ApplicationContext implements Serializable, ApplicationLifecycle {
 
     @Override
     public void onStart() {
-        this.runtime.start(this.application,this.config);
+        this.runtime.start(this.application,this.configuration);
     }
 
     @Override
     public void onStop() {
-        this.runtime.stop(this.application,this.config);
+        this.runtime.stop(this.application,this.configuration);
     }
 
     public ApplicationEntity getMetadata() {

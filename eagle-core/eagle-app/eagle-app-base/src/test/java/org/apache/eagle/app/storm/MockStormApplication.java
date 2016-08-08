@@ -32,19 +32,13 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class MockStormApplication extends StormApplication<MockStormApplication.MockStormConfiguration> {
-    private MockStormConfiguration appConfig;
 
     @Override
     public StormTopology execute(MockStormConfiguration config, StormEnvironment environment) {
-        return null;
-    }
-
-    @Override
-    public StormTopology execute(Config config, StormEnvironment environment) {
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("metric_spout", new RandomEventSpout(), config.getInt("spoutNum"));
-        builder.setBolt("sink_1",environment.getFlattenStreamSink("TEST_STREAM_1",config)).fieldsGrouping("metric_spout",new Fields("metric"));
-        builder.setBolt("sink_2",environment.getFlattenStreamSink("TEST_STREAM_2",config)).fieldsGrouping("metric_spout",new Fields("metric"));
+        builder.setSpout("metric_spout", new RandomEventSpout(), config.getSpoutNum());
+        builder.setBolt("sink_1",environment.getFlattenStreamSink("TEST_STREAM_1",config.getConfig())).fieldsGrouping("metric_spout",new Fields("metric"));
+        builder.setBolt("sink_2",environment.getFlattenStreamSink("TEST_STREAM_2",config.getConfig())).fieldsGrouping("metric_spout",new Fields("metric"));
         return builder.createTopology();
     }
 
@@ -55,6 +49,12 @@ public class MockStormApplication extends StormApplication<MockStormApplication.
     static class MockStormConfiguration extends Configuration {
         private int spoutNum = 1;
         private boolean loaded = false;
+
+        public MockStormConfiguration(Config config) {
+            super(config);
+            this.spoutNum = config.getInt("spoutNum");
+            this.loaded = config.getBoolean("loaded");
+        }
 
         public int getSpoutNum() {
             return spoutNum;

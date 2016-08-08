@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,23 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.app.example;
+package org.apache.eagle.app.annotation;
 
-import com.typesafe.config.Config;
-import org.apache.eagle.app.Configuration;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class ExampleStormConfig extends Configuration {
-    private int spoutNum = 1;
-
-    public ExampleStormConfig(Config config) {
-        super(config);
-    }
-
-    public int getSpoutNum() {
-        return spoutNum;
-    }
-
-    public void setSpoutNum(int spoutNum) {
-        this.spoutNum = spoutNum;
-    }
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Property {
+    String value() default "";
+    String name() default "";
+    boolean required() default false;
+    String displayName() default "";
+    String description() default "";
 }
