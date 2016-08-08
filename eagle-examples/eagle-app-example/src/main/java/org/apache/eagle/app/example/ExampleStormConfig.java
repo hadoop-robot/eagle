@@ -16,15 +16,12 @@
  */
 package org.apache.eagle.app.example;
 
-import com.typesafe.config.Config;
 import org.apache.eagle.app.Configuration;
+import org.apache.eagle.app.annotation.Config;
 
 public class ExampleStormConfig extends Configuration {
+    @Config("topology.spoutNum")
     private int spoutNum = 1;
-
-    public ExampleStormConfig(Config config) {
-        super(config);
-    }
 
     public int getSpoutNum() {
         return spoutNum;

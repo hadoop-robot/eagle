@@ -23,9 +23,9 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
-import com.typesafe.config.Config;
 import org.apache.eagle.app.Configuration;
 import org.apache.eagle.app.StormApplication;
+import org.apache.eagle.app.annotation.Config;
 import org.apache.eagle.app.environment.impl.StormEnvironment;
 
 import java.util.Arrays;
@@ -47,14 +47,11 @@ public class MockStormApplication extends StormApplication<MockStormApplication.
      * Application Configuration
      */
     static class MockStormConfiguration extends Configuration {
+        @Config("topology.spoutNum")
         private int spoutNum = 1;
-        private boolean loaded = false;
 
-        public MockStormConfiguration(Config config) {
-            super(config);
-            this.spoutNum = config.getInt("spoutNum");
-            this.loaded = config.getBoolean("loaded");
-        }
+        @Config("topology.loaded")
+        private boolean loaded = false;
 
         public int getSpoutNum() {
             return spoutNum;

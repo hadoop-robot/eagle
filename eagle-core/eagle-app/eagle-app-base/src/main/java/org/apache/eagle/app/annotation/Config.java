@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Property {
+public @interface Config {
     String value() default "";
     String name() default "";
     boolean required() default false;

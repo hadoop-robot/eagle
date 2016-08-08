@@ -23,7 +23,7 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
-import com.typesafe.config.Config;
+import org.apache.eagle.app.annotation.Config;
 import org.apache.eagle.app.environment.impl.StormEnvironment;
 import org.apache.eagle.app.spi.AbstractApplicationProvider;
 import org.junit.Ignore;
@@ -43,11 +43,8 @@ public class TestStormApplication extends StormApplication<TestStormApplication.
     }
 
     public final static class TestStormAppConfig extends Configuration{
+        @Config("topology.spoutNum")
         private int spoutNum = 1;
-
-        public TestStormAppConfig(Config config) {
-            super(config);
-        }
 
         public int getSpoutNum() {
             return spoutNum;

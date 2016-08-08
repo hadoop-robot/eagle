@@ -14,11 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.app.jpm;
+package org.apache.eagle.app.exception;
 
-import com.typesafe.config.Config;
-import org.apache.eagle.app.Configuration;
+public class IllegalConfigurationException extends IllegalStateException {
+    public IllegalConfigurationException() {
+        super();
+    }
 
-public class JPMConfiguration extends Configuration {
+    public IllegalConfigurationException(String s) {
+        super(s);
+    }
 
+    public IllegalConfigurationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public IllegalConfigurationException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -1,8 +1,7 @@
 package org.apache.eagle.security.hbase;
 
-import com.typesafe.config.Config;
 import org.apache.eagle.app.Configuration;
-import org.apache.eagle.app.annotation.Property;
+import org.apache.eagle.app.annotation.Config;
 
 public class HBaseAuditLogAppConfig extends Configuration {
     public final static String SPOUT_TASK_NUM = "topology.numOfSpoutTasks";
@@ -10,21 +9,17 @@ public class HBaseAuditLogAppConfig extends Configuration {
     public final static String JOIN_TASK_NUM = "topology.numOfJoinTasks";
     public final static String SINK_TASK_NUM = "topology.numOfSinkTasks";
 
-    @Property(SPOUT_TASK_NUM)
+    @Config(SPOUT_TASK_NUM)
     private int spoutTaskNum;
 
-    @Property(PARSER_TASK_NUM)
+    @Config(PARSER_TASK_NUM)
     private int parserTaskNum;
 
-    @Property(JOIN_TASK_NUM)
+    @Config(JOIN_TASK_NUM)
     private int joinTaskNum;
 
-    @Property(SINK_TASK_NUM)
+    @Config(SINK_TASK_NUM)
     private int sinkTaskNum;
-
-    public HBaseAuditLogAppConfig(Config config) {
-        super(config);
-    }
 
     public int getSpoutTaskNum() {
         return spoutTaskNum;
