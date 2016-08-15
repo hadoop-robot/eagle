@@ -48,8 +48,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class EagleServiceBaseClient implements IEagleServiceClient {
-    public final static String SERVICE_NAME="serviceName";
-    public final static String DELETE_BY_ID="byId";
+    public final static String SERVICE_NAME = "serviceName";
+    public final static String DELETE_BY_ID = "byId";
 
     private final String host;
     private final int port;
@@ -72,7 +72,7 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
     protected static final String CONTENT_TYPE = "Content-Type";
 
     protected final static String GENERIC_ENTITY_PATH = "/entities";
-    protected final static String GENERIC_ENTITY_DELETE_PATH = GENERIC_ENTITY_PATH+"/delete";
+    protected final static String GENERIC_ENTITY_DELETE_PATH = GENERIC_ENTITY_PATH + "/delete";
     private final Client client;
     private final List<Closeable> closeables = new LinkedList<Closeable>();
 
@@ -96,11 +96,11 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
         //        Runtime.getRuntime().addShutdownHook(new EagleServiceClientShutdownHook(this));
     }
 
-    public EagleServiceBaseClient(String host, int port, String basePath){
+    public EagleServiceBaseClient(String host, int port, String basePath) {
         this(host, port, basePath, null);
     }
 
-    public EagleServiceBaseClient(String host, int port, String username, String password){
+    public EagleServiceBaseClient(String host, int port, String username, String password) {
         this(host, port, DEFAULT_BASE_PATH, username, password);
     }
 
@@ -121,12 +121,12 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
 //        }
 //    }
 
-    public Client getJerseyClient(){
+    public Client getJerseyClient() {
         return client;
     }
 
-    public EagleServiceBaseClient(String host, int port){
-        this(host,port,DEFAULT_BASE_PATH);
+    public EagleServiceBaseClient(String host, int port) {
+        this(host, port, DEFAULT_BASE_PATH);
     }
 
     protected final StringBuilder buildBathPath() {
@@ -146,23 +146,25 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
         return mapper.writeValueAsString(entities);
     }
 
-    protected <E extends TaggedLogAPIEntity> Map<String,List<E>> groupEntitiesByService(List<E> entities) throws EagleServiceClientException {
-        Map<String,List<E>> serviceEntityMap = new HashMap<String, List<E>>();
-        if(LOG.isDebugEnabled()) LOG.debug("Grouping entities by service name");
-        for(E entity: entities){
-            if(entity == null) {
+    protected <E extends TaggedLogAPIEntity> Map<String, List<E>> groupEntitiesByService(List<E> entities) throws EagleServiceClientException {
+        Map<String, List<E>> serviceEntityMap = new HashMap<String, List<E>>();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Grouping entities by service name");
+        }
+        for (E entity : entities) {
+            if (entity == null) {
                 LOG.warn("Skip null entity");
                 continue;
             }
 
             try {
                 EntityDefinition entityDefinition = EntityDefinitionManager.getEntityDefinitionByEntityClass(entity.getClass());
-                if(entityDefinition == null){
-                    throw new EagleServiceClientException("Failed to find entity definition of class: "+entity.getClass());
+                if (entityDefinition == null) {
+                    throw new EagleServiceClientException("Failed to find entity definition of class: " + entity.getClass());
                 }
                 String serviceName = entityDefinition.getService();
                 List<E> bucket = serviceEntityMap.get(serviceName);
-                if(bucket == null){
+                if (bucket == null) {
                     bucket = new LinkedList<E>();
                     serviceEntityMap.put(serviceName, bucket);
                 }
@@ -186,28 +188,28 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
         return new SearchRequestBuilder(this).query(query);
     }
 
-    protected void register(Closeable closeable){
+    protected void register(Closeable closeable) {
         this.closeables.add(closeable);
     }
 
     @Override
     public MetricSender metric(String metricName) {
-        MetricSender metricGenerator = new MetricSender(this,metricName);
+        MetricSender metricGenerator = new MetricSender(this, metricName);
         this.register(metricGenerator);
         return metricGenerator;
     }
 
-    protected WebResource getWebResource(String relativePath){
+    protected WebResource getWebResource(String relativePath) {
         return this.getJerseyClient().resource(this.getBaseEndpoint() + relativePath);
     }
 
-    protected AsyncWebResource getAsyncWebResource(String relativePath){
+    protected AsyncWebResource getAsyncWebResource(String relativePath) {
         return this.getJerseyClient().asyncResource(this.getBaseEndpoint() + relativePath);
     }
 
     protected WebResource.Builder putAuthHeaderIfNeeded(WebResource.Builder r) {
         if (username != null && password != null) {
-           r.header(SecurityConstants.AUTHORIZATION, SecurityConstants.BASIC_AUTHORIZATION_HEADER_PREFIX + Base64.encode(username + ":" + password));
+            r.header(SecurityConstants.AUTHORIZATION, SecurityConstants.BASIC_AUTHORIZATION_HEADER_PREFIX + Base64.encode(username + ":" + password));
         }
         return r;
     }
@@ -224,12 +226,12 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    protected GenericServiceAPIResponseEntity<String> postEntitiesWithService(String resourceURL, List<? extends TaggedLogAPIEntity> entities,String serviceName) throws JsonMappingException, JsonGenerationException, IOException {
+    protected GenericServiceAPIResponseEntity<String> postEntitiesWithService(String resourceURL, List<? extends TaggedLogAPIEntity> entities, String serviceName) throws JsonMappingException, JsonGenerationException, IOException {
         final String json = marshall(entities);
         final WebResource r = getWebResource(resourceURL);
-        return putAuthHeaderIfNeeded(r.queryParam(SERVICE_NAME,serviceName).accept(DEFAULT_MEDIA_TYPE))
-                .header(CONTENT_TYPE, DEFAULT_HTTP_HEADER_CONTENT_TYPE)
-                .post(GenericServiceAPIResponseEntity.class, json);
+        return putAuthHeaderIfNeeded(r.queryParam(SERVICE_NAME, serviceName).accept(DEFAULT_MEDIA_TYPE))
+            .header(CONTENT_TYPE, DEFAULT_HTTP_HEADER_CONTENT_TYPE)
+            .post(GenericServiceAPIResponseEntity.class, json);
     }
 
     /**
@@ -244,12 +246,12 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    protected GenericServiceAPIResponseEntity<String> putEntitiesWithService(String resourceURL, List<? extends TaggedLogAPIEntity> entities,String serviceName) throws JsonMappingException, JsonGenerationException, IOException {
+    protected GenericServiceAPIResponseEntity<String> putEntitiesWithService(String resourceURL, List<? extends TaggedLogAPIEntity> entities, String serviceName) throws JsonMappingException, JsonGenerationException, IOException {
         final String json = marshall(entities);
         final WebResource r = getWebResource(resourceURL);
-        return putAuthHeaderIfNeeded(r.queryParam(SERVICE_NAME,serviceName).accept(DEFAULT_MEDIA_TYPE))
-                .header(CONTENT_TYPE, DEFAULT_HTTP_HEADER_CONTENT_TYPE)
-                .put(GenericServiceAPIResponseEntity.class, json);
+        return putAuthHeaderIfNeeded(r.queryParam(SERVICE_NAME, serviceName).accept(DEFAULT_MEDIA_TYPE))
+            .header(CONTENT_TYPE, DEFAULT_HTTP_HEADER_CONTENT_TYPE)
+            .put(GenericServiceAPIResponseEntity.class, json);
     }
 
 
@@ -263,8 +265,8 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
             throw new EagleServiceClientException(e);
         }
 
-        if(entityDefinition == null){
-            throw new EagleServiceClientException("cannot find entity definition of class "+entityClass);
+        if (entityDefinition == null) {
+            throw new EagleServiceClientException("cannot find entity definition of class " + entityClass);
         }
         return entityDefinition.getService();
     }
@@ -272,7 +274,7 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
 
     @Override
     public BatchSender batch(int batchSize) {
-        BatchSender batchSender = new BatchSender(this,batchSize);
+        BatchSender batchSender = new BatchSender(this, batchSize);
         this.register(batchSender);
         return batchSender;
     }
@@ -286,7 +288,7 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
 
     @Override
     public ConcurrentSender parallel(int parallelNum) {
-        ConcurrentSender concurrentSender = new ConcurrentSender(this,parallelNum);
+        ConcurrentSender concurrentSender = new ConcurrentSender(this, parallelNum);
         this.register(concurrentSender);
         return concurrentSender;
     }
@@ -308,8 +310,10 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
 
     @Override
     public void close() throws IOException {
-        if(!this.isStopped) {
-            if(LOG.isDebugEnabled()) LOG.debug("Client is closing");
+        if (!this.isStopped) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Client is closing");
+            }
             for (Closeable closeable : this.closeables) {
                 try {
                     closeable.close();
@@ -327,8 +331,10 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
         return new DeleteRequestBuilder(this);
     }
 
-    protected void checkNotNull(Object obj,String name) throws EagleServiceClientException{
-        if(obj == null) throw new EagleServiceClientException(name+" should not be null but given");
+    protected void checkNotNull(Object obj, String name) throws EagleServiceClientException {
+        if (obj == null) {
+            throw new EagleServiceClientException(name + " should not be null but given");
+        }
     }
 
     @Override

@@ -25,7 +25,6 @@ import java.util.List;
  */
 public interface JdbcEntityUpdater<E extends TaggedLogAPIEntity> {
     /**
-     *
      * @param entities
      * @return
      * @throws Exception

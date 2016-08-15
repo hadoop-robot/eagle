@@ -46,88 +46,91 @@ import org.apache.eagle.common.service.POSTResultEntityBase;
 @Deprecated
 @Path("rowkey")
 public class RowkeyResource {
-	private static final Logger LOG = LoggerFactory.getLogger(RowkeyResource.class);
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public RowkeyAPIEntity inspectRowkey(@QueryParam("table") String table, @QueryParam("cf") String columnFamily, 
-			@QueryParam("key") String key, @QueryParam("all") String all, @QueryParam("field") List<String> fields){
-		RowkeyAPIEntity entity = new RowkeyAPIEntity();
-		byte[] row = null;
-		boolean includingAllQualifiers = false;
-		if(all != null && all.equals("true"))
-			includingAllQualifiers = true;
-		HBaseLogByRowkeyReader getter = new HBaseLogByRowkeyReader(table, columnFamily, includingAllQualifiers, fields);
-		InternalLog log = null;
-		try{
-			getter.open();
-			row = EagleBase64Wrapper.decode(key);
-			log = getter.get(row);
-		}catch(Exception ex){
-			LOG.error("Cannot get rowkey", ex);
-			entity.setSuccess(false);
-			entity.setException(EagleExceptionWrapper.wrap(ex));
-			return entity;
-		}finally{
-			try{
-				getter.close();
-			}catch(Exception ex){}
-		}
-		
-		Map<String, String> fieldNameValueMap = new TreeMap<String, String>();
-		entity.setFieldNameValueMap(fieldNameValueMap);
-		// populate qualifiers
-		Map<String, byte[]> qualifierValues = log.getQualifierValues();
-		for(Map.Entry<String, byte[]> qualifier : qualifierValues.entrySet()){
-			if(qualifier.getValue() != null){
-				fieldNameValueMap.put(qualifier.getKey(), new String(qualifier.getValue()));
-			}
-		}
-		
-		// decode rowkey
-		// the first integer is prefix hashcode
-		entity.setPrefixHashCode(ByteUtil.bytesToInt(row, 0));
-		long ts = Long.MAX_VALUE-ByteUtil.bytesToLong(row, 4);
-		entity.setTimestamp(ts);
-		entity.setHumanTime(DateTimeUtil.millisecondsToHumanDateWithMilliseconds(ts));
-		int offset = 4+8;
-		int len = row.length;
-		Map<Integer, Integer> tagNameHashValueHashMap = new HashMap<Integer, Integer>();
-		// TODO boundary check please
-		while(offset < len){
-			int tagNameHash = ByteUtil.bytesToInt(row, offset);
-			offset += 4;
-			int tagValueHash = ByteUtil.bytesToInt(row, offset);
-			offset += 4;
-			tagNameHashValueHashMap.put(tagNameHash, tagValueHash);
-		}
-		
-		entity.setSuccess(true);
-		return entity;
-	}
-	
-	/**
-	 * for entities, the only required field is encodedRowkey
-	 * @param table
-	 * @param columnFamily
-	 * @param entities
-	 */
-	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public POSTResultEntityBase deleteEntityByEncodedRowkey(@QueryParam("table") String table, @QueryParam("cf") String columnFamily,
-			List<TaggedLogAPIEntity> entities){
-		GenericDeleter deleter = new GenericDeleter(table, columnFamily);
-		POSTResultEntityBase result = new POSTResultEntityBase();
-		try{
-			deleter.delete(entities);
-		}catch(Exception ex){
-			LOG.error("Fail deleting entity " + table + ":" + columnFamily, ex);
-			result.setSuccess(false);
-			result.setException(ex.getMessage());
-			return result;
-		}
-		result.setSuccess(true);
-		return result;
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(RowkeyResource.class);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public RowkeyAPIEntity inspectRowkey(@QueryParam("table") String table, @QueryParam("cf") String columnFamily,
+                                         @QueryParam("key") String key, @QueryParam("all") String all, @QueryParam("field") List<String> fields) {
+        RowkeyAPIEntity entity = new RowkeyAPIEntity();
+        byte[] row = null;
+        boolean includingAllQualifiers = false;
+        if (all != null && all.equals("true")) {
+            includingAllQualifiers = true;
+        }
+        HBaseLogByRowkeyReader getter = new HBaseLogByRowkeyReader(table, columnFamily, includingAllQualifiers, fields);
+        InternalLog log = null;
+        try {
+            getter.open();
+            row = EagleBase64Wrapper.decode(key);
+            log = getter.get(row);
+        } catch (Exception ex) {
+            LOG.error("Cannot get rowkey", ex);
+            entity.setSuccess(false);
+            entity.setException(EagleExceptionWrapper.wrap(ex));
+            return entity;
+        } finally {
+            try {
+                getter.close();
+            } catch (Exception ex) {
+            }
+        }
+
+        Map<String, String> fieldNameValueMap = new TreeMap<String, String>();
+        entity.setFieldNameValueMap(fieldNameValueMap);
+        // populate qualifiers
+        Map<String, byte[]> qualifierValues = log.getQualifierValues();
+        for (Map.Entry<String, byte[]> qualifier : qualifierValues.entrySet()) {
+            if (qualifier.getValue() != null) {
+                fieldNameValueMap.put(qualifier.getKey(), new String(qualifier.getValue()));
+            }
+        }
+
+        // decode rowkey
+        // the first integer is prefix hashcode
+        entity.setPrefixHashCode(ByteUtil.bytesToInt(row, 0));
+        long ts = Long.MAX_VALUE - ByteUtil.bytesToLong(row, 4);
+        entity.setTimestamp(ts);
+        entity.setHumanTime(DateTimeUtil.millisecondsToHumanDateWithMilliseconds(ts));
+        int offset = 4 + 8;
+        int len = row.length;
+        Map<Integer, Integer> tagNameHashValueHashMap = new HashMap<Integer, Integer>();
+        // TODO boundary check please
+        while (offset < len) {
+            int tagNameHash = ByteUtil.bytesToInt(row, offset);
+            offset += 4;
+            int tagValueHash = ByteUtil.bytesToInt(row, offset);
+            offset += 4;
+            tagNameHashValueHashMap.put(tagNameHash, tagValueHash);
+        }
+
+        entity.setSuccess(true);
+        return entity;
+    }
+
+    /**
+     * for entities, the only required field is encodedRowkey
+     *
+     * @param table
+     * @param columnFamily
+     * @param entities
+     */
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public POSTResultEntityBase deleteEntityByEncodedRowkey(@QueryParam("table") String table, @QueryParam("cf") String columnFamily,
+                                                            List<TaggedLogAPIEntity> entities) {
+        GenericDeleter deleter = new GenericDeleter(table, columnFamily);
+        POSTResultEntityBase result = new POSTResultEntityBase();
+        try {
+            deleter.delete(entities);
+        } catch (Exception ex) {
+            LOG.error("Fail deleting entity " + table + ":" + columnFamily, ex);
+            result.setSuccess(false);
+            result.setException(ex.getMessage());
+            return result;
+        }
+        result.setSuccess(true);
+        return result;
+    }
 }

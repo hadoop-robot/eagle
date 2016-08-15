@@ -31,25 +31,22 @@ public interface IEagleServiceClient extends IEagleServiceRequestBuilder, Closea
     IEagleServiceClient silence(boolean silence);
 
     /**
-     *
      * @param <E>
      * @param entities
      * @param serviceName
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> create(List<E> entities,String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> create(List<E> entities, String serviceName) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param entityClass
      * @param <E>
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> create(List<E> entities,Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> create(List<E> entities, Class<E> entityClass) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
@@ -57,7 +54,6 @@ public interface IEagleServiceClient extends IEagleServiceRequestBuilder, Closea
     <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> create(List<E> entities) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
@@ -65,37 +61,33 @@ public interface IEagleServiceClient extends IEagleServiceRequestBuilder, Closea
     <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> delete(List<E> entities) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> delete(List<E> entities,String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> delete(List<E> entities, String serviceName) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> delete(List<E> entities,Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> delete(List<E> entities, Class<E> entityClass) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param request
      * @return
      */
     GenericServiceAPIResponseEntity<String> delete(EagleServiceSingleEntityQueryRequest request) throws EagleServiceClientException, IOException;
 
     /**
-     *
      * @param ids
      * @param serviceName
      * @return
      * @throws EagleServiceClientException
      * @throws IOException
      */
-    GenericServiceAPIResponseEntity<String> deleteById(List<String> ids,String serviceName) throws EagleServiceClientException, IOException;
+    GenericServiceAPIResponseEntity<String> deleteById(List<String> ids, String serviceName) throws EagleServiceClientException, IOException;
 
     /**
      * @param entities
@@ -105,23 +97,20 @@ public interface IEagleServiceClient extends IEagleServiceRequestBuilder, Closea
     <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> update(List<E> entities) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> update(List<E> entities,String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> update(List<E> entities, String serviceName) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param entities
      * @param <E>
      * @return
      */
-    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> update(List<E> entities,Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> GenericServiceAPIResponseEntity<String> update(List<E> entities, Class<E> entityClass) throws IOException, EagleServiceClientException;
 
     /**
-     *
      * @param request
      * @return
      */

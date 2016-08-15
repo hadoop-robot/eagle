@@ -14,44 +14,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * 
- */
+
 package org.apache.eagle.log.expression;
 
 /**
+ * ParsiiUnknowVariableException.
+ *
  * @since Nov 7, 2014
  */
-public class ParsiiUnknowVariableException extends Exception{
-	
-	private static final long serialVersionUID = 1L;
+public class ParsiiUnknowVariableException extends Exception {
 
-	/**
-	 * Default constructor
-	 */
-	public ParsiiUnknowVariableException() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public ParsiiUnknowVariableException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Default constructor.
+     */
+    public ParsiiUnknowVariableException() {
+        super();
+    }
 
-	/**
-	 * @param message
-	 */
-	public ParsiiUnknowVariableException(String message) {
-		super(message);
-	}
+    /**
+     * ParsiiUnknowVariableException.
+     *
+     * @param message message
+     * @param cause cause
+     */
+    public ParsiiUnknowVariableException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	/**
-	 * @param cause
-	 */
-	public ParsiiUnknowVariableException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * ParsiiUnknowVariableException.
+     *
+     * @param message message
+     */
+    public ParsiiUnknowVariableException(String message) {
+        super(message);
+    }
+
+    /**
+     * ParsiiUnknowVariableException.
+     *
+     * @param cause throwable
+     */
+    public ParsiiUnknowVariableException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -30,14 +30,13 @@ public class MetricJdbcSerDeser implements JdbcSerDeser<double[]> {
     @Override
     public double[] toJavaTypedValue(ResultSet result, Class<?> fieldType, String fieldName, Qualifier qualifier) throws IOException {
         try {
-            return new double[]{result.getDouble(fieldName)};
+            return new double[] {result.getDouble(fieldName)};
         } catch (SQLException e) {
-            throw new IOException("Generic Metric Field: "+fieldName+", java type:"+fieldType,e);
+            throw new IOException("Generic Metric Field: " + fieldName + ", java type:" + fieldType, e);
         }
     }
 
     /**
-     *
      * @param fieldValue
      * @param fieldType
      * @return
@@ -45,12 +44,12 @@ public class MetricJdbcSerDeser implements JdbcSerDeser<double[]> {
     @Override
     public JdbcTypedValue toJdbcTypedValue(Object fieldValue, Class<?> fieldType, Qualifier qualifier) {
         double[] metricFieldValues = (double[]) fieldValue;
-        if(metricFieldValues == null || metricFieldValues.length == 0){
+        if (metricFieldValues == null || metricFieldValues.length == 0) {
             return null;
-        } else if(metricFieldValues.length > 1){
-            throw new IllegalArgumentException("Not support metric value length > 1: "+fieldType);
-        }else{
-            return new JdbcTypedValue(metricFieldValues[0],Types.DOUBLE);
+        } else if (metricFieldValues.length > 1) {
+            throw new IllegalArgumentException("Not support metric value length > 1: " + fieldType);
+        } else {
+            return new JdbcTypedValue(metricFieldValues[0], Types.DOUBLE);
         }
     }
 }

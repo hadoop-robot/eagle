@@ -35,46 +35,52 @@ import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_USER_ID;
 import static org.apache.eagle.audit.common.AuditConstants.AUDIT_SERVICE_ENDPOINT;
 import static org.apache.eagle.audit.common.AuditConstants.AUDIT_TABLE;
 
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Table(AUDIT_TABLE)
 @ColumnFamily("f")
 @Prefix(AUDIT_TABLE)
 @Service(AUDIT_SERVICE_ENDPOINT)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TimeSeries(false)
-@Tags({AUDIT_COLUMN_SERVICE_NAME, AUDIT_COLUMN_USER_ID, AUDIT_COLUMN_OPERATION, AUDIT_COLUMN_TIMESTAMP})
+@Tags( {AUDIT_COLUMN_SERVICE_NAME, AUDIT_COLUMN_USER_ID, AUDIT_COLUMN_OPERATION, AUDIT_COLUMN_TIMESTAMP})
 public class GenericAuditEntity extends TaggedLogAPIEntity {
-	
-	public boolean equals (Object obj) {
-		if(obj == this)
-			return true;
-		if(!(obj instanceof GenericAuditEntity))
-			return false;
-		GenericAuditEntity that = (GenericAuditEntity) obj;
-		if(compare(that.getTags().get(AUDIT_COLUMN_SERVICE_NAME), this.getTags().get(AUDIT_COLUMN_SERVICE_NAME)) &&
-				compare(that.getTags().get(AUDIT_COLUMN_USER_ID), this.getTags().get(AUDIT_COLUMN_USER_ID)) &&
-				compare(that.getTags().get(AUDIT_COLUMN_OPERATION), this.getTags().get(AUDIT_COLUMN_OPERATION)) &&
-				compare(that.getTags().get(AUDIT_COLUMN_TIMESTAMP), this.getTags().get(AUDIT_COLUMN_TIMESTAMP)))
-			return true;
-		return false;
-	}
-	
-	private boolean compare(String a, String b){
-		if(a == b)
-			return true;
-		if(a == null || b == null)
-			return false;
-		if(a.equals(b))
-			return true;
-		return false;
-	}
 
-	public int hashCode(){
-		HashCodeBuilder builder = new HashCodeBuilder();
-		builder.append(getTags().get(AUDIT_COLUMN_SERVICE_NAME));
-		builder.append(getTags().get(AUDIT_COLUMN_USER_ID));
-		builder.append(getTags().get(AUDIT_COLUMN_OPERATION));
-		builder.append(getTags().get(AUDIT_COLUMN_TIMESTAMP));
-		return builder.toHashCode();
-	}
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof GenericAuditEntity)) {
+            return false;
+        }
+        GenericAuditEntity that = (GenericAuditEntity) obj;
+        if (compare(that.getTags().get(AUDIT_COLUMN_SERVICE_NAME), this.getTags().get(AUDIT_COLUMN_SERVICE_NAME)) &&
+            compare(that.getTags().get(AUDIT_COLUMN_USER_ID), this.getTags().get(AUDIT_COLUMN_USER_ID)) &&
+            compare(that.getTags().get(AUDIT_COLUMN_OPERATION), this.getTags().get(AUDIT_COLUMN_OPERATION)) &&
+            compare(that.getTags().get(AUDIT_COLUMN_TIMESTAMP), this.getTags().get(AUDIT_COLUMN_TIMESTAMP))) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean compare(String a, String b) {
+        if (a == b) {
+            return true;
+        }
+        if (a == null || b == null) {
+            return false;
+        }
+        if (a.equals(b)) {
+            return true;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        HashCodeBuilder builder = new HashCodeBuilder();
+        builder.append(getTags().get(AUDIT_COLUMN_SERVICE_NAME));
+        builder.append(getTags().get(AUDIT_COLUMN_USER_ID));
+        builder.append(getTags().get(AUDIT_COLUMN_OPERATION));
+        builder.append(getTags().get(AUDIT_COLUMN_TIMESTAMP));
+        return builder.toHashCode();
+    }
 }

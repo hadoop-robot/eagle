@@ -17,13 +17,10 @@
 package org.apache.eagle.log.entity.test;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.meta.Column;
-import org.apache.eagle.log.entity.meta.ColumnFamily;
-import org.apache.eagle.log.entity.meta.TimeSeries;
+import org.apache.eagle.log.entity.meta.*;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import org.apache.eagle.log.entity.meta.Prefix;
-import org.apache.eagle.log.entity.meta.Table;
 
 /**
  * this class is written by customer, but it has some contracts
@@ -33,75 +30,75 @@ import org.apache.eagle.log.entity.meta.Table;
  * 3. Annotate those qualifier fields with column name
  * 4. Fire property change event for all fields' setter method, where field name is mandatory parameter
  */
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Table("alertdetail")
 @ColumnFamily("f")
 @Prefix("hadoop")
 @TimeSeries(true)
 public class TestEntity extends TaggedLogAPIEntity {
-	@Column("remediationID")
-	private String remediationID;
-	@Column("remediationStatus")
-	private String remediationStatus;
-	@Column("c")
-	private long count;
-	@Column("d")
-	private int numHosts;
-	@Column("e")
-	private Long numClusters;
+    @Column("remediationID")
+    private String remediationID;
+    @Column("remediationStatus")
+    private String remediationStatus;
+    @Column("c")
+    private long count;
+    @Column("d")
+    private int numHosts;
+    @Column("e")
+    private Long numClusters;
 
-	public Long getNumClusters() {
-		return numClusters;
-	}
+    public Long getNumClusters() {
+        return numClusters;
+    }
 
-	public void setNumClusters(Long numClusters) {
-		this.numClusters = numClusters;
-		_pcs.firePropertyChange("numClusters", null, null);
-	}
+    public void setNumClusters(Long numClusters) {
+        this.numClusters = numClusters;
+        _pcs.firePropertyChange("numClusters", null, null);
+    }
 
-	public int getNumHosts() {
-		return numHosts;
-	}
+    public int getNumHosts() {
+        return numHosts;
+    }
 
-	public void setNumHosts(int numHosts) {
-		this.numHosts = numHosts;
-		_pcs.firePropertyChange("numHosts", null, null);
-	}
+    public void setNumHosts(int numHosts) {
+        this.numHosts = numHosts;
+        _pcs.firePropertyChange("numHosts", null, null);
+    }
 
-	public long getCount() {
-		return count;
-	}
+    public long getCount() {
+        return count;
+    }
 
-	public void setCount(long count) {
-		this.count = count;
-		_pcs.firePropertyChange("count", null, null);
-	}
+    public void setCount(long count) {
+        this.count = count;
+        _pcs.firePropertyChange("count", null, null);
+    }
 
-	public String getRemediationID() {
-		return remediationID;
-	}
+    public String getRemediationID() {
+        return remediationID;
+    }
 
-	public void setRemediationID(String remediationID) {
-		this.remediationID = remediationID;
-		_pcs.firePropertyChange("remediationID", null, null);
-	}
+    public void setRemediationID(String remediationID) {
+        this.remediationID = remediationID;
+        _pcs.firePropertyChange("remediationID", null, null);
+    }
 
-	public String getRemediationStatus() {
-		return remediationStatus;
-	}
+    public String getRemediationStatus() {
+        return remediationStatus;
+    }
 
-	public void setRemediationStatus(String remediationStatus) {
-		this.remediationStatus = remediationStatus;
-		_pcs.firePropertyChange("remediationStatus", null, null);
-	}
-	
-	public String toString(){
-		StringBuffer sb = new StringBuffer();
-		sb.append(super.toString());
-		sb.append(", remediationID:");
-		sb.append(remediationID);
-		sb.append(", remediationStatus:");
-		sb.append(remediationStatus);
-		return sb.toString();
-	}
+    public void setRemediationStatus(String remediationStatus) {
+        this.remediationStatus = remediationStatus;
+        _pcs.firePropertyChange("remediationStatus", null, null);
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(super.toString());
+        sb.append(", remediationID:");
+        sb.append(remediationID);
+        sb.append(", remediationStatus:");
+        sb.append(remediationStatus);
+        return sb.toString();
+    }
 }

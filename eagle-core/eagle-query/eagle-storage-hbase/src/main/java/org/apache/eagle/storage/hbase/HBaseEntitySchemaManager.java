@@ -42,7 +42,8 @@ public class HBaseEntitySchemaManager {
 
     private final int DEFAULT_MAX_VERSIONS = 1;
 
-    private HBaseEntitySchemaManager() {}
+    private HBaseEntitySchemaManager() {
+    }
 
     public static HBaseEntitySchemaManager getInstance() {
         if (instance == null) {

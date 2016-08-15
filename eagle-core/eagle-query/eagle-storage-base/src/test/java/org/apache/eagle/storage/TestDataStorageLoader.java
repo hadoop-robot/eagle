@@ -39,7 +39,7 @@ public class TestDataStorageLoader {
         assert dataStorage2 instanceof TestDataStorage;
 
         AbstractConfiguration configuration = new CombinedConfiguration();
-        configuration.addProperty(DataStorageManager.EAGLE_STORAGE_TYPE,"test");
+        configuration.addProperty(DataStorageManager.EAGLE_STORAGE_TYPE, "test");
         DataStorage dataStorage3 = DataStorageManager.newDataStorage(configuration);
         assert dataStorage3 instanceof TestDataStorage;
 

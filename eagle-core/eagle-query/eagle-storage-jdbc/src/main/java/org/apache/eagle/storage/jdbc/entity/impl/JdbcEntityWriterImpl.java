@@ -53,7 +53,7 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
         try {
             this.connectionManager = ConnectionManagerFactory.getInstance();
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -61,12 +61,14 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
     @Override
     public List<String> write(List<E> entities) throws Exception {
         List<String> keys = new ArrayList<String>();
-        if(LOG.isDebugEnabled()) LOG.debug("Writing "+entities.size()+" entities");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Writing " + entities.size() + " entities");
+        }
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Connection connection = null;
         Savepoint insertDup = null;
-        int i = 0 ;
+        int i = 0;
         try {
             connection = ConnectionManagerFactory.getInstance().getConnection();
             // set auto commit false and commit by hands for 3x~5x better performance
@@ -79,10 +81,10 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
                 ObjectKey key = null;
                 try {
                     //save point , so that we can roll back just current entry, if required.
-                    i++ ;
-                    insertDup = connection.setSavepoint("insertEntity"+i);
+                    i++;
+                    insertDup = connection.setSavepoint("insertEntity" + i);
                     // TODO: implement batch insert for better performance
-                    key = peer.delegate().doInsert(columnValues,connection);
+                    key = peer.delegate().doInsert(columnValues, connection);
 
                     if (key != null) {
                         keys.add((String) key.getValue());
@@ -92,18 +94,20 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
                 } catch (ClassCastException ex) {
                     assert key != null;
                     throw new RuntimeException("Key is not in type of String (VARCHAR) , but JdbcType (java.sql.Types): " + key.getJdbcType() + ", value: " + key.getValue(), ex);
-                } catch (ConstraintViolationException e){
+                } catch (ConstraintViolationException e) {
                     //this message will be different in each DB type ...using duplicate keyword to catch for broader set of DBs. moreover we are already inside ConstraintViolationException exception, do we even need this check?
-                    if(e.getMessage().toLowerCase().contains("duplicate")){
+                    if (e.getMessage().toLowerCase().contains("duplicate")) {
                         connection.rollback(insertDup); // need to rollback current Insert entity, as it is duplicate record, need to update. Postgresql is strict in transaction handling(need rollback) as compared to MySql
                         String primaryKey = entity.getEncodedRowkey();
-                        if(primaryKey==null) {
+                        if (primaryKey == null) {
                             primaryKey = ConnectionManagerFactory.getInstance().getStatementExecutor().getPrimaryKeyBuilder().build(entity);
                             entity.setEncodedRowkey(primaryKey);
                         }
                         PrimaryKeyCriteriaBuilder pkBuilder = new PrimaryKeyCriteriaBuilder(Collections.singletonList(primaryKey), this.jdbcEntityDefinition.getJdbcTableName());
                         Criteria selectCriteria = pkBuilder.build();
-                        if(LOG.isDebugEnabled()) LOG.debug("Updating by query: "+ SqlBuilder.buildQuery(selectCriteria).getDisplayString());
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Updating by query: " + SqlBuilder.buildQuery(selectCriteria).getDisplayString());
+                        }
                         peer.delegate().doUpdate(selectCriteria, columnValues, connection);
                         keys.add(primaryKey);
                     }
@@ -111,23 +115,27 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
             }
 
             // Why not commit in finally: give up all if any single entity throws exception to make sure consistency guarantee
-            if(LOG.isDebugEnabled()){
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Committing writing");
             }
             connection.commit();
-        }catch (Exception ex) {
-            LOG.error("Failed to write records, rolling back",ex);
-            if(connection!=null)
+        } catch (Exception ex) {
+            LOG.error("Failed to write records, rolling back", ex);
+            if (connection != null) {
                 connection.rollback();
+            }
             throw ex;
-        }finally {
+        } finally {
             stopWatch.stop();
-            if(LOG.isDebugEnabled()) LOG.debug("Closing connection");
-            if(connection!=null)
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Closing connection");
+            }
+            if (connection != null) {
                 connection.close();
+            }
         }
 
-        LOG.info(String.format("Wrote %s records in %s ms (table: %s)",keys.size(),stopWatch.getTime(),this.jdbcEntityDefinition.getJdbcTableName()));
+        LOG.info(String.format("Wrote %s records in %s ms (table: %s)", keys.size(), stopWatch.getTime(), this.jdbcEntityDefinition.getJdbcTableName()));
         return keys;
     }
 }

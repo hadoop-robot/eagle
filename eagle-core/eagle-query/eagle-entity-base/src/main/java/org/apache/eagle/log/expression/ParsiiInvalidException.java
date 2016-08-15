@@ -15,43 +15,51 @@
  * limitations under the License.
  */
 /**
- * 
+ *
  */
 package org.apache.eagle.log.expression;
 
 /**
+ * ParsiiInvalidException.
+ *
  * @since Nov 7, 2014
  */
-public class ParsiiInvalidException extends Exception{
-	
-	private static final long serialVersionUID = 1L;
+public class ParsiiInvalidException extends Exception {
 
-	/**
-	 * Default constructor
-	 */
-	public ParsiiInvalidException() {
-		super();
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param message
-	 * @param cause
-	 */
-	public ParsiiInvalidException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Default constructor.
+     */
+    public ParsiiInvalidException() {
+        super();
+    }
 
-	/**
-	 * @param message
-	 */
-	public ParsiiInvalidException(String message) {
-		super(message);
-	}
+    /**
+     * ParsiiInvalidException.
+     *
+     * @param message message
+     * @param cause cause
+     */
+    public ParsiiInvalidException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	/**
-	 * @param cause
-	 */
-	public ParsiiInvalidException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * ParsiiInvalidException.
+     *
+     * @param message message
+     */
+    public ParsiiInvalidException(String message) {
+        super(message);
+    }
+
+    /**
+     * ParsiiInvalidException.
+     *
+     * @param cause cause
+     */
+    public ParsiiInvalidException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -26,21 +26,18 @@ import java.util.List;
  */
 public interface JdbcEntityDeleter<E extends TaggedLogAPIEntity> {
     /**
-     *
      * @param entities
      * @return
      */
     public int delete(List<E> entities) throws Exception;
 
     /**
-     *
      * @param ids
      * @return
      */
-    public int deleteByIds(List<String> ids)  throws Exception;
+    public int deleteByIds(List<String> ids) throws Exception;
 
     /**
-     *
      * @param query
      * @return
      */

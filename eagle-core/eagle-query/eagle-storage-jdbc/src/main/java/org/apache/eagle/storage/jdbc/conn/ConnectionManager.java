@@ -23,7 +23,6 @@ import java.sql.Connection;
  */
 public interface ConnectionManager {
     /**
-     *
      * @param config
      * @throws Exception
      */
@@ -32,7 +31,6 @@ public interface ConnectionManager {
     ConnectionConfig getConfig();
 
     /**
-     *
      * @return
      * @throws Exception
      */
@@ -53,14 +51,12 @@ public interface ConnectionManager {
     <T extends StatementExecutor> T getStatementExecutor(String tableName);
 
     /**
-     *
      * @param connection
      * @throws Exception
      */
     void close(Connection connection) throws Exception;
 
     /**
-     *
      * @throws Exception
      */
     void shutdown() throws Exception;

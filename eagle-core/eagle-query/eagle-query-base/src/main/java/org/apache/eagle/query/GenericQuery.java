@@ -22,25 +22,24 @@ import java.util.List;
  * @since : 10/30/14,2014
  */
 public interface GenericQuery {
-	/**
-	 * Throw all exceptions to http server
-	 *
+    /**
+     * Throw all exceptions to http server
+     *
      * @param <T> result entity type
-	 * @return result entities list
-	 *
+     * @return result entities list
      * @throws Exception
-	 */
-	<T> List<T> result() throws Exception;
+     */
+    <T> List<T> result() throws Exception;
 
-	/**
-	 * Get last/largest timestamp on all rows
-	 *
-	 * @return last timestamp
-	 */
-	long getLastTimestamp();
+    /**
+     * Get last/largest timestamp on all rows
+     *
+     * @return last timestamp
+     */
+    long getLastTimestamp();
 
-	/**
-	 * Get first timestamp on all rows
-	 */
-	long getFirstTimeStamp();
+    /**
+     * Get first timestamp on all rows
+     */
+    long getFirstTimeStamp();
 }

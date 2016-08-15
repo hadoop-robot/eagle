@@ -28,7 +28,6 @@ public interface DataStorageServiceProvider<T extends DataStorage> {
     String getType();
 
     /**
-     *
      * @return storage instance
      */
     T getStorage();

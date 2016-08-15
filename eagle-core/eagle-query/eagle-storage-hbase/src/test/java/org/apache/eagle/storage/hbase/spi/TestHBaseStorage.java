@@ -23,7 +23,7 @@ import org.junit.Test;
  */
 public class TestHBaseStorage {
     @Test
-    public void testCreate(){
+    public void testCreate() {
 
     }
 }

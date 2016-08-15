@@ -17,9 +17,10 @@
 package org.apache.eagle.log;
 
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
-import org.junit.Assert;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -31,37 +32,45 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
+ * TestGenericServiceAPIResponseEntity.
+ *
  * @since 3/18/15
  */
 public class TestGenericServiceAPIResponseEntity {
-    final static Logger LOG = LoggerFactory.getLogger(TestGenericServiceAPIResponseEntity.class);
+    static final Logger LOG = LoggerFactory.getLogger(TestGenericServiceAPIResponseEntity.class);
 
     ObjectMapper objectMapper;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         objectMapper = new ObjectMapper();
     }
 
     @JsonSerialize
-    public static class Item{
-        public Item(){}
-        public Item(String name,Double value){
+    public static class Item {
+        public Item() {
+        }
+
+        public Item(String name, Double value) {
             this.name = name;
             this.value = value;
         }
+
         private String name;
         private Double value;
 
         public String getName() {
             return name;
         }
+
         public void setName(String name) {
             this.name = name;
         }
+
         public Double getValue() {
             return value;
         }
+
         public void setValue(Double value) {
             this.value = value;
         }
@@ -71,22 +80,23 @@ public class TestGenericServiceAPIResponseEntity {
     public void testSerDeserialize() throws IOException {
         // mock up service side to serialize
         GenericServiceAPIResponseEntity<Item> entity = new GenericServiceAPIResponseEntity<Item>(Item.class);
-        entity.setObj(Arrays.asList(new Item("a",1.2),new Item("b",1.3),new Item("c",1.4)));
-        entity.setMeta(new HashMap<String, Object>(){{
-            put("tag1","val1");
-            put("tag2","val2");
-        }});
+        entity.setObj(Arrays.asList(new Item("a", 1.2), new Item("b", 1.3), new Item("c", 1.4)));
+        entity.setMeta(new HashMap<String, Object>() {
+            {
+                put("tag1", "val1");
+                put("tag2", "val2");
+            }
+        });
 
-//        entity.setTypeByObj();
         entity.setSuccess(true);
         String json = objectMapper.writeValueAsString(entity);
         LOG.info(json);
 
         // mock up client side to deserialize
-        GenericServiceAPIResponseEntity deserEntity = objectMapper.readValue(json,GenericServiceAPIResponseEntity.class);
-        Assert.assertEquals(json,objectMapper.writeValueAsString(deserEntity));
+        GenericServiceAPIResponseEntity deserEntity = objectMapper.readValue(json, GenericServiceAPIResponseEntity.class);
+        Assert.assertEquals(json, objectMapper.writeValueAsString(deserEntity));
         Assert.assertEquals(3, deserEntity.getObj().size());
-        Assert.assertEquals(LinkedList.class,deserEntity.getObj().getClass());
-        Assert.assertEquals(Item.class,deserEntity.getObj().get(0).getClass());
+        Assert.assertEquals(LinkedList.class, deserEntity.getObj().getClass());
+        Assert.assertEquals(Item.class, deserEntity.getObj().get(0).getClass());
     }
 }

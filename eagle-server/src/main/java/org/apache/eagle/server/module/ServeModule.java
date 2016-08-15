@@ -16,10 +16,11 @@
  */
 package org.apache.eagle.server.module;
 
-import com.google.inject.AbstractModule;
-import org.apache.eagle.app.module.ApplicationGuiceModule;
 import org.apache.eagle.common.module.CommonGuiceModule;
+import org.apache.eagle.app.module.ApplicationGuiceModule;
 import org.apache.eagle.metadata.persistence.MetadataStoreFactory;
+
+import com.google.inject.AbstractModule;
 
 public class ServeModule extends AbstractModule {
     @Override

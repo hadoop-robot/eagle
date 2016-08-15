@@ -23,8 +23,7 @@ package org.apache.eagle.storage.jdbc.conn;
  */
 public interface PrimaryKeyBuilder<K> {
     /**
-     *
-     * @param t entity instance
+     * @param t   entity instance
      * @param <T> entity type
      * @return primary in type of K
      */

@@ -25,9 +25,8 @@ import java.util.List;
  */
 public interface JdbcEntityReader {
     /**
-     *
      * @param query query
-     * @param <E> entity type
+     * @param <E>   entity type
      * @return result entities list
      * @throws Exception
      */
@@ -36,13 +35,11 @@ public interface JdbcEntityReader {
     public <E extends Object> List<E> query(List<String> pk) throws Exception;
 
     /**
-     *
      * @return firstTimestamp
      */
     public Long getResultFirstTimestamp();
 
     /**
-     *
      * @return lastTimeStamp
      */
     public Long getResultLastTimestamp();

@@ -19,11 +19,12 @@ package org.apache.eagle.log.entity;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * GenericMetricEntity should use prefix field which is extended from TaggedLogAPIEntity as metric name
- * metric name is used to partition the metric tables
+ * metric name is used to partition the metric tables.
  */
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Table("eagle_metric")

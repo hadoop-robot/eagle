@@ -49,7 +49,7 @@ public class HBaseStorage extends DataStorageBase {
 
     private final static Logger LOG = LoggerFactory.getLogger(HBaseStorage.class);
     private HBaseStorageAudit audit = new HBaseStorageAudit();
-    
+
     @Override
     public void init() throws IOException {
         HBaseEntitySchemaManager.getInstance().init();
@@ -58,9 +58,9 @@ public class HBaseStorage extends DataStorageBase {
 
     @Override
     public <E extends TaggedLogAPIEntity> ModifyResult<String> update(List<E> entities, EntityDefinition entityDefinition) throws IOException {
-    	ModifyResult<String> result = create(entities, entityDefinition);
-    	audit.auditOperation(AUDIT_EVENT_UPDATE, entities, null, entityDefinition); // added for jira: EAGLE-47
-    	return result;
+        ModifyResult<String> result = create(entities, entityDefinition);
+        audit.auditOperation(AUDIT_EVENT_UPDATE, entities, null, entityDefinition); // added for jira: EAGLE-47
+        return result;
     }
 
     @Override
@@ -71,35 +71,33 @@ public class HBaseStorage extends DataStorageBase {
             result.setIdentifiers(entityWriter.write(entities));
             result.setSuccess(true);
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new IOException(e);
         }
 
         audit.auditOperation(AUDIT_EVENT_CREATE, entities, null, entityDefinition); // added for jira: EAGLE-47
         return result;
     }
-    
+
     /**
      * @param entities
      * @param entityDefinition
      * @param <E>
-     *
      * @return ModifyResult
-     *
      * @throws IOException
      */
     @Override
     public <E extends TaggedLogAPIEntity> ModifyResult<String> delete(List<E> entities, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
-        try{
+        try {
             GenericDeleter deleter = new GenericDeleter(entityDefinition.getTable(), entityDefinition.getColumnFamily());
             result.setIdentifiers(deleter.delete(entities));
-        }catch(Exception ex){
-            LOG.error(ex.getMessage(),ex);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
             result.setSuccess(false);
             throw new IOException(ex);
         }
-        
+
         audit.auditOperation(AUDIT_EVENT_DELETE, entities, null, entityDefinition); // added for jira: EAGLE-47
         result.setSuccess(true);
         return result;
@@ -116,16 +114,16 @@ public class HBaseStorage extends DataStorageBase {
     @Override
     public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
-        try{
+        try {
             GenericDeleter deleter = new GenericDeleter(entityDefinition.getTable(), entityDefinition.getColumnFamily());
             deleter.deleteByEncodedRowkeys(ids);
             result.setIdentifiers(ids);
-        }catch(Exception ex){
-            LOG.error(ex.getMessage(),ex);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
             result.setSuccess(false);
             throw new IOException(ex);
         }
-        
+
         audit.auditOperation(AUDIT_EVENT_DELETE, null, ids, entityDefinition); // added for jira: EAGLE-47
         result.setSuccess(true);
         return result;
@@ -141,34 +139,34 @@ public class HBaseStorage extends DataStorageBase {
      */
     @Override
     public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
-        if(query.isHasAgg()){
+        if (query.isHasAgg()) {
             throw new IOException("delete by aggregation query is not supported");
         }
         ModifyResult<String> result;
 
         try {
-            LOG.info("Querying for deleting: "+query);
+            LOG.info("Querying for deleting: " + query);
             GenericQuery reader = GenericQueryBuilder
-                    .select(query.getSearchCondition().getOutputFields())
-                    .from(query.getServiceName(),query.getRawQuery().getMetricName()).where(query.getSearchCondition())
-                    .groupBy(query.isHasAgg(), query.getGroupByFields(), query.getAggregateFunctionTypes(), query.getAggregateFields())
-                    .timeSeries(query.getRawQuery().isTimeSeries(),query.getRawQuery().getIntervalmin())
-                    .treeAgg(query.getRawQuery().isTreeAgg())
-                    .orderBy(query.getSortOptions(),query.getSortFunctions(),query.getSortFields())
-                    .top(query.getRawQuery().getTop())
-                    .parallel(query.getRawQuery().getParallel())
-                    .build();
+                .select(query.getSearchCondition().getOutputFields())
+                .from(query.getServiceName(), query.getRawQuery().getMetricName()).where(query.getSearchCondition())
+                .groupBy(query.isHasAgg(), query.getGroupByFields(), query.getAggregateFunctionTypes(), query.getAggregateFields())
+                .timeSeries(query.getRawQuery().isTimeSeries(), query.getRawQuery().getIntervalmin())
+                .treeAgg(query.getRawQuery().isTreeAgg())
+                .orderBy(query.getSortOptions(), query.getSortFunctions(), query.getSortFields())
+                .top(query.getRawQuery().getTop())
+                .parallel(query.getRawQuery().getParallel())
+                .build();
             List<? extends TaggedLogAPIEntity> entities = reader.result();
-            if(entities != null){
-                LOG.info("Deleting "+entities.size()+" entities");
-                result =  delete(entities,entityDefinition);
-            }else{
+            if (entities != null) {
+                LOG.info("Deleting " + entities.size() + " entities");
+                result = delete(entities, entityDefinition);
+            } else {
                 LOG.info("Deleting 0 entities");
                 result = new ModifyResult<String>();
                 result.setSuccess(true);
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new IOException(e);
         }
         return result;
@@ -189,24 +187,26 @@ public class HBaseStorage extends DataStorageBase {
         QueryResult<E> result = new QueryResult<E>();
         try {
             GenericQuery reader = GenericQueryBuilder
-                    .select(query.getSearchCondition().getOutputFields())
-                    .from(query.getServiceName(),query.getRawQuery().getMetricName()).where(query.getSearchCondition())
-                    .groupBy(query.isHasAgg(), query.getGroupByFields(), query.getAggregateFunctionTypes(), query.getAggregateFields())
-                    .timeSeries(query.getRawQuery().isTimeSeries(),query.getRawQuery().getIntervalmin())
-                    .treeAgg(query.getRawQuery().isTreeAgg())
-                    .orderBy(query.getSortOptions(),query.getSortFunctions(),query.getSortFields())
-                    .top(query.getRawQuery().getTop())
-                    .parallel(query.getRawQuery().getParallel())
-                    .build();
-            List<E> entities =  reader.result();
+                .select(query.getSearchCondition().getOutputFields())
+                .from(query.getServiceName(), query.getRawQuery().getMetricName()).where(query.getSearchCondition())
+                .groupBy(query.isHasAgg(), query.getGroupByFields(), query.getAggregateFunctionTypes(), query.getAggregateFields())
+                .timeSeries(query.getRawQuery().isTimeSeries(), query.getRawQuery().getIntervalmin())
+                .treeAgg(query.getRawQuery().isTreeAgg())
+                .orderBy(query.getSortOptions(), query.getSortFunctions(), query.getSortFields())
+                .top(query.getRawQuery().getTop())
+                .parallel(query.getRawQuery().getParallel())
+                .build();
+            List<E> entities = reader.result();
             result.setData(entities);
             result.setFirstTimestamp(reader.getFirstTimeStamp());
             result.setLastTimestamp(reader.getLastTimestamp());
             result.setSize(entities.size());
-            if(!query.isHasAgg()) result.setEntityType((Class<E>) entityDefinition.getEntityClass());
+            if (!query.isHasAgg()) {
+                result.setEntityType((Class<E>) entityDefinition.getEntityClass());
+            }
             result.setSuccess(true);
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new IOException(e);
         }
         return result;
@@ -215,27 +215,30 @@ public class HBaseStorage extends DataStorageBase {
     /**
      * Query by HBase rowkey
      *
-     * @param ids hbase rowkey list
+     * @param ids              hbase rowkey list
      * @param entityDefinition entity definition
-     * @param <E> entity type
+     * @param <E>              entity type
      * @return QueryResult with entity type <E>
-     *
      * @throws IOException
      */
     @Override
     public <E> QueryResult<E> queryById(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         List<byte[]> rowkeys = new ArrayList<>(ids.size());
         QueryResult<E> result = new QueryResult<E>();
-        for(String id:ids) rowkeys.add(EagleBase64Wrapper.decode(id));
+        for (String id : ids) {
+            rowkeys.add(EagleBase64Wrapper.decode(id));
+        }
         RowKeyLogReader reader = null;
         try {
-            reader = new RowKeyLogReader(entityDefinition, rowkeys,null);
+            reader = new RowKeyLogReader(entityDefinition, rowkeys, null);
             reader.open();
             List<TaggedLogAPIEntity> entities = new LinkedList<>();
 
-            while(true) {
+            while (true) {
                 InternalLog log = reader.read();
-                if(log == null) break;
+                if (log == null) {
+                    break;
+                }
                 TaggedLogAPIEntity entity = HBaseInternalLogHelper.buildEntity(log, entityDefinition);
                 entities.add(entity);
             }
@@ -247,8 +250,10 @@ public class HBaseStorage extends DataStorageBase {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new IOException(e);
-        } finally{
-            if(reader != null) reader.close();
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
         }
     }
 

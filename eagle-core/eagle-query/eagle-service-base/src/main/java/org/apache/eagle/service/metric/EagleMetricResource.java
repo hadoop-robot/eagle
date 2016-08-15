@@ -33,26 +33,26 @@ import org.apache.eagle.log.entity.GenericMetricEntity;
 
 @Path(EagleMetricResource.METRIC_URL_PATH)
 public class EagleMetricResource {
-	private static final Logger LOG = LoggerFactory.getLogger(EagleMetricResource.class);
-	public static final String METRIC_URL_PATH = "/metric";
-	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public GenericCreateAPIResponseEntity createGenericMetricEntity(List<GenericMetricEntity> entities) {
-		GenericCreateAPIResponseEntity result = new GenericCreateAPIResponseEntity();
-		try{
-			GenericEntityWriter writer = new GenericEntityWriter(GenericMetricEntity.GENERIC_METRIC_SERVICE);
-			List<String> rowkeys = null;
-			rowkeys = writer.write(entities);
-			result.setEncodedRowkeys(rowkeys);
-			result.setSuccess(true);
-			return result;
-		}catch(Exception ex){
-			LOG.error("Fail writing Generic Metric entity", ex);
-			result.setSuccess(false);
-			result.setException(ex.getMessage());
-			return result;
-		}
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(EagleMetricResource.class);
+    public static final String METRIC_URL_PATH = "/metric";
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public GenericCreateAPIResponseEntity createGenericMetricEntity(List<GenericMetricEntity> entities) {
+        GenericCreateAPIResponseEntity result = new GenericCreateAPIResponseEntity();
+        try {
+            GenericEntityWriter writer = new GenericEntityWriter(GenericMetricEntity.GENERIC_METRIC_SERVICE);
+            List<String> rowkeys = null;
+            rowkeys = writer.write(entities);
+            result.setEncodedRowkeys(rowkeys);
+            result.setSuccess(true);
+            return result;
+        } catch (Exception ex) {
+            LOG.error("Fail writing Generic Metric entity", ex);
+            result.setSuccess(false);
+            result.setException(ex.getMessage());
+            return result;
+        }
+    }
 }

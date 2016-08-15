@@ -30,6 +30,7 @@ public interface JdbcSerDeser<T> {
     /**
      * for entity read
      * convert value from jdbc storage into user-typed object
+     *
      * @param result
      * @return
      * @throws IOException
@@ -39,6 +40,7 @@ public interface JdbcSerDeser<T> {
     /**
      * for write entity
      * convert user-typed fieldValue into fieldType-compatible value and persist that value into jdbc storage
+     *
      * @param fieldValue
      * @param fieldType
      * @return

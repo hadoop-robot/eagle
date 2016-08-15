@@ -32,7 +32,7 @@ public class PrimaryKeyCriteriaBuilder implements CriteriaBuilder {
     private final List<String> keys;
     private final String tableName;
 
-    public PrimaryKeyCriteriaBuilder(List<String> keys,String tableName){
+    public PrimaryKeyCriteriaBuilder(List<String> keys, String tableName) {
         this.keys = keys;
         this.tableName = tableName;
     }
@@ -40,8 +40,8 @@ public class PrimaryKeyCriteriaBuilder implements CriteriaBuilder {
     @Override
     public Criteria build() {
         Criteria root = new Criteria();
-        for(String key:keys){
-            root = root.or(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.ROW_KEY_COLUMN_NAME),key, SqlEnum.EQUAL));
+        for (String key : keys) {
+            root = root.or(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.ROW_KEY_COLUMN_NAME), key, SqlEnum.EQUAL));
         }
         return root;
     }

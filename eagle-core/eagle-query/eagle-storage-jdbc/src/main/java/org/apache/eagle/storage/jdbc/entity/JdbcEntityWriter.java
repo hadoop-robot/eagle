@@ -26,7 +26,7 @@ import java.util.List;
 public interface JdbcEntityWriter<E extends TaggedLogAPIEntity> {
     /**
      * <h2>Consistency Guarantee</h2>
-     *
+     * <p>
      * Rollback all changes if any single entity throws exception to make sure consistency guarantee
      *
      * @param entities entities to write

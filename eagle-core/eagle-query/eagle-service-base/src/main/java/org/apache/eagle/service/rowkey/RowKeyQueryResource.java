@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 /**
- * 
+ *
  */
 package org.apache.eagle.service.rowkey;
 
@@ -46,43 +46,41 @@ import org.apache.eagle.common.EagleBase64Wrapper;
  */
 @Path("/rowkeyquery")
 public class RowKeyQueryResource {
-	private static final Logger LOG = LoggerFactory.getLogger(RowKeyQueryResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RowKeyQueryResource.class);
 
-	@GET
-	@Produces({MediaType.APPLICATION_JSON})
-	public RowkeyQueryAPIResponseEntity getEntityByRowkey(@QueryParam("query") String query, @QueryParam("rowkey") String rowkey){
-		RowkeyQueryAPIResponseEntity result = new RowkeyQueryAPIResponseEntity();
-		RowKeyLogReader reader = null;
+    @GET
+    @Produces( {MediaType.APPLICATION_JSON})
+    public RowkeyQueryAPIResponseEntity getEntityByRowkey(@QueryParam("query") String query, @QueryParam("rowkey") String rowkey) {
+        RowkeyQueryAPIResponseEntity result = new RowkeyQueryAPIResponseEntity();
+        RowKeyLogReader reader = null;
 
-		try {
-			EntityDefinition ed = EntityDefinitionManager.getEntityByServiceName(query);
-			reader = new RowKeyLogReader(ed, EagleBase64Wrapper.decode(rowkey));
-			reader.open();
-			InternalLog log = reader.read();
-			TaggedLogAPIEntity entity;
-			entity = HBaseInternalLogHelper.buildEntity(log, ed);
-			result.setObj(entity);			
-			result.setSuccess(true);
-			return result;
-		}
-		catch(NoSuchRowException ex){
-			LOG.error("rowkey " + ex.getMessage() + " does not exist!", ex);
-			result.setSuccess(false);
-			result.setException(EagleExceptionWrapper.wrap(ex));
-			return result;
-		}
-		catch(Exception ex){
-			LOG.error("Cannot read alert by rowkey", ex);
-			result.setSuccess(false);
-			result.setException(EagleExceptionWrapper.wrap(ex));
-			return result;
-		}
-		finally{
-			try {
-				if(reader != null)
-					reader.close();
-			} catch (IOException e) {
-			}
-		}
-	}
+        try {
+            EntityDefinition ed = EntityDefinitionManager.getEntityByServiceName(query);
+            reader = new RowKeyLogReader(ed, EagleBase64Wrapper.decode(rowkey));
+            reader.open();
+            InternalLog log = reader.read();
+            TaggedLogAPIEntity entity;
+            entity = HBaseInternalLogHelper.buildEntity(log, ed);
+            result.setObj(entity);
+            result.setSuccess(true);
+            return result;
+        } catch (NoSuchRowException ex) {
+            LOG.error("rowkey " + ex.getMessage() + " does not exist!", ex);
+            result.setSuccess(false);
+            result.setException(EagleExceptionWrapper.wrap(ex));
+            return result;
+        } catch (Exception ex) {
+            LOG.error("Cannot read alert by rowkey", ex);
+            result.setSuccess(false);
+            result.setException(EagleExceptionWrapper.wrap(ex));
+            return result;
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
 }

@@ -717,7 +717,6 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.carrotsearch</groupId>
@@ -1136,10 +1135,11 @@
                     <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <encoding>UTF-8</encoding>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
+                    <consoleOutput>false</consoleOutput>
+                    <failOnViolation>false</failOnViolation>
                     <failsOnError>true</failsOnError>
                     <violationSeverity>warning</violationSeverity>
+                    <excludes>**/generated/**/*</excludes>
                 </configuration>
                 <dependencies>
                     <dependency>

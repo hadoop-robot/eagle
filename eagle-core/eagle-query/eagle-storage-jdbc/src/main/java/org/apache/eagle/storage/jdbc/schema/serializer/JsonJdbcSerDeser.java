@@ -38,7 +38,7 @@ public class JsonJdbcSerDeser<T extends Object> implements JdbcSerDeser<T> {
             String jsonString = result.getString(fieldName);
             return (T) objectMapper.readValue(jsonString, fieldType);
         } catch (IOException e) {
-           throw e;
+            throw e;
         } catch (SQLException e) {
             throw new IOException(e);
         }

@@ -59,7 +59,7 @@ public class JdbcStorage extends DataStorageBase {
             ConnectionManagerFactory.getInstance();
             JdbcEntitySchemaManager.getInstance().init();
         } catch (Exception e) {
-            LOG.error("Failed to start connection manager",e);
+            LOG.error("Failed to start connection manager", e);
             throw new IOException(e);
         }
     }
@@ -68,7 +68,7 @@ public class JdbcStorage extends DataStorageBase {
     public <E extends TaggedLogAPIEntity> ModifyResult<String> update(List<E> entities, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityUpdater updater = new JdbcEntityUpdaterImpl(jdbcEntityDefinition);
             int updated = updater.update(entities);
             result.setSize(updated);
@@ -85,7 +85,7 @@ public class JdbcStorage extends DataStorageBase {
     public <E extends TaggedLogAPIEntity> ModifyResult<String> create(List<E> entities, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityWriter writer = new JdbcEntityWriterImpl(jdbcEntityDefinition);
             List<String> keys = writer.write(entities);
             result.setIdentifiers(keys);
@@ -103,7 +103,7 @@ public class JdbcStorage extends DataStorageBase {
     public <E extends TaggedLogAPIEntity> ModifyResult<String> delete(List<E> entities, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityDeleter writer = new JdbcEntityDeleterImpl(jdbcEntityDefinition);
             int num = writer.delete(entities);
             result.setSize(num);
@@ -121,7 +121,7 @@ public class JdbcStorage extends DataStorageBase {
     public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityDeleter writer = new JdbcEntityDeleterImpl(jdbcEntityDefinition);
             int num = writer.deleteByIds(ids);
             result.setSize(num);
@@ -138,7 +138,7 @@ public class JdbcStorage extends DataStorageBase {
     public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityDeleter writer = new JdbcEntityDeleterImpl(jdbcEntityDefinition);
             int num = writer.deleteByQuery(query);
             result.setSize(num);
@@ -156,18 +156,18 @@ public class JdbcStorage extends DataStorageBase {
     public <E extends Object> QueryResult<E> query(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
         QueryResult<E> result = new QueryResult<E>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityReader reader = new JdbcEntityReaderImpl(jdbcEntityDefinition);
             List<E> entities = reader.query(query);
             result.setData(entities);
-            if(entities!=null) {
+            if (entities != null) {
                 result.setSize(entities.size());
-            }else{
+            } else {
                 result.setSize(0);
             }
-            if(query.isHasAgg()){
+            if (query.isHasAgg()) {
                 result.setEntityType((Class<E>) Map.class);
-            }else {
+            } else {
                 result.setEntityType((Class<E>) entityDefinition.getEntityClass());
             }
             result.setFirstTimestamp(reader.getResultFirstTimestamp());
@@ -185,13 +185,13 @@ public class JdbcStorage extends DataStorageBase {
     public <E> QueryResult<E> queryById(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         QueryResult<E> result = new QueryResult<E>();
         try {
-            JdbcEntityDefinition jdbcEntityDefinition =  JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
+            JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityReader reader = new JdbcEntityReaderImpl(jdbcEntityDefinition);
             List<E> entities = reader.query(ids);
             result.setData(entities);
-            if(entities!=null) {
+            if (entities != null) {
                 result.setSize(entities.size());
-            }else{
+            } else {
                 result.setSize(0);
             }
             result.setEntityType((Class<E>) entityDefinition.getEntityClass());

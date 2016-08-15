@@ -44,7 +44,7 @@ public class EntityRecordMapper<E extends TaggedLogAPIEntity> implements RecordM
         try {
             return JdbcEntitySerDeserHelper.readEntity(resultSet, entityDefinition);
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new TorqueException(e);
         }
     }

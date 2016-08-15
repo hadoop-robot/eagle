@@ -27,6 +27,7 @@ public class Result {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
     private boolean success;
 
     private int size;

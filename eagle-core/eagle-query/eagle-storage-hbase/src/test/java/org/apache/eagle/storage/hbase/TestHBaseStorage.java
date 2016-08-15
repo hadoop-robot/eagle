@@ -23,12 +23,12 @@ import org.junit.Test;
  */
 public class TestHBaseStorage {
     @Test
-    public void testCreate(){
+    public void testCreate() {
 
     }
 
     @Test
-    public void testQuery(){
+    public void testQuery() {
 
     }
 }

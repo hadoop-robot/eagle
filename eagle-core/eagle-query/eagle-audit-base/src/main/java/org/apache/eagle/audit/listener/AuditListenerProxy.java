@@ -23,19 +23,19 @@ import org.apache.eagle.audit.common.AuditEvent;
 
 public class AuditListenerProxy extends EventListenerProxy<AuditListener> implements AuditListener {
 
-	private final String propertyName;
-	
-	public String getPropertyName() {
-		return propertyName;
-	}
+    private final String propertyName;
 
-	public AuditListenerProxy(String propertyName, AuditListener listener) {
-		super(listener);
-		this.propertyName = propertyName;
-	}
+    public String getPropertyName() {
+        return propertyName;
+    }
 
-	@Override
-	public void auditEvent(AuditEvent event) {
-		getListener().auditEvent(event);
-	}
+    public AuditListenerProxy(String propertyName, AuditListener listener) {
+        super(listener);
+        this.propertyName = propertyName;
+    }
+
+    @Override
+    public void auditEvent(AuditEvent event) {
+        getListener().auditEvent(event);
+    }
 }

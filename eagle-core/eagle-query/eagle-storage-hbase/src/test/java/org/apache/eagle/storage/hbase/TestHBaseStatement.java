@@ -69,17 +69,17 @@ public class TestHBaseStatement extends TestHBaseBase {
         entity.setTags(new HashMap<String, String>() {{
             put("cluster", "test");
             put("datacenter", "test");
-            put("name","unit.test.name");
+            put("name", "unit.test.name");
         }});
 
         entities.add(entity);
 
-        CreateStatement createStatement = new CreateStatement(entities,"TestTimeSeriesAPIEntity");
+        CreateStatement createStatement = new CreateStatement(entities, "TestTimeSeriesAPIEntity");
         ModifyResult resultSet = createStatement.execute(DataStorageManager.newDataStorage("hbase"));
 
         Assert.assertEquals(1, resultSet.getIdentifiers().size());
 
-        createStatement = new CreateStatement(entities,"TestTimeSeriesAPIEntity");
+        createStatement = new CreateStatement(entities, "TestTimeSeriesAPIEntity");
         resultSet = createStatement.execute(DataStorageManager.newDataStorage("hbase"));
 
         Assert.assertEquals(1, resultSet.getIdentifiers().size());
@@ -93,7 +93,7 @@ public class TestHBaseStatement extends TestHBaseBase {
         query.setPageSize(Integer.MAX_VALUE);
         query.setFilterIfMissing(false);
         query.setStartTime(DateTimeUtil.millisecondsToHumanDateWithSeconds(0));
-        query.setEndTime(DateTimeUtil.millisecondsToHumanDateWithSeconds(System.currentTimeMillis()+25 * 3600 * 1000));
+        query.setEndTime(DateTimeUtil.millisecondsToHumanDateWithSeconds(System.currentTimeMillis() + 25 * 3600 * 1000));
         QueryStatement queryStatement = new QueryStatement(query);
         QueryResult<?> entityResult = queryStatement.execute(DataStorageManager.newDataStorage("hbase"));
         assert entityResult != null;

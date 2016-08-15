@@ -21,6 +21,8 @@ package org.apache.eagle.storage.jdbc.schema;
  */
 public interface IJdbcEntityDDLManager {
     void init();
+
     void reinit();
+
     void shutdown();
 }

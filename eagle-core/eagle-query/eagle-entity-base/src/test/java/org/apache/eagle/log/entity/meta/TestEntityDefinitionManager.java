@@ -18,17 +18,19 @@ package org.apache.eagle.log.entity.meta;
 
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.test.TestLogAPIEntity;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TestEntityDefinitionManager {
     @Test
-    public void testCreateEntityDefinition(){
+    public void testCreateEntityDefinition() {
         EntityDefinition entityDefinition = EntityDefinitionManager.createEntityDefinition(TestLogAPIEntity.class);
         Assert.assertNotNull(entityDefinition);
     }
+
     @Test
-    public void testCreateMetricEntityDefinition(){
+    public void testCreateMetricEntityDefinition() {
         EntityDefinition entityDefinition = EntityDefinitionManager.createEntityDefinition(GenericMetricEntity.class);
         Assert.assertNotNull(entityDefinition);
     }

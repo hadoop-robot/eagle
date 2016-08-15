@@ -42,11 +42,11 @@ public class QueryCriteriaBuilder implements CriteriaBuilder {
     private final Boolean limitEnabled;
     private final JdbcEntityDefinition jdbcEntityDefinition;
 
-    public QueryCriteriaBuilder(CompiledQuery query, JdbcEntityDefinition entityDefinition){
-        this(query,entityDefinition,true);
+    public QueryCriteriaBuilder(CompiledQuery query, JdbcEntityDefinition entityDefinition) {
+        this(query, entityDefinition, true);
     }
 
-    public QueryCriteriaBuilder(CompiledQuery query, JdbcEntityDefinition entityDefinition, Boolean limitEnabled){
+    public QueryCriteriaBuilder(CompiledQuery query, JdbcEntityDefinition entityDefinition, Boolean limitEnabled) {
         this.query = query;
         this.tableName = entityDefinition.getJdbcTableName();
         this.limitEnabled = limitEnabled;
@@ -59,19 +59,18 @@ public class QueryCriteriaBuilder implements CriteriaBuilder {
         SearchCondition searchCondition = query.getSearchCondition();
 
 
-
-        if(query.isHasAgg()){
-            if(this.jdbcEntityDefinition.getInternal().isTimeSeries() && query.isTimeSeries()) {
+        if (query.isHasAgg()) {
+            if (this.jdbcEntityDefinition.getInternal().isTimeSeries() && query.isTimeSeries()) {
                 // SELECT
-                root.addSelectColumn(new ColumnImpl(this.tableName,JdbcConstants.TIMESTAMP_COLUMN_NAME));
+                root.addSelectColumn(new ColumnImpl(this.tableName, JdbcConstants.TIMESTAMP_COLUMN_NAME));
                 List<String> aggFields = query.getAggregateFields();
-                for(String field:aggFields){
-                    root.addSelectColumn(new ColumnImpl(this.tableName,field));
+                for (String field : aggFields) {
+                    root.addSelectColumn(new ColumnImpl(this.tableName, field));
                 }
 
                 List<String> groupByFieldsFields = query.getGroupByFields();
-                for(String field:groupByFieldsFields){
-                    root.addSelectColumn(new ColumnImpl(this.tableName,field));
+                for (String field : groupByFieldsFields) {
+                    root.addSelectColumn(new ColumnImpl(this.tableName, field));
                 }
             } else {
                 List<String> aggFields = query.getAggregateFields();
@@ -86,19 +85,19 @@ public class QueryCriteriaBuilder implements CriteriaBuilder {
                     }
                 }
             }
-        } else if(searchCondition.isOutputAll()){
+        } else if (searchCondition.isOutputAll()) {
             // SELECT *
             root.addSelectColumn(new ColumnImpl(this.tableName, "*"));
-        }else{
+        } else {
             // SELECT $outputFields
             List<String> outputFields = searchCondition.getOutputFields();
-            for(String field:outputFields) {
+            for (String field : outputFields) {
                 root.addSelectColumn(new ColumnImpl(this.tableName, field));
             }
-            if(!outputFields.contains(JdbcConstants.ROW_KEY_COLUMN_NAME)) {
+            if (!outputFields.contains(JdbcConstants.ROW_KEY_COLUMN_NAME)) {
                 root.addSelectColumn(new ColumnImpl(this.tableName, JdbcConstants.ROW_KEY_COLUMN_NAME));
             }
-            if(!outputFields.contains(JdbcConstants.TIMESTAMP_COLUMN_NAME)) {
+            if (!outputFields.contains(JdbcConstants.TIMESTAMP_COLUMN_NAME)) {
                 root.addSelectColumn(new ColumnImpl(this.tableName, JdbcConstants.TIMESTAMP_COLUMN_NAME));
             }
         }
@@ -108,36 +107,36 @@ public class QueryCriteriaBuilder implements CriteriaBuilder {
 
         // WHERE timestamp in time range
         Criterion where = new Criterion(new ColumnImpl(this.tableName, JdbcConstants.TIMESTAMP_COLUMN_NAME), query.getStartTime(), SqlEnum.GREATER_EQUAL)
-                        .and(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.TIMESTAMP_COLUMN_NAME),query.getEndTime(), SqlEnum.LESS_THAN));
+            .and(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.TIMESTAMP_COLUMN_NAME), query.getEndTime(), SqlEnum.LESS_THAN));
         ORExpression expression = searchCondition.getQueryExpression();
-        if(expression!=null){
-            CriterionBuilder criterionBuilder = new ExpressionCriterionBuilder(expression,this.jdbcEntityDefinition);
+        if (expression != null) {
+            CriterionBuilder criterionBuilder = new ExpressionCriterionBuilder(expression, this.jdbcEntityDefinition);
             where = where.and(criterionBuilder.build());
         }
 
         // AND metricName = "metric.name.value"
-        if(query.getServiceName().equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)){
-            where = where.and(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.METRIC_NAME_COLUMN_NAME),this.query.getRawQuery().getMetricName(),SqlEnum.EQUAL));
+        if (query.getServiceName().equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)) {
+            where = where.and(new Criterion(new ColumnImpl(this.tableName, JdbcConstants.METRIC_NAME_COLUMN_NAME), this.query.getRawQuery().getMetricName(), SqlEnum.EQUAL));
         }
 
         root.where(where);
 
-        if(this.limitEnabled) {
+        if (this.limitEnabled) {
             // LIMITED BY $pageSize
             root.setLimit((int) searchCondition.getPageSize());
         }
 
         // TODO: GROUP BY
-        if(query.isHasAgg() && !query.isTimeSeries()){
-            for(String groupByField:query.getGroupByFields()){
-                root.addGroupByColumn(new ColumnImpl(this.tableName,groupByField));
+        if (query.isHasAgg() && !query.isTimeSeries()) {
+            for (String groupByField : query.getGroupByFields()) {
+                root.addGroupByColumn(new ColumnImpl(this.tableName, groupByField));
             }
         }
 
         // TODO: ORDER BY
 
         // If no columns are specified, then select * by default
-        if(root.getSelectColumns() == null || root.getSelectColumns().size() ==0){
+        if (root.getSelectColumns() == null || root.getSelectColumns().size() == 0) {
             // SELECT *
             root.addSelectColumn(new ColumnImpl(this.tableName, "*"));
         }

@@ -23,25 +23,31 @@ package org.apache.eagle.service.selfcheck;
 //@XmlAccessorType(XmlAccessType.FIELD)
 //@XmlType(propOrder = {"env", "hbaseZookeeperQuorum", "hbaseZookeeperClientPort"})
 public class EagleServiceSelfCheckAPIEntity {
-	private String env;
-	private String hbaseZookeeperQuorum;
-	private String hbaseZookeeperClientPort;
-	public String getEnv() {
-		return env;
-	}
-	public void setEnv(String env) {
-		this.env = env;
-	}
-	public String getHbaseZookeeperQuorum() {
-		return hbaseZookeeperQuorum;
-	}
-	public void setHbaseZookeeperQuorum(String hbaseZookeeperQuorum) {
-		this.hbaseZookeeperQuorum = hbaseZookeeperQuorum;
-	}
-	public String getHbaseZookeeperClientPort() {
-		return hbaseZookeeperClientPort;
-	}
-	public void setHbaseZookeeperClientPort(String hbaseZookeeperClientPort) {
-		this.hbaseZookeeperClientPort = hbaseZookeeperClientPort;
-	}
+    private String env;
+    private String hbaseZookeeperQuorum;
+    private String hbaseZookeeperClientPort;
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public String getHbaseZookeeperQuorum() {
+        return hbaseZookeeperQuorum;
+    }
+
+    public void setHbaseZookeeperQuorum(String hbaseZookeeperQuorum) {
+        this.hbaseZookeeperQuorum = hbaseZookeeperQuorum;
+    }
+
+    public String getHbaseZookeeperClientPort() {
+        return hbaseZookeeperClientPort;
+    }
+
+    public void setHbaseZookeeperClientPort(String hbaseZookeeperClientPort) {
+        this.hbaseZookeeperClientPort = hbaseZookeeperClientPort;
+    }
 }

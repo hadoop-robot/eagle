@@ -19,7 +19,6 @@ package org.apache.eagle.service.client;
 import org.apache.eagle.service.client.impl.*;
 
 /**
- *
  * IEagleServiceClient extension interfaces
  *
  * @see IEagleServiceClient
@@ -41,7 +40,6 @@ public interface IEagleServiceRequestBuilder {
     SearchRequestBuilder search(String query);
 
     /**
-     *
      * Delete pipe API
      *
      * @return

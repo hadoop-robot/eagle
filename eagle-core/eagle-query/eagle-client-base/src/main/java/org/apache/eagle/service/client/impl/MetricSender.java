@@ -29,7 +29,7 @@ public class MetricSender extends BatchSender {
     private Map<String, String> tags;
 
     public MetricSender(IEagleServiceClient client, String metricName) {
-        super(client,1);
+        super(client, 1);
         this.metricName = metricName;
     }
 
@@ -38,12 +38,12 @@ public class MetricSender extends BatchSender {
         return this;
     }
 
-    public MetricSender tags(Map<String,String> tags){
+    public MetricSender tags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
 
-    public MetricSender send(String metricName,long timestamp,Map<String,String> tags,double ...values) throws IOException, EagleServiceClientException {
+    public MetricSender send(String metricName, long timestamp, Map<String, String> tags, double... values) throws IOException, EagleServiceClientException {
         GenericMetricEntity metric = new GenericMetricEntity();
         metric.setPrefix(metricName);
         metric.setValue(values);
@@ -53,12 +53,12 @@ public class MetricSender extends BatchSender {
         return this;
     }
 
-    public MetricSender send(Long timestamp,Map<String,String> tags,double ...values) throws IOException, EagleServiceClientException {
-        return this.send(this.metricName,timestamp,tags,values);
+    public MetricSender send(Long timestamp, Map<String, String> tags, double... values) throws IOException, EagleServiceClientException {
+        return this.send(this.metricName, timestamp, tags, values);
     }
 
-    public MetricSender send(Long timestamp, double ... values) throws IOException, EagleServiceClientException {
-        return this.send(timestamp,new HashMap<String, String>(this.tags),values);
+    public MetricSender send(Long timestamp, double... values) throws IOException, EagleServiceClientException {
+        return this.send(timestamp, new HashMap<String, String>(this.tags), values);
     }
 
 //    public EagleServiceMetricSender send(String metricName,Map<String,String> tags,double ... values) throws IOException, EagleServiceClientException {

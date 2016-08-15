@@ -32,10 +32,11 @@ public interface StatementExecutor {
     /**
      * Initialize statement for action like CREATE, UPDATE, DELETE which need table name
      *
-     * @param config connection config
+     * @param config    connection config
      * @param tableName
      */
-    void init(ConnectionConfig config,String tableName);
+    void init(ConnectionConfig config, String tableName);
+
     /**
      * @return customized primary key builder if no built-in primary key generation method like auto-increment and so on.
      */

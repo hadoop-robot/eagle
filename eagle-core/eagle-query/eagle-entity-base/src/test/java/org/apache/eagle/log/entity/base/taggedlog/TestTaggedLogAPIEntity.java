@@ -16,21 +16,23 @@
  */
 package org.apache.eagle.log.entity.base.taggedlog;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+
 import org.apache.eagle.log.entity.meta.Column;
-import org.junit.Assert;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 public class TestTaggedLogAPIEntity {
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+    @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
     private class MockSubTaggedLogAPIEntity extends TaggedLogAPIEntity {
         public double getField1() {
             return field1;
@@ -58,7 +60,7 @@ public class TestTaggedLogAPIEntity {
     }
 
     @SuppressWarnings("serial")
-	@Test
+    @Test
     public void testJsonSerializeFilter() throws IOException {
         MockSubTaggedLogAPIEntity mock = new MockSubTaggedLogAPIEntity();
         Assert.assertTrue(mock instanceof TaggedLogAPIEntity);
@@ -77,12 +79,16 @@ public class TestTaggedLogAPIEntity {
         mock.setPrefix("mock");
         mock.setField2("ok");
         mock.setField1(12.345);
-        mock.setTags(new HashMap<String, String>(){{
-            put("tagName", "tagValue");
-        }});
-        mock.setExp(new HashMap<String, Object>() {{
-            put("extra_field", 3.14);
-        }});
+        mock.setTags(new HashMap<String, String>() {
+            {
+                put("tagName", "tagValue");
+            }
+        });
+        mock.setExp(new HashMap<String, Object>() {
+            {
+                put("extra_field", 3.14);
+            }
+        });
         json = objectMapper.filteredWriter(TaggedLogAPIEntity.getFilterProvider()).writeValueAsString(mock);
         System.out.println(json);
         Assert.assertTrue(json.contains("field2"));

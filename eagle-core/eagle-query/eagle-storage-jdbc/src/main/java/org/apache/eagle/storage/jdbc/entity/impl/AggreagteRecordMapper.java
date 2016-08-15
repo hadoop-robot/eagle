@@ -46,10 +46,10 @@ public class AggreagteRecordMapper implements RecordMapper<Map> {
         try {
             return JdbcEntitySerDeserHelper.readInternal(resultSet, this.jdbcEntityDefinition);
         } catch (SQLException e) {
-            LOG.error("Failed to read result set",e);
+            LOG.error("Failed to read result set", e);
             throw new TorqueException(e);
         } catch (IOException e) {
-            LOG.error("Failed to read result set",e);
+            LOG.error("Failed to read result set", e);
             throw new TorqueException(e);
         }
     }

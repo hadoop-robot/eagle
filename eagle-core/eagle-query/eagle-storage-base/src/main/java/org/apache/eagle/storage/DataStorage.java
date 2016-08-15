@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Eagle DataStorage Interface
- *
+ * <p>
  * Interface description:
  * 1) TaggedLogAPIEntity (Why not InternalLog: it's deeply hbase specific and all values are converted to byte[] which is unnecessary for other database like mysql)
  * 2) EntityDefinition
@@ -92,9 +92,10 @@ public interface DataStorage<I> {
 
     /**
      * Execute query to return a list of results
-     * @param ids id set
+     *
+     * @param ids              id set
      * @param entityDefinition entity definition
-     * @param <E> result item type
+     * @param <E>              result item type
      * @return QueryResult object
      * @throws IOException
      */

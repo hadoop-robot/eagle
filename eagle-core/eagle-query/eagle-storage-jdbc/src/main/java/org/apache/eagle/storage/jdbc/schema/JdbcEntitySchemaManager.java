@@ -42,30 +42,30 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
 
     private static IJdbcEntityDDLManager instance;
 
-    private JdbcEntitySchemaManager(){
+    private JdbcEntitySchemaManager() {
         instance = null;
         ConnectionConfig config = ConnectionConfigFactory.getFromEagleConfig();
         this.platform = PlatformFactory.createNewPlatformInstance(config.getAdapter());
         Connection connection = null;
         try {
             connection = ConnectionManagerFactory.getInstance().getConnection();
-            this.database = platform.readModelFromDatabase(connection,config.getDatabaseName());
-            LOG.info("Loaded "+database);
+            this.database = platform.readModelFromDatabase(connection, config.getDatabaseName());
+            LOG.info("Loaded " + database);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(),e);
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
-            if(connection!=null){
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.warn(e.getMessage(),e);
+                    LOG.warn(e.getMessage(), e);
                 }
             }
         }
     }
 
-    public static IJdbcEntityDDLManager getInstance(){
-        if(instance == null){
+    public static IJdbcEntityDDLManager getInstance() {
+        if (instance == null) {
             instance = new JdbcEntitySchemaManager();
         }
         return instance;
@@ -76,29 +76,29 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
         Connection connection = null;
         try {
             Database _database = identifyNewTables();
-            if(_database.getTableCount() >0 ) {
-                LOG.info("Creating {} new tables (totally {} tables)", _database.getTableCount(),database.getTableCount());
+            if (_database.getTableCount() > 0) {
+                LOG.info("Creating {} new tables (totally {} tables)", _database.getTableCount(), database.getTableCount());
                 connection = ConnectionManagerFactory.getInstance().getConnection();
-                this.platform.createTables(connection,_database, false, true);
-                LOG.info("Created {} new tables: ",_database.getTableCount(),_database.getTables());
+                this.platform.createTables(connection, _database, false, true);
+                LOG.info("Created {} new tables: ", _database.getTableCount(), _database.getTables());
             } else {
                 LOG.debug("All the {} tables have already been created, no new tables", database.getTableCount());
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         } finally {
-            if(connection != null){
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.warn(e.getMessage(),e);
+                    LOG.warn(e.getMessage(), e);
                 }
             }
         }
     }
 
-    private Database identifyNewTables(){
+    private Database identifyNewTables() {
         Database _database = new Database();
         _database.setName(database.getName());
         Collection<JdbcEntityDefinition> entityDefinitions = JdbcEntityDefinitionManager.getJdbcEntityDefinitionMap().values();
@@ -117,21 +117,21 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
     }
 
     @Override
-    public void reinit(){
+    public void reinit() {
         Connection connection = null;
         try {
             identifyNewTables();
             connection = ConnectionManagerFactory.getInstance().getConnection();
-            this.platform.createTables(connection,database, true, true);
+            this.platform.createTables(connection, database, true, true);
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
             throw new IllegalStateException(e);
         } finally {
-            if(connection != null){
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.warn(e.getMessage(),e);
+                    LOG.warn(e.getMessage(), e);
                 }
             }
         }
@@ -142,14 +142,14 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
         this.platform.shutdownDatabase();
     }
 
-    private Table createTable(JdbcEntityDefinition entityDefinition){
+    private Table createTable(JdbcEntityDefinition entityDefinition) {
         Table table = new Table();
         table.setName(entityDefinition.getJdbcTableName());
-        buildTable(entityDefinition,table);
+        buildTable(entityDefinition, table);
         return table;
     }
 
-    private Column createTagColumn(String tagName){
+    private Column createTagColumn(String tagName) {
         Column tagColumn = new Column();
         tagColumn.setName(tagName);
         tagColumn.setTypeCode(Types.VARCHAR);
@@ -157,14 +157,14 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
 //        tagColumn.setScale(1024);
         tagColumn.setSize(String.valueOf(JdbcConstants.DEFAULT_VARCHAR_SIZE));
         tagColumn.setDefaultValue(null);
-        tagColumn.setDescription("eagle entity tag column for "+tagName);
+        tagColumn.setDescription("eagle entity tag column for " + tagName);
         return tagColumn;
     }
 
-    private void buildTable(JdbcEntityDefinition entityDefinition, Table table){
+    private void buildTable(JdbcEntityDefinition entityDefinition, Table table) {
         // METRIC
-        if(entityDefinition.getInternal().getService()
-                .equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)){
+        if (entityDefinition.getInternal().getService()
+            .equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)) {
             Column metricColumn = new Column();
             metricColumn.setName(JdbcConstants.METRIC_NAME_COLUMN_NAME);
             metricColumn.setTypeCode(Types.VARCHAR);
@@ -192,7 +192,7 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
         table.addColumn(tsColumn);
 
         // TAGS
-        if(entityDefinition.getInternal().getTags() != null) {
+        if (entityDefinition.getInternal().getTags() != null) {
 //            Index index = new UniqueIndex();
             for (String tag : entityDefinition.getInternal().getTags()) {
                 Column tagColumn = createTagColumn(tag);
@@ -208,15 +208,17 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
 //            table.addIndex(index);
         }
 
-        for(Map.Entry<String,Qualifier> entry: entityDefinition.getInternal().getDisplayNameMap().entrySet()){
+        for (Map.Entry<String, Qualifier> entry : entityDefinition.getInternal().getDisplayNameMap().entrySet()) {
             Column fieldColumn = new Column();
             fieldColumn.setName(entry.getKey());
             fieldColumn.setJavaName(entry.getKey());
             Integer typeCode = entityDefinition.getJdbcColumnTypeCodeOrNull(entry.getKey());
-            typeCode = typeCode == null? Types.VARCHAR:typeCode;
-            if(typeCode == Types.VARCHAR) fieldColumn.setSize(String.valueOf(JdbcConstants.DEFAULT_VARCHAR_SIZE));
+            typeCode = typeCode == null ? Types.VARCHAR : typeCode;
+            if (typeCode == Types.VARCHAR) {
+                fieldColumn.setSize(String.valueOf(JdbcConstants.DEFAULT_VARCHAR_SIZE));
+            }
             fieldColumn.setTypeCode(typeCode);
-            fieldColumn.setDescription("eagle field column "+entry.getKey()+":"+entityDefinition.getColumnTypeOrNull(entry.getKey()));
+            fieldColumn.setDescription("eagle field column " + entry.getKey() + ":" + entityDefinition.getColumnTypeOrNull(entry.getKey()));
             table.addColumn(fieldColumn);
         }
     }

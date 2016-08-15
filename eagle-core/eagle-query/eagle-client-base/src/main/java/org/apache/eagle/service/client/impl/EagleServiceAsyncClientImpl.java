@@ -40,7 +40,9 @@ public class EagleServiceAsyncClientImpl implements EagleServiceAsyncClient {
 
     @Override
     public void close() throws IOException {
-        if(LOG.isDebugEnabled()) LOG.debug("Executor service is shutting down");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Executor service is shutting down");
+        }
         this.client.getJerseyClient().getExecutorService().shutdown();
     }
 
@@ -49,7 +51,7 @@ public class EagleServiceAsyncClientImpl implements EagleServiceAsyncClient {
         return this.client.getJerseyClient().getExecutorService().submit(new Callable<GenericServiceAPIResponseEntity<String>>() {
             @Override
             public GenericServiceAPIResponseEntity<String> call() throws Exception {
-                return client.create(entities,serviceName);
+                return client.create(entities, serviceName);
             }
         });
     }
@@ -59,7 +61,7 @@ public class EagleServiceAsyncClientImpl implements EagleServiceAsyncClient {
         return this.client.getJerseyClient().getExecutorService().submit(new Callable<GenericServiceAPIResponseEntity<String>>() {
             @Override
             public GenericServiceAPIResponseEntity<String> call() throws Exception {
-                return client.create(entities,entityClass);
+                return client.create(entities, entityClass);
             }
         });
     }
@@ -99,7 +101,7 @@ public class EagleServiceAsyncClientImpl implements EagleServiceAsyncClient {
         return this.client.getJerseyClient().getExecutorService().submit(new Callable<GenericServiceAPIResponseEntity<String>>() {
             @Override
             public GenericServiceAPIResponseEntity<String> call() throws Exception {
-                return client.create(entities,entityClass);
+                return client.create(entities, entityClass);
             }
         });
     }

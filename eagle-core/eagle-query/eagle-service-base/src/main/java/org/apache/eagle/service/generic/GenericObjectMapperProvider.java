@@ -31,15 +31,17 @@ import javax.ws.rs.ext.Provider;
 @Singleton
 public class GenericObjectMapperProvider implements ContextResolver<ObjectMapper> {
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @Override
     public ObjectMapper getContext(Class<?> clazz) {
         return OBJECT_MAPPER;
     }
-    public static void setFilter(FilterProvider filter){
+
+    public static void setFilter(FilterProvider filter) {
         OBJECT_MAPPER.setFilters(filter);
     }
 
-    static{
+    static {
         setFilter(TaggedLogAPIEntity.getFilterProvider());
         // set more filter here
     }

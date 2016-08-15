@@ -63,28 +63,34 @@ public class JdbcEntityUpdaterImpl<E extends TaggedLogAPIEntity> implements Jdbc
         try {
             for (E entity : entities) {
                 String primaryKey = entity.getEncodedRowkey();
-                if(primaryKey==null) {
+                if (primaryKey == null) {
                     primaryKey = ConnectionManagerFactory.getInstance().getStatementExecutor().getPrimaryKeyBuilder().build(entity);
                     entity.setEncodedRowkey(primaryKey);
                 }
                 PrimaryKeyCriteriaBuilder pkBuilder = new PrimaryKeyCriteriaBuilder(Collections.singletonList(primaryKey), this.jdbcEntityDefinition.getJdbcTableName());
                 Criteria selectCriteria = pkBuilder.build();
-                if(LOG.isDebugEnabled()) LOG.debug("Updating by query: "+SqlBuilder.buildQuery(selectCriteria).getDisplayString());
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Updating by query: " + SqlBuilder.buildQuery(selectCriteria).getDisplayString());
+                }
                 ColumnValues columnValues = JdbcEntitySerDeserHelper.buildColumnValues(entity, this.jdbcEntityDefinition);
                 num += peer.delegate().doUpdate(selectCriteria, columnValues, connection);
             }
-            if(LOG.isDebugEnabled()) LOG.debug("Committing updates");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Committing updates");
+            }
             connection.commit();
         } catch (Exception ex) {
-            LOG.error("Failed to update, rolling back",ex);
+            LOG.error("Failed to update, rolling back", ex);
             connection.rollback();
             throw ex;
-        }finally {
+        } finally {
             stopWatch.stop();
-            if(LOG.isDebugEnabled()) LOG.debug("Closing connection");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Closing connection");
+            }
             connection.close();
         }
-        LOG.info(String.format("Updated %s records in %s ms",num,stopWatch.getTime()));
+        LOG.info(String.format("Updated %s records in %s ms", num, stopWatch.getTime()));
         return num;
     }
 }
