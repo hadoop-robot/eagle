@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.service;
 
 import java.util.List;
 
 public interface HadoopAccountService {
-	public List<HadoopUser> searchByUsername(List<String> username);
+    public List<HadoopUser> searchByUsername(List<String> username);
 }

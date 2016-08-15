@@ -1,6 +1,4 @@
-package org.apache.eagle.common.function;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -16,7 +14,11 @@ package org.apache.eagle.common.function;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.eagle.common.function;
+
+
 @FunctionalInterface
 public interface ThrowableConsumer<T, E extends Throwable> {
-    void accept(T o) throws E;
+    void accept(T param) throws E;
 }

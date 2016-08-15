@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,16 +31,16 @@ import java.util.List;
  */
 public class TestSiddhiAggregator {
     @Test
-    public void test() throws Exception{
-        TimeBatchWindowSpec spec = new TimeBatchWindowSpec();
+    public void test() throws Exception {
+        final TimeBatchWindowSpec spec = new TimeBatchWindowSpec();
         Agg agg = new Agg();
         agg.field = "value";
         agg.function = "avg";
         agg.alias = "avg";
-        spec.aggs = Arrays.asList(agg);
+        spec.aggs = Collections.singletonList(agg);
         spec.filter = "metric==\"missingblocks\"";
         Groupby gb = new Groupby();
-        gb.cols = Arrays.asList("host");
+        gb.cols = Collections.singletonList("host");
         spec.groupby = gb;
         spec.start = 0L;
         spec.timestampColumn = "timestamp";
@@ -76,18 +77,18 @@ public class TestSiddhiAggregator {
             }
         });
 
-        aggregator.add(new Object[]{"host1", 1000L, "missingblocks", "site1", 10.0});
-        aggregator.add(new Object[]{"host2", 2000L, "missingblocks", "site1", 16.0});
-        aggregator.add(new Object[]{"host3", 2000L, "missingblocks", "site1", 11.0});
-        aggregator.add(new Object[]{"host1", 21000L, "missingblocks", "site1", 20.0});
+        aggregator.add(new Object[] {"host1", 1000L, "missingblocks", "site1", 10.0});
+        aggregator.add(new Object[] {"host2", 2000L, "missingblocks", "site1", 16.0});
+        aggregator.add(new Object[] {"host3", 2000L, "missingblocks", "site1", 11.0});
+        aggregator.add(new Object[] {"host1", 21000L, "missingblocks", "site1", 20.0});
 
-        aggregator.add(new Object[]{"host1", 61000L, "missingblocks", "site1", 14.0});
-        aggregator.add(new Object[]{"host2", 61500L, "missingblocks", "site1", 14.0});
-        aggregator.add(new Object[]{"host3", 62000L, "missingblocks", "site1", 13.0});
-        aggregator.add(new Object[]{"host2", 63500L, "missingblocks", "site1", 19.0});
+        aggregator.add(new Object[] {"host1", 61000L, "missingblocks", "site1", 14.0});
+        aggregator.add(new Object[] {"host2", 61500L, "missingblocks", "site1", 14.0});
+        aggregator.add(new Object[] {"host3", 62000L, "missingblocks", "site1", 13.0});
+        aggregator.add(new Object[] {"host2", 63500L, "missingblocks", "site1", 19.0});
 
-        aggregator.add(new Object[]{"host1", 121000L, "missingblocks", "site1", 14.0});
-        aggregator.add(new Object[]{"host2", 121000L, "missingblocks", "site1", 14.0});
-        aggregator.add(new Object[]{"host3", 122000L, "missingblocks", "site1", 13.0});
+        aggregator.add(new Object[] {"host1", 121000L, "missingblocks", "site1", 14.0});
+        aggregator.add(new Object[] {"host2", 121000L, "missingblocks", "site1", 14.0});
+        aggregator.add(new Object[] {"host3", 122000L, "missingblocks", "site1", 13.0});
     }
 }

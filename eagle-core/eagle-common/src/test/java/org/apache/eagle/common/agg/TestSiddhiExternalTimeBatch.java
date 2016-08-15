@@ -16,6 +16,7 @@
  *  * limitations under the License.
  *
  */
+
 package org.apache.eagle.common.agg;
 
 import org.junit.Assert;
@@ -33,10 +34,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TestSiddhiExternalTimeBatch {
     @Test
-    public void testSiddhi() throws Exception{
-        String ql = "define stream s (host string, timestamp long, metric string, site string, value double);" +
-                " @info(name='query') " +
-                " from s[metric == \"missingblocks\"]#window.externalTimeBatch(timestamp, 1 min, 0) select host, count(value) as avg group by host insert into tmp; ";
+    public void testSiddhi() throws Exception {
+        String ql = "define stream s (host string, timestamp long, metric string, site string, value double);"
+            + " @info(name='query') "
+            + " from s[metric == \"missingblocks\"]#window.externalTimeBatch(timestamp, 1 min, 0) select host, count(value) as avg group by host insert into tmp; ";
         System.out.println("query: " + ql);
         SiddhiManager sm = new SiddhiManager();
         ExecutionPlanRuntime runtime = sm.createExecutionPlanRuntime(ql);
@@ -46,30 +47,30 @@ public class TestSiddhiExternalTimeBatch {
         AtomicInteger index = new AtomicInteger(0);
 
         runtime.addCallback("query", new QueryCallback() {
-                @Override
-                public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                    printEvents(inEvents);
-                    if(index.get() == 0){
-                        Assert.assertEquals(3, inEvents.length);
-                        Assert.assertEquals("host1", inEvents[0].getData()[0]);
-                        Assert.assertEquals(3L, inEvents[0].getData()[1]);
-                        Assert.assertEquals("host2", inEvents[1].getData()[0]);
-                        Assert.assertEquals(4L, inEvents[1].getData()[1]);
-                        Assert.assertEquals("host3", inEvents[2].getData()[0]);
-                        Assert.assertEquals(2L, inEvents[2].getData()[1]);
-                        index.incrementAndGet();
-                    }else if(index.get() == 1){
-                        Assert.assertEquals(3, inEvents.length);
-                        Assert.assertEquals("host1", inEvents[0].getData()[0]);
-                        Assert.assertEquals(1L, inEvents[0].getData()[1]);
-                        Assert.assertEquals("host2", inEvents[1].getData()[0]);
-                        Assert.assertEquals(2L, inEvents[1].getData()[1]);
-                        Assert.assertEquals("host3", inEvents[2].getData()[0]);
-                        Assert.assertEquals(2L, inEvents[2].getData()[1]);
-                        index.incrementAndGet();
-                    }
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                printEvents(inEvents);
+                if (index.get() == 0) {
+                    Assert.assertEquals(3, inEvents.length);
+                    Assert.assertEquals("host1", inEvents[0].getData()[0]);
+                    Assert.assertEquals(3L, inEvents[0].getData()[1]);
+                    Assert.assertEquals("host2", inEvents[1].getData()[0]);
+                    Assert.assertEquals(4L, inEvents[1].getData()[1]);
+                    Assert.assertEquals("host3", inEvents[2].getData()[0]);
+                    Assert.assertEquals(2L, inEvents[2].getData()[1]);
+                    index.incrementAndGet();
+                } else if (index.get() == 1) {
+                    Assert.assertEquals(3, inEvents.length);
+                    Assert.assertEquals("host1", inEvents[0].getData()[0]);
+                    Assert.assertEquals(1L, inEvents[0].getData()[1]);
+                    Assert.assertEquals("host2", inEvents[1].getData()[0]);
+                    Assert.assertEquals(2L, inEvents[1].getData()[1]);
+                    Assert.assertEquals("host3", inEvents[2].getData()[0]);
+                    Assert.assertEquals(2L, inEvents[2].getData()[1]);
+                    index.incrementAndGet();
                 }
-            });
+            }
+        });
         runtime.start();
 
         sendEvents(3, 4, 2, input, 1000L);
@@ -81,34 +82,35 @@ public class TestSiddhiExternalTimeBatch {
         Thread.sleep(1000);
     }
 
-    void sendEvents(int countHost1, int countHost2, int countHost3, InputHandler input, long startTime) throws Exception{
-        for(int i=0; i<countHost1; i++){
-            Event e = createEvent("host1", startTime + i*100);
-            input.send(e);
+    void sendEvents(int countHost1, int countHost2, int countHost3, InputHandler input, long startTime) throws Exception {
+        for (int i = 0; i < countHost1; i++) {
+            Event event = createEvent("host1", startTime + i * 100);
+            input.send(event);
         }
         startTime += 2000;
-        for(int i=0; i<countHost2; i++){
-            Event e = createEvent("host2", startTime + i*100);
-            input.send(e);
+        for (int i = 0; i < countHost2; i++) {
+            Event event = createEvent("host2", startTime + i * 100);
+            input.send(event);
         }
         startTime += 4000;
-       for(int i=0; i<countHost3; i++){
-            Event e = createEvent("host3", startTime + i*100);
-            input.send(e);
+        for (int i = 0; i < countHost3; i++) {
+            Event event = createEvent("host3", startTime + i * 100);
+            input.send(event);
         }
     }
 
-    void printEvents(Event[] inEvents){
-        for(Event e : inEvents) {
+    void printEvents(Event[] inEvents) {
+        for (Event e : inEvents) {
             System.out.print(e);
             System.out.print(",");
         }
         System.out.println();
     }
-    Event createEvent(String host, long timestamp){
-        Event e = new Event();
-        e.setTimestamp(timestamp);
-        e.setData(new Object[]{host, timestamp, "missingblocks", "site1", 14.0});
-        return e;
+
+    Event createEvent(String host, long timestamp) {
+        Event event = new Event();
+        event.setTimestamp(timestamp);
+        event.setData(new Object[] {host, timestamp, "missingblocks", "site1", 14.0});
+        return event;
     }
 }

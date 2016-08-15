@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.config;
 
 import com.typesafe.config.Config;
@@ -25,47 +26,48 @@ import org.apache.commons.cli.Parser;
 
 import java.util.Map;
 
-/**
- * @since 8/22/15
- */
 public abstract class AbstractConfigOptionParser {
 
     // private final Options options;
     private final Parser parser;
 
-    public AbstractConfigOptionParser(){
+    public AbstractConfigOptionParser() {
         parser = parser();
         //options = options();
     }
 
     /**
+     * Get current common-cli Parser instance.
+     *
      * @return Parser
      */
     protected abstract Parser parser();
 
     /**
+     * Get current options.
+     *
      * @return Options
      */
     protected abstract Options options();
 
-    public abstract Map<String,String> parseConfig(String[] arguments) throws ParseException;
+    public abstract Map<String, String> parseConfig(String[] arguments) throws ParseException;
 
     /**
-     * Load config as system properties
+     * Load config as system properties.
      *
      * @param arguments command line arguments
-     * @throws ParseException
+     * @throws ParseException parsing exception for CLI arguments
      */
     public Config load(String[] arguments) throws ParseException {
-        Map<String,String> configProps = parseConfig(arguments);
-        for(Map.Entry<String,String> entry:configProps.entrySet()){
-            System.setProperty(entry.getKey(),entry.getValue());
+        Map<String, String> configProps = parseConfig(arguments);
+        for (Map.Entry<String, String> entry : configProps.entrySet()) {
+            System.setProperty(entry.getKey(), entry.getValue());
         }
         System.setProperty("config.trace", "loads");
         return ConfigFactory.load();
     }
 
     public CommandLine parse(String[] arguments) throws ParseException {
-        return this.parser.parse(this.options(),arguments);
+        return this.parser.parse(this.options(), arguments);
     }
 }

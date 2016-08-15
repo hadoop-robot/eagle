@@ -14,32 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.email;
 
-import java.io.File;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
+import com.netflix.config.ConcurrentMapConfiguration;
 import org.apache.commons.configuration.AbstractConfiguration;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -50,204 +28,246 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netflix.config.ConcurrentMapConfiguration;
+import java.io.File;
+import java.io.StringWriter;
+import java.util.*;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 public class EagleMailClient {
-//	private static final String CONFIG_FILE = "config.properties";
-	private static final String BASE_PATH = "templates/";
-	private static final String AUTH_CONFIG = "mail.smtp.auth";
-	private static final String DEBUG_CONFIG = "mail.debug";
-	private static final String USER_CONFIG = "mail.user";
-	private static final String PASSWORD_CONFIG = "mail.password";
+    // private static final String CONFIG_FILE = "config.properties";
+    private static final String BASE_PATH = "templates/";
+    private static final String AUTH_CONFIG = "mail.smtp.auth";
+    private static final String DEBUG_CONFIG = "mail.debug";
+    private static final String USER_CONFIG = "mail.user";
+    private static final String PASSWORD_CONFIG = "mail.password";
 
-	private VelocityEngine velocityEngine;
-	private Session session;
-	private static final Logger LOG = LoggerFactory.getLogger(EagleMailClient.class);
+    private VelocityEngine velocityEngine;
+    private Session session;
+    private static final Logger LOG = LoggerFactory.getLogger(EagleMailClient.class);
 
-	public EagleMailClient() {
-		this(new ConcurrentMapConfiguration());
-	}
+    public EagleMailClient() {
+        this(new ConcurrentMapConfiguration());
+    }
 
-	public EagleMailClient(AbstractConfiguration configuration) {
-		try {
-			ConcurrentMapConfiguration con = (ConcurrentMapConfiguration)configuration;
-			velocityEngine = new VelocityEngine();
-			velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-			velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-			velocityEngine.init();
+    /**
+     * EagleMailClient.
+     *
+     * @param configuration mail configuration
+     */
+    public EagleMailClient(AbstractConfiguration configuration) {
+        try {
+            final ConcurrentMapConfiguration con = (ConcurrentMapConfiguration) configuration;
+            velocityEngine = new VelocityEngine();
+            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+            velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+            velocityEngine.init();
 
-			con.setProperty("mail.transport.protocol", "smtp");
-			final Properties config = con.getProperties();
-			if(Boolean.parseBoolean(config.getProperty(AUTH_CONFIG))){
-				session = Session.getDefaultInstance(config, new Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(config.getProperty(USER_CONFIG), config.getProperty(PASSWORD_CONFIG));
-					}
-				});
-			}
-			else session = Session.getDefaultInstance(config, new Authenticator() {});
-			final String debugMode = config.getProperty(DEBUG_CONFIG, "false");
-			final boolean debug = Boolean.parseBoolean(debugMode);
-			session.setDebug(debug);
-		} catch (Exception e) {
-            LOG.error("Failed connect to smtp server",e);
-		}
-	}
+            con.setProperty("mail.transport.protocol", "smtp");
+            final Properties config = con.getProperties();
+            if (Boolean.parseBoolean(config.getProperty(AUTH_CONFIG))) {
+                session = Session.getDefaultInstance(config, new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(config.getProperty(USER_CONFIG), config.getProperty(PASSWORD_CONFIG));
+                    }
+                });
+            } else {
+                session = Session.getDefaultInstance(config, new Authenticator() {
+                });
+            }
+            final String debugMode = config.getProperty(DEBUG_CONFIG, "false");
+            final boolean debug = Boolean.parseBoolean(debugMode);
+            session.setDebug(debug);
+        } catch (Exception ex) {
+            LOG.error("Failed connect to smtp server", ex);
+        }
+    }
 
-	private boolean _send(String from, String to, String cc, String title,
-			String content) {
-		Message msg = new MimeMessage(session);
-		try {
-			msg.setFrom(new InternetAddress(from));
-			msg.setSubject(title);
-			if (to != null) {
-				msg.setRecipients(Message.RecipientType.TO,
-						InternetAddress.parse(to));
-			}
-			if (cc != null) {
-				msg.setRecipients(Message.RecipientType.CC,
-						InternetAddress.parse(cc));
-			}
-			//msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(DEFAULT_BCC_ADDRESS));
-			msg.setContent(content, "text/html;charset=utf-8");
-			LOG.info(String.format("Going to send mail: from[%s], to[%s], cc[%s], title[%s]", from, to, cc, title));
+    private boolean doSent(String from, String to, String cc, String title,
+                           String content) {
+        Message msg = new MimeMessage(session);
+        try {
+            msg.setFrom(new InternetAddress(from));
+            msg.setSubject(title);
+            if (to != null) {
+                msg.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            }
+            if (cc != null) {
+                msg.setRecipients(Message.RecipientType.CC,
+                    InternetAddress.parse(cc));
+            }
+            //msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(DEFAULT_BCC_ADDRESS));
+            msg.setContent(content, "text/html;charset=utf-8");
+            LOG.info(String.format("Going to send mail: from[%s], to[%s], cc[%s], title[%s]", from, to, cc, title));
 
-			Transport.send(msg);
+            Transport.send(msg);
 
-			return true;
-		} catch (AddressException e) {
-			LOG.info("Send mail failed, got an AddressException: " + e.getMessage(), e);
-			return false;
-		} catch (MessagingException e) {
-			LOG.info("Send mail failed, got an AddressException: " + e.getMessage(), e);
-			return false;
-		}
-	}
+            return true;
+        } catch (AddressException ex) {
+            LOG.info("Send mail failed, got an AddressException: " + ex.getMessage(), ex);
+            return false;
+        } catch (MessagingException ex) {
+            LOG.info("Send mail failed, got an AddressException: " + ex.getMessage(), ex);
+            return false;
+        }
+    }
 
-	private boolean _send(String from,String to,String cc,String title,String content,List<MimeBodyPart> attachments){
-		MimeMessage mail = new MimeMessage(session);
-		try {
-			mail.setFrom(new InternetAddress(from));
-			mail.setSubject(title);
-			if (to != null) {
-				mail.setRecipients(Message.RecipientType.TO,
-						InternetAddress.parse(to));
-			}
-			if (cc != null) {
-				mail.setRecipients(Message.RecipientType.CC,
-						InternetAddress.parse(cc));
-			}
+    private boolean doSent(String from, String to, String cc, String title, String content, List<MimeBodyPart> attachments) {
+        MimeMessage mail = new MimeMessage(session);
+        try {
+            mail.setFrom(new InternetAddress(from));
+            mail.setSubject(title);
+            if (to != null) {
+                mail.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            }
+            if (cc != null) {
+                mail.setRecipients(Message.RecipientType.CC,
+                    InternetAddress.parse(cc));
+            }
 
-			//mail.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(DEFAULT_BCC_ADDRESS));
+            //mail.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(DEFAULT_BCC_ADDRESS));
 
-			MimeBodyPart mimeBodyPart = new MimeBodyPart();
-			mimeBodyPart.setContent(content,"text/html;charset=utf-8");
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            mimeBodyPart.setContent(content, "text/html;charset=utf-8");
 
-			Multipart multipart = new MimeMultipart();
-			multipart.addBodyPart(mimeBodyPart);
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(mimeBodyPart);
 
-			for(MimeBodyPart attachment:attachments){
-				multipart.addBodyPart(attachment);
-			}
+            for (MimeBodyPart attachment : attachments) {
+                multipart.addBodyPart(attachment);
+            }
 
-			mail.setContent(multipart);
-//			mail.setContent(content, "text/html;charset=utf-8");
-			LOG.info(String.format("Going to send mail: from[%s], to[%s], cc[%s], title[%s]", from, to, cc, title));
+            mail.setContent(multipart); //mail.setContent(content, "text/html;charset=utf-8");
+            LOG.info(String.format("Going to send mail: from[%s], to[%s], cc[%s], title[%s]", from, to, cc, title));
 
-			Transport.send(mail);
+            Transport.send(mail);
 
-			return true;
-		} catch (AddressException e) {
-			LOG.info("Send mail failed, got an AddressException: " + e.getMessage(), e);
-			return false;
-		} catch (MessagingException e) {
-			LOG.info("Send mail failed, got an AddressException: " + e.getMessage(), e);
-			return false;
-		}
-	}
+            return true;
+        } catch (AddressException ex) {
+            LOG.info("Send mail failed, got an AddressException: " + ex.getMessage(), ex);
+            return false;
+        } catch (MessagingException ex) {
+            LOG.info("Send mail failed, got an AddressException: " + ex.getMessage(), ex);
+            return false;
+        }
+    }
 
-	public boolean send(String from, String to, String cc, String title,
-			String content) {
-		return this._send(from, to, cc, title, content);
-	}
+    public boolean send(String from, String to, String cc, String title,
+                        String content) {
+        return this.doSent(from, to, cc, title, content);
+    }
 
-	public boolean send(String from, String to, String cc, String title,
-			String templatePath, VelocityContext context) {
-		Template t = null;
-		try {
-			t = velocityEngine.getTemplate(BASE_PATH + templatePath);
-		} catch (ResourceNotFoundException ex) {
 
-		}
-		if (t == null) {
-			try {
-				t = velocityEngine.getTemplate(templatePath);
-			} catch (ResourceNotFoundException e) {
-				t = velocityEngine.getTemplate("/" + templatePath);
-			}
-		}
-		final StringWriter writer = new StringWriter();
-		t.merge(context, writer);
-		if(LOG.isDebugEnabled()) LOG.debug(writer.toString());
-		return this.send(from, to, cc, title, writer.toString());
-	}
+    /**
+     * Send email with velocity template.
+     *
+     * @param from         from address
+     * @param to           to address
+     * @param cc           cc address
+     * @param title        email title
+     * @param templatePath email template
+     * @param context      template context
+     * @return success or not
+     */
+    public boolean send(String from, String to, String cc, String title,
+                        String templatePath, VelocityContext context) {
+        Template template = null;
+        try {
+            template = velocityEngine.getTemplate(BASE_PATH + templatePath);
+        } catch (ResourceNotFoundException ignored) {
+            LOG.warn(ignored.getMessage(), ignored);
+        }
+        if (template == null) {
+            try {
+                template = velocityEngine.getTemplate(templatePath);
+            } catch (ResourceNotFoundException ex) {
+                template = velocityEngine.getTemplate("/" + templatePath);
+            }
+        }
+        final StringWriter writer = new StringWriter();
+        template.merge(context, writer);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(writer.toString());
+        }
+        return this.send(from, to, cc, title, writer.toString());
+    }
 
-	public boolean send(String from, String to, String cc, String title,
-	                    String templatePath, VelocityContext context, Map<String,File> attachments) {
-		if (attachments == null || attachments.isEmpty()) {
-			return send(from, to, cc, title, templatePath, context);
-		}
-		Template t = null;
+    /**
+     * Send email with velocity template.
+     *
+     * @param from         from address
+     * @param to           to address
+     * @param cc           cc address
+     * @param title        email title
+     * @param templatePath email template
+     * @param context      template context
+     * @param attachments  attachments
+     * @return success or not
+     */
+    public boolean send(String from, String to, String cc, String title,
+                        String templatePath, VelocityContext context, Map<String, File> attachments) {
+        if (attachments == null || attachments.isEmpty()) {
+            return send(from, to, cc, title, templatePath, context);
+        }
+        Template template = null;
 
-		List<MimeBodyPart> mimeBodyParts = new ArrayList<MimeBodyPart>();
-		Map<String,String> cid = new HashMap<String,String>();
+        List<MimeBodyPart> mimeBodyParts = new ArrayList<MimeBodyPart>();
+        Map<String, String> cid = new HashMap<String, String>();
 
-		for (Map.Entry<String,File> entry : attachments.entrySet()) {
-			final String attachment = entry.getKey();
-			final File attachmentFile  = entry.getValue();
-			final MimeBodyPart mimeBodyPart = new MimeBodyPart();
-			if(attachmentFile !=null && attachmentFile.exists()){
-				DataSource source = new FileDataSource(attachmentFile);
-				try {
-					mimeBodyPart.setDataHandler(new DataHandler(source));
-					mimeBodyPart.setFileName(attachment);
-					mimeBodyPart.setDisposition(MimeBodyPart.ATTACHMENT);
-					mimeBodyPart.setContentID(attachment);
-					cid.put(attachment,mimeBodyPart.getContentID());
-					mimeBodyParts.add(mimeBodyPart);
-				} catch (MessagingException e) {
-					LOG.error("Generate mail failed, got exception while attaching files: " + e.getMessage(), e);
-				}
-			}else{
-				LOG.error("Attachment: " + attachment + " is null or not exists");
-			}
-		}
-		//TODO remove cid, because not used at all
-		if(LOG.isDebugEnabled()) LOG.debug("Cid maps: "+cid);
-		context.put("cid", cid);
+        for (Map.Entry<String, File> entry : attachments.entrySet()) {
+            final String attachment = entry.getKey();
+            final File attachmentFile = entry.getValue();
+            final MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            if (attachmentFile != null && attachmentFile.exists()) {
+                DataSource source = new FileDataSource(attachmentFile);
+                try {
+                    mimeBodyPart.setDataHandler(new DataHandler(source));
+                    mimeBodyPart.setFileName(attachment);
+                    mimeBodyPart.setDisposition(MimeBodyPart.ATTACHMENT);
+                    mimeBodyPart.setContentID(attachment);
+                    cid.put(attachment, mimeBodyPart.getContentID());
+                    mimeBodyParts.add(mimeBodyPart);
+                } catch (MessagingException ex) {
+                    LOG.error("Generate mail failed, got exception while attaching files: " + ex.getMessage(), ex);
+                }
+            } else {
+                LOG.error("Attachment: " + attachment + " is null or not exists");
+            }
+        }
+        //TODO remove cid, because not used at all
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Cid maps: " + cid);
+        }
+        context.put("cid", cid);
 
-		try {
-			t = velocityEngine.getTemplate(BASE_PATH + templatePath);
-		} catch (ResourceNotFoundException ex) {
-//			LOGGER.error("Template not found:"+BASE_PATH + templatePath, ex);
-		}
+        try {
+            template = velocityEngine.getTemplate(BASE_PATH + templatePath);
+        } catch (ResourceNotFoundException ex) {
+            LOG.error("Template not found:" + BASE_PATH + templatePath, ex);
+        }
 
-		if (t == null) {
-			try {
-				t = velocityEngine.getTemplate(templatePath);
-			} catch (ResourceNotFoundException e) {
-				try {
-					t = velocityEngine.getTemplate("/" + templatePath);
-				}
-				catch (Exception ex) {
-					LOG.error("Template not found:"+ "/" + templatePath, ex);
-				}
-			}
-		}
+        if (template == null) {
+            try {
+                template = velocityEngine.getTemplate(templatePath);
+            } catch (ResourceNotFoundException ignored) {
+                try {
+                    template = velocityEngine.getTemplate("/" + templatePath);
+                } catch (Exception ex) {
+                    LOG.error("Template not found:" + "/" + templatePath, ex);
+                }
+            }
+        }
 
-		final StringWriter writer = new StringWriter();
-		t.merge(context, writer);
-		if(LOG.isDebugEnabled()) LOG.debug(writer.toString());
-		return this._send(from, to, cc, title, writer.toString(), mimeBodyParts);
-	}
+        final StringWriter writer = new StringWriter();
+        template.merge(context, writer);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(writer.toString());
+        }
+        return this.doSent(from, to, cc, title, writer.toString(), mimeBodyParts);
+    }
 }

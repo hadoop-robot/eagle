@@ -14,31 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.service;
 
 import java.util.List;
 
 /**
+ * HadoopUser model.
+ *
  * @since : 7/11/14,2014
  */
 public class HadoopUser {
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	protected String username;
+    protected String username;
 
-	public List<String> getEmail() {
-		return email;
-	}
+    public List<String> getEmail() {
+        return email;
+    }
 
-	public void setEmail(List<String> emails) {
-		this.email = emails;
-	}
+    public void setEmail(List<String> emails) {
+        this.email = emails;
+    }
 
-	protected List<String> email;
+    protected List<String> email;
 }

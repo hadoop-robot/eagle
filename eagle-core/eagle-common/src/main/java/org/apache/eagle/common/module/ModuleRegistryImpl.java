@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.module;
 
 import com.google.common.collect.LinkedListMultimap;
@@ -24,7 +25,8 @@ import java.util.List;
 
 public class ModuleRegistryImpl implements ModuleRegistry {
     private final LinkedListMultimap<Class<? extends ModuleScope>, Module> moduleRepo;
-    public ModuleRegistryImpl(){
+
+    public ModuleRegistryImpl() {
         moduleRepo = LinkedListMultimap.create();
     }
 
@@ -38,13 +40,14 @@ public class ModuleRegistryImpl implements ModuleRegistry {
         return moduleRepo.get(moduleScope);
     }
 
-    @Override
-    public List<Class<? extends ModuleScope>> getScopes() {
-        return Arrays.asList((Class<? extends ModuleScope>[]) moduleRepo.keys().toArray());
-    }
 
     @Override
     public List<Module> getModules() {
         return moduleRepo.values();
+    }
+
+    @Override
+    public List<Class<? extends ModuleScope>> getScopes() {
+        return Arrays.asList((Class<? extends ModuleScope>[]) moduleRepo.keys().toArray());
     }
 }

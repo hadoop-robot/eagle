@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.module;
 
 import com.google.inject.Guice;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
     private final Injector injector;
+
     public GuiceJUnitRunner(Class<?> klass) throws InitializationError {
         super(klass);
         injector = createInjectorFor(getModulesFor(klass));
@@ -43,14 +45,15 @@ public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
 
     /**
      * Create a Guice Injector for the class under test.
+     *
      * @param classes Guice Modules
      * @return A Guice Injector instance.
      * @throws InitializationError If couldn't instantiate a module.
      */
     private Injector createInjectorFor(final Class<?>[] classes)
-            throws InitializationError {
+        throws InitializationError {
         final List<Module> modules = new ArrayList<>();
-        if(classes!= null) {
+        if (classes != null) {
             for (final Class<?> module : Arrays.asList(classes)) {
                 try {
                     modules.add((Module) module.newInstance());
@@ -65,12 +68,13 @@ public class GuiceJUnitRunner extends BlockJUnit4ClassRunner {
     /**
      * Get the list of Guice Modules request by GuiceModules annotation in the
      * class under test.
+     *
      * @param klass Class under test.
      * @return A Class Array of Guice Modules required by this class.
      * @throws InitializationError If the annotation is not present.
      */
     private Class<?>[] getModulesFor(final Class<?> klass)
-            throws InitializationError {
+        throws InitializationError {
         final Modules annotation = klass.getAnnotation(Modules.class);
         if (annotation == null) {
             return null;

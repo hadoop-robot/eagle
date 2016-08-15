@@ -14,30 +14,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.config;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @since 9/22/15
- */
 public class TestEagleConfig {
     private EagleConfig config;
 
     @Before
-    public void setUp(){
-        System.setProperty("config.resource","test-service-config.conf");
+    public void setUp() {
+        System.setProperty("config.resource", "test-service-config.conf");
         config = EagleConfigFactory.load();
     }
 
     @Test
-    public void testInit(){
-        Assert.assertEquals("test",config.getEnv());
-        Assert.assertEquals("localhost",config.getServiceHost());
-        Assert.assertEquals(9090,config.getServicePort());
-        Assert.assertEquals("hbase",config.getStorageType());
-        Assert.assertEquals(false,config.isCoprocessorEnabled());
+    public void testInit() {
+        Assert.assertEquals("test", config.getEnv());
+        Assert.assertEquals("localhost", config.getServiceHost());
+        Assert.assertEquals(9090, config.getServicePort());
+        Assert.assertEquals("hbase", config.getStorageType());
+        Assert.assertEquals(false, config.isCoprocessorEnabled());
     }
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.module;
 
 import com.google.inject.Module;
@@ -21,18 +22,22 @@ import com.google.inject.Module;
 import java.util.List;
 
 /**
+ * ModuleScope.
+ *
  * @see ModuleRegistry
  */
 public interface ModuleScope {
     /**
+     * Get registered modules.
+     *
      * @param registry ModuleRegistry
-     * @return
+     * @return module list
      */
-    default List<Module> getModules(ModuleRegistry registry){
+    default List<Module> getModules(ModuleRegistry registry) {
         return registry.getModules(this.getClass());
     }
 
-    default String getName(){
+    default String getName() {
         return getClass().getName();
     }
 }

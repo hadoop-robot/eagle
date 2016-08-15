@@ -1,8 +1,4 @@
-package org.apache.eagle.common.function;
-
-import java.sql.SQLException;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -18,14 +14,17 @@ import java.sql.SQLException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.apache.eagle.common.function;
+
 @FunctionalInterface
 public interface ThrowableFunction<T, R, E extends Throwable> {
 
     /**
      * Applies this function to the given argument.
      *
-     * @param t the function argument
+     * @param param the function argument
      * @return the function result
      */
-    R apply(T t) throws E;
+    R apply(T param) throws E;
 }

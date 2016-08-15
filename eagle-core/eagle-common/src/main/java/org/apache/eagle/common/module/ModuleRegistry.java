@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.module;
 
 import com.google.inject.Module;
@@ -21,32 +22,37 @@ import com.google.inject.Module;
 import java.util.List;
 
 /**
- * Module Registry Repository
+ * Module Registry Repository.
  */
 public interface ModuleRegistry {
     /**
-     * @param modules
+     * Register modules to scope.
      */
-    void register(Class<? extends ModuleScope> scope, Module ... modules);
+    void register(Class<? extends ModuleScope> scope, Module... modules);
 
     /**
+     * Register modules.
      *
-     * @param moduleScope
-     * @return
+     * @param modules modules
+     */
+    default void register(Module... modules) {
+        register(GlobalScope.class, modules);
+    }
+
+    /**
+     * Get all modules.
+     *
+     * @return all modules.
+     */
+    List<Module> getModules();
+
+    /**
+     * Get all modules.
      */
     List<Module> getModules(Class<? extends ModuleScope> moduleScope);
 
     /**
-     * @return
+     * Get all scopes.
      */
     List<Class<? extends ModuleScope>> getScopes();
-
-    /**
-     * @return all modules
-     */
-    List<Module> getModules();
-
-    default void register(Module ... modules){
-        register(GlobalScope.class,modules);
-    }
 }

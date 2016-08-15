@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.common.config;
 
 import com.typesafe.config.Config;
@@ -27,7 +28,7 @@ public interface EagleConfig {
 
     boolean isCoprocessorEnabled();
 
-	HTableInterface getHTable(String tableName);
+    HTableInterface getHTable(String tableName);
 
     Configuration getHbaseConf();
 
@@ -35,25 +36,27 @@ public interface EagleConfig {
 
     ThreadPoolExecutor getExecutor();
 
-	String getZKQuorum();
+    String getZKQuorum();
 
-	String getZKPort();
+    String getZKPort();
 
-	String getServiceHost();
+    String getServiceHost();
 
-	int getServicePort();
+    int getServicePort();
 
     String getEnv();
 
     boolean isTableNamePrefixedWithEnvironment();
-	
+
     int getHBaseClientScanCacheSize();
 
     TimeZone getTimeZone();
-    
+
     boolean isServiceAuditingEnabled();
 
     /**
+     * Get current context config.
+     *
      * @return root config
      */
     Config getConfig();
