@@ -14,20 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.url;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 import org.apache.eagle.jobrunning.util.JobUtils;
 
 public class JobCountersServiceURLBuilderImpl implements ServiceURLBuilder {
-	
-	public String build(String ... parameters) {
-		// parameter[0] = baseUrl, parameter[1] = appID;
-		// {rmUrl}/proxy/application_xxxxxxxxxxxxx_xxxxxx/ws/v1/mapreduce/jobs/job_xxxxxxxxxxxxx_xxxxxx/counters?anonymous=true"
-		return parameters[0] + JobConstants.V2_PROXY_PREFIX_URL +
-			   parameters[1] + JobConstants.V2_MR_APPMASTER_PREFIX +
-			   JobUtils.getJobIDByAppID(parameters[1]) + JobConstants.V2_MR_COUNTERS_URL +
-			   "?" + JobConstants.ANONYMOUS_PARAMETER;
-	}
-	
+
+    public String build(String... parameters) {
+        // parameter[0] = baseUrl, parameter[1] = appID;
+        // {rmUrl}/proxy/application_xxxxxxxxxxxxx_xxxxxx/ws/v1/mapreduce/jobs/job_xxxxxxxxxxxxx_xxxxxx/counters?anonymous=true"
+        return parameters[0] + JobConstants.V2_PROXY_PREFIX_URL
+            + parameters[1] + JobConstants.V2_MR_APPMASTER_PREFIX
+            + JobUtils.getJobIDByAppID(parameters[1]) + JobConstants.V2_MR_COUNTERS_URL
+            + "?" + JobConstants.ANONYMOUS_PARAMETER;
+    }
 }

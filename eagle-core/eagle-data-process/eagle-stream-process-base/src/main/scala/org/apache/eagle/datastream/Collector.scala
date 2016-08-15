@@ -17,5 +17,5 @@
 package org.apache.eagle.datastream
 
 trait Collector[-R] {
-  def collect(r : R);
+  def collect(r: R);
 }

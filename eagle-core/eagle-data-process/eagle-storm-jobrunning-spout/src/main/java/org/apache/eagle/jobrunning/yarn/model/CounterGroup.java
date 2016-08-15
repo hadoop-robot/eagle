@@ -14,26 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.yarn.model;
 
 import java.util.List;
 
 public class CounterGroup {
 
-	private String counterGroupName;
-	private List<Counter> counter;
-	
-	public String getCounterGroupName() {
-		return counterGroupName;
-	}
-	public void setCounterGroupName(String counterGroupName) {
-		this.counterGroupName = counterGroupName;
-	}
-	public List<Counter> getCounter() {
-		return counter;
-	}
-	public void setCounter(List<Counter> counter) {
-		this.counter = counter;
-	}
-	
+    private String counterGroupName;
+    private List<Counter> counter;
+
+    public String getCounterGroupName() {
+        return counterGroupName;
+    }
+
+    public void setCounterGroupName(String counterGroupName) {
+        this.counterGroupName = counterGroupName;
+    }
+
+    public List<Counter> getCounter() {
+        return counter;
+    }
+
+    public void setCounter(List<Counter> counter) {
+        this.counter = counter;
+    }
+
 }

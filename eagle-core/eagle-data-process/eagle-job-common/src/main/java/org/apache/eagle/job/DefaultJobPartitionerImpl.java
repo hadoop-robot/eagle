@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.job;
 
 public class DefaultJobPartitionerImpl implements JobPartitioner {
-	@Override
-	public int partition(int numTotalParts, String key) {
-		int hash = key.hashCode();
-		hash = Math.abs(hash);
-		return hash % numTotalParts;
-	}
+    @Override
+    public int partition(int numTotalParts, String key) {
+        int hash = key.hashCode();
+        hash = Math.abs(hash);
+        return hash % numTotalParts;
+    }
 }

@@ -14,24 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.callback;
+
+import org.apache.eagle.jobrunning.common.JobConstants;
+import org.apache.eagle.jobrunning.crawler.JobContext;
 
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.eagle.jobrunning.crawler.JobContext;
-import org.apache.eagle.jobrunning.common.JobConstants;
-
 /**
- * callback when running job info is ready
+ * callback when running job info is ready.
  */
-public interface RunningJobCallback extends Serializable{
-		
-	/**
-	 * this is called when running job resource is ready
-	 * @param jobContext
-	 * @param type
-	 * @param objects
-	 */
-	void onJobRunningInformation(JobContext jobContext, JobConstants.ResourceType type, List<Object> objects);
+public interface RunningJobCallback extends Serializable {
+
+    /**
+     * this is called when running job resource is ready.
+     *
+     * @param jobContext jobContext
+     * @param type type
+     * @param objects objects
+     */
+    void onJobRunningInformation(JobContext jobContext, JobConstants.ResourceType type, List<Object> objects);
 }

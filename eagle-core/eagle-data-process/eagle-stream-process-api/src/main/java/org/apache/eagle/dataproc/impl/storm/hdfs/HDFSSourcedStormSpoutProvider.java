@@ -17,42 +17,43 @@
 
 package org.apache.eagle.dataproc.impl.storm.hdfs;
 
-import com.typesafe.config.Config;
 import org.apache.eagle.dataproc.impl.storm.StormSpoutProvider;
+
+import backtype.storm.topology.base.BaseRichSpout;
+import com.typesafe.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import backtype.storm.topology.base.BaseRichSpout;
-
 public class HDFSSourcedStormSpoutProvider implements StormSpoutProvider {
-	private static final Logger LOG = LoggerFactory.getLogger(HDFSSourcedStormSpoutProvider.class);
-	
-	public abstract static class HDFSSpout extends BaseRichSpout{
-		public abstract void copyFiles(); 
-		public void fail(Object msgId) {
-		    int transactionId = (Integer) msgId;
-		    LOG.info(transactionId + " failed");
-		}
-		
-		public void ack(Object msgId) {
-		    int transactionId = (Integer) msgId;
-		    LOG.info(transactionId + " acknowledged");
-		}
-		
-		public static HDFSSpout getHDFSSpout(String conf, Config configContext){
-			if(conf.equalsIgnoreCase("data collection")){
-				return new DataCollectionHDFSSpout(configContext); 
-			}
-			return null;
-		}
-	}
-	
-	@Override
-	public BaseRichSpout getSpout(Config context){
-		LOG.info("GetHDFSSpout called");
-		String typeOperation = context.getString("dataSourceConfig.typeOperation");
-		HDFSSpout spout = HDFSSpout.getHDFSSpout(typeOperation, context);
-		spout.copyFiles();
-		return spout;
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(HDFSSourcedStormSpoutProvider.class);
+
+    public abstract static class HDFSSpout extends BaseRichSpout {
+        public abstract void copyFiles();
+
+        public void fail(Object msgId) {
+            int transactionId = (Integer) msgId;
+            LOG.info(transactionId + " failed");
+        }
+
+        public void ack(Object msgId) {
+            int transactionId = (Integer) msgId;
+            LOG.info(transactionId + " acknowledged");
+        }
+
+        public static HDFSSpout getHDFSSpout(String conf, Config configContext) {
+            if (conf.equalsIgnoreCase("data collection")) {
+                return new DataCollectionHDFSSpout(configContext);
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public BaseRichSpout getSpout(Config context) {
+        LOG.info("GetHDFSSpout called");
+        String typeOperation = context.getString("dataSourceConfig.typeOperation");
+        HDFSSpout spout = HDFSSpout.getHDFSSpout(typeOperation, context);
+        spout.copyFiles();
+        return spout;
+    }
 }

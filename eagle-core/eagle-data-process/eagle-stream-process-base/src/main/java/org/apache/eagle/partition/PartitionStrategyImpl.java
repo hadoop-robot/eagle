@@ -29,14 +29,14 @@ import java.util.Map;
 public class PartitionStrategyImpl implements PartitionStrategy {
 
     public DataDistributionDao dao;
-    public PartitionAlgorithm algorithm;
-    public Map<String, Integer> routingTable;
-    public long lastRefreshTime;
-    public long refreshInterval;
-    public long timeRange;
-    public static long DEFAULT_TIME_RANGE = 2 * DateUtils.MILLIS_PER_DAY;
-    public static long DEFAULT_REFRESH_INTERVAL = 2 * DateUtils.MILLIS_PER_HOUR;
-    private final Logger LOG = LoggerFactory.getLogger(PartitionStrategyImpl.class);
+    private PartitionAlgorithm algorithm;
+    private Map<String, Integer> routingTable;
+    private long lastRefreshTime;
+    private long refreshInterval;
+    private long timeRange;
+    private static long DEFAULT_TIME_RANGE = 2 * DateUtils.MILLIS_PER_DAY;
+    private static long DEFAULT_REFRESH_INTERVAL = 2 * DateUtils.MILLIS_PER_HOUR;
+    private static final Logger LOG = LoggerFactory.getLogger(PartitionStrategyImpl.class);
 
     public PartitionStrategyImpl(DataDistributionDao dao, PartitionAlgorithm algorithm, long refreshInterval, long timeRange) {
         this.dao = dao;
@@ -63,8 +63,7 @@ public class PartitionStrategyImpl implements PartitionStrategy {
             List<Weight> weights = dao.fetchDataDistribution(currentTime - timeRange, currentTime);
             routingTable = algorithm.partition(weights, buckNum);
             return routingTable;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
@@ -78,8 +77,7 @@ public class PartitionStrategyImpl implements PartitionStrategy {
         }
         if (routingTable.containsKey(key)) {
             return routingTable.get(key);
-        }
-        else {
+        } else {
             return Math.abs(key.hashCode()) % buckNum;
         }
     }

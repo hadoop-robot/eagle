@@ -14,7 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.util;
+
+import org.apache.eagle.jobrunning.common.JobConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,45 +28,40 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.eagle.jobrunning.common.JobConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class InputStreamUtils {
-	private static final Logger LOG = LoggerFactory.getLogger(InputStreamUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InputStreamUtils.class);
 
 
-	private static final int CONNECTION_TIMEOUT = 10 * 1000;
-	private static final int READ_TIMEOUT = 5 * 60 * 1000;
-	private static final String GZIP_HTTP_HEADER = "Accept-Encoding";
-	private static final String GZIP_COMPRESSION = "gzip";
-	
-	private static InputStream openGZIPInputStream(URL url, int timeout) throws IOException {
-		final URLConnection connection = url.openConnection();
-		connection.setConnectTimeout(CONNECTION_TIMEOUT);
-		connection.setReadTimeout(timeout);
-		connection.addRequestProperty(GZIP_HTTP_HEADER, GZIP_COMPRESSION);
-		return new GZIPInputStream(connection.getInputStream());
-	}
-	
-	private static InputStream openInputStream(URL url, int timeout) throws IOException {
-		URLConnection connection = url.openConnection();
-		connection.setConnectTimeout(timeout);
-		return connection.getInputStream();
-	}
-	
-	public static InputStream getInputStream(String urlString, JobConstants.CompressionType compressionType, int timeout) throws Exception {
-		final URL url = URLConnectionUtils.getUrl(urlString);
-		LOG.info("Open connection. compression type:" + compressionType + "; URL: " + url.toString());
-		if (compressionType.equals(JobConstants.CompressionType.GZIP)) {
-			return openGZIPInputStream(url, timeout);
-		}
-		else { // CompressionType.NONE
-			return openInputStream(url, timeout);
-		}
-	}
-	
-	public static InputStream getInputStream(String urlString, JobConstants.CompressionType compressionType) throws Exception {
-		return getInputStream(urlString, compressionType, READ_TIMEOUT);
-	}
+    private static final int CONNECTION_TIMEOUT = 10 * 1000;
+    private static final int READ_TIMEOUT = 5 * 60 * 1000;
+    private static final String GZIP_HTTP_HEADER = "Accept-Encoding";
+    private static final String GZIP_COMPRESSION = "gzip";
+
+    private static InputStream openGZIPInputStream(URL url, int timeout) throws IOException {
+        final URLConnection connection = url.openConnection();
+        connection.setConnectTimeout(CONNECTION_TIMEOUT);
+        connection.setReadTimeout(timeout);
+        connection.addRequestProperty(GZIP_HTTP_HEADER, GZIP_COMPRESSION);
+        return new GZIPInputStream(connection.getInputStream());
+    }
+
+    private static InputStream openInputStream(URL url, int timeout) throws IOException {
+        URLConnection connection = url.openConnection();
+        connection.setConnectTimeout(timeout);
+        return connection.getInputStream();
+    }
+
+    public static InputStream getInputStream(String urlString, JobConstants.CompressionType compressionType, int timeout) throws Exception {
+        final URL url = URLConnectionUtils.getUrl(urlString);
+        LOG.info("Open connection. compression type:" + compressionType + "; URL: " + url.toString());
+        if (compressionType.equals(JobConstants.CompressionType.GZIP)) {
+            return openGZIPInputStream(url, timeout);
+        } else { // CompressionType.NONE
+            return openInputStream(url, timeout);
+        }
+    }
+
+    public static InputStream getInputStream(String urlString, JobConstants.CompressionType compressionType) throws Exception {
+        return getInputStream(urlString, compressionType, READ_TIMEOUT);
+    }
 }

@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.url;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class JobDetailServiceURLBuilderImpl implements ServiceURLBuilder {
-	
-	public String build(String... parameters) {
-		// parameter[0] = baseUrl , parameter[1] = appID
-		// {rmUrl}/proxy/application_xxx/ws/v1/mapreduce/jobs?anonymous=true
-		return parameters[0] + JobConstants.V2_PROXY_PREFIX_URL + parameters[1] + JobConstants.V2_APP_DETAIL_URL + "?" + JobConstants.ANONYMOUS_PARAMETER;
-	}
+
+    public String build(String... parameters) {
+        // parameter[0] = baseUrl , parameter[1] = appID
+        // {rmUrl}/proxy/application_xxx/ws/v1/mapreduce/jobs?anonymous=true
+        return parameters[0] + JobConstants.V2_PROXY_PREFIX_URL + parameters[1] + JobConstants.V2_APP_DETAIL_URL + "?" + JobConstants.ANONYMOUS_PARAMETER;
+    }
 }

@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.dataproc.impl.storm;
 
 import backtype.storm.topology.base.BaseRichSpout;
@@ -25,5 +26,5 @@ import com.typesafe.config.Config;
  * which can be retrieved from getSpout method.
  */
 public interface StormSpoutProvider {
-	public BaseRichSpout getSpout(Config context);
+    BaseRichSpout getSpout(Config context);
 }

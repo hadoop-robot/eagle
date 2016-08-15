@@ -14,24 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.job;
 
 public class JobFilterByPartition implements JobFilter {
-	private JobPartitioner partitioner;
-	private int numTotalPartitions;
-	private int partitionId;
-	
-	public JobFilterByPartition(JobPartitioner partitioner, int numTotalPartitions, int partitionId){
-		this.partitioner = partitioner;
-		this.numTotalPartitions = numTotalPartitions;
-		this.partitionId = partitionId;
-	}
+    private JobPartitioner partitioner;
+    private int numTotalPartitions;
+    private int partitionId;
 
-	@Override
-	public boolean accept(String key) {
-		int part = partitioner.partition(numTotalPartitions, key);
-		if(part == partitionId)
-			return true;
-		return false;
-	}
+    public JobFilterByPartition(JobPartitioner partitioner, int numTotalPartitions, int partitionId) {
+        this.partitioner = partitioner;
+        this.numTotalPartitions = numTotalPartitions;
+        this.partitionId = partitionId;
+    }
+
+    @Override
+    public boolean accept(String key) {
+        int part = partitioner.partition(numTotalPartitions, key);
+        if (part == partitionId) {
+            return true;
+        }
+        return false;
+    }
 }

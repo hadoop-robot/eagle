@@ -14,30 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.util;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class JobUtils {
-	
-	public static String checkAndAddLastSlash(String urlBase) {
-		if (!urlBase.endsWith("/")) {
-			return urlBase + "/";
-		}
-		return urlBase;
-	}
-	
-	public static String getJobIDByAppID(String appID) {
-		if (appID.startsWith(JobConstants.APPLICATION_PREFIX)) {
-			return appID.replace(JobConstants.APPLICATION_PREFIX, JobConstants.JOB_PREFIX);
-		}
-		return null;
-	}
 
-	public static String getAppIDByJobID(String jobID) {
-		if (jobID.startsWith(JobConstants.JOB_PREFIX)) {
-			return jobID.replace(JobConstants.JOB_PREFIX, JobConstants.APPLICATION_PREFIX);
-		}
-		return null;
-	}
+    public static String checkAndAddLastSlash(String urlBase) {
+        if (!urlBase.endsWith("/")) {
+            return urlBase + "/";
+        }
+        return urlBase;
+    }
+
+    public static String getJobIDByAppID(String appID) {
+        if (appID.startsWith(JobConstants.APPLICATION_PREFIX)) {
+            return appID.replace(JobConstants.APPLICATION_PREFIX, JobConstants.JOB_PREFIX);
+        }
+        return null;
+    }
+
+    public static String getAppIDByJobID(String jobID) {
+        if (jobID.startsWith(JobConstants.JOB_PREFIX)) {
+            return jobID.replace(JobConstants.JOB_PREFIX, JobConstants.APPLICATION_PREFIX);
+        }
+        return null;
+    }
 }

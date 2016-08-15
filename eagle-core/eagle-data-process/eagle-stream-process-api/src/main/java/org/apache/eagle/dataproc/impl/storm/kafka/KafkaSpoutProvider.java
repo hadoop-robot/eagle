@@ -21,11 +21,12 @@
 
 package org.apache.eagle.dataproc.impl.storm.kafka;
 
+import org.apache.eagle.dataproc.impl.storm.StormSpoutProvider;
+
 import backtype.storm.spout.Scheme;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.base.BaseRichSpout;
 import com.typesafe.config.Config;
-import org.apache.eagle.dataproc.impl.storm.StormSpoutProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.BrokerHosts;
@@ -39,49 +40,52 @@ import java.util.Arrays;
  * Since 6/8/16.
  */
 public class KafkaSpoutProvider implements StormSpoutProvider {
-    private final static Logger LOG = LoggerFactory.getLogger(KafkaSpoutProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaSpoutProvider.class);
 
     private String configPrefix = "dataSourceConfig";
 
-    public KafkaSpoutProvider(){}
+    public KafkaSpoutProvider() {
+    }
 
-    public KafkaSpoutProvider(String prefix){
+    public KafkaSpoutProvider(String prefix) {
         this.configPrefix = prefix;
     }
 
     @Override
-    public BaseRichSpout getSpout(Config config){
+    public BaseRichSpout getSpout(Config config) {
         Config context = config;
-        if(this.configPrefix!=null) context = config.getConfig(configPrefix);
+        if (this.configPrefix != null) {
+            context = config.getConfig(configPrefix);
+        }
         // Kafka topic
         String topic = context.getString("topic");
         // Kafka consumer group id
-        String groupId = context.getString("consumerGroupId");
+        final String groupId = context.getString("consumerGroupId");
         // Kafka fetch size
-        int fetchSize = context.getInt("fetchSize");
+        final int fetchSize = context.getInt("fetchSize");
         // Kafka broker zk connection
-        String zkConnString = context.getString("zkConnection");
+        final String zkConnString = context.getString("zkConnection");
         // transaction zkRoot
-        String zkRoot = context.getString("transactionZKRoot");
+        final String zkRoot = context.getString("transactionZKRoot");
 
-        LOG.info(String.format("Use topic id: %s",topic));
+        LOG.info(String.format("Use topic id: %s", topic));
 
         String brokerZkPath = null;
-        if(context.hasPath("brokerZkPath")) {
+        if (context.hasPath("brokerZkPath")) {
             brokerZkPath = context.getString("brokerZkPath");
         }
 
         BrokerHosts hosts;
-        if(brokerZkPath == null) {
+        if (brokerZkPath == null) {
             hosts = new ZkHosts(zkConnString);
         } else {
             hosts = new ZkHosts(zkConnString, brokerZkPath);
         }
 
         SpoutConfig spoutConfig = new SpoutConfig(hosts,
-                topic,
-                zkRoot + "/" + topic,
-                groupId);
+            topic,
+            zkRoot + "/" + topic,
+            groupId);
 
         // transaction zkServers
         spoutConfig.zkServers = Arrays.asList(context.getString("transactionZKServers").split(","));
@@ -102,13 +106,13 @@ public class KafkaSpoutProvider implements StormSpoutProvider {
 
         if (context.hasPath("schemeCls")) {
             try {
-                Scheme s = (Scheme)Class.forName(context.getString("schemeCls")).newInstance();
+                Scheme s = (Scheme) Class.forName(context.getString("schemeCls")).newInstance();
                 spoutConfig.scheme = new SchemeAsMultiScheme(s);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 LOG.error("error instantiating scheme object");
                 throw new IllegalStateException(ex);
             }
-        }else{
+        } else {
             String err = "schemeCls must be present";
             LOG.error(err);
             throw new IllegalStateException(err);

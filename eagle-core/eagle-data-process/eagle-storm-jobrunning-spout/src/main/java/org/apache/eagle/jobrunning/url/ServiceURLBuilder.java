@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.url;
 
 public interface ServiceURLBuilder {
-	String build(String ... parameters);
+    String build(String... parameters);
 }

@@ -14,17 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.url;
 
+package org.apache.eagle.jobrunning.url;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class JobCompletedConfigServiceURLBuilderImpl implements ServiceURLBuilder {
-	
-	public String build(String ... parameters) {
-		// parameters[0] = baseUrl, parameters[1] = jobID
-		// {historyUrl}/jobhistory/conf/job_xxxxxxxxxxxxx_xxxxxx		
-		return parameters[0] + "jobhistory/conf/" + parameters[1]
-				+ "?" + JobConstants.ANONYMOUS_PARAMETER;
-	}
+    public String build(String... parameters) {
+        // parameters[0] = baseUrl, parameters[1] = jobID
+        // {historyUrl}/jobhistory/conf/job_xxxxxxxxxxxxx_xxxxxx
+        return parameters[0] + "jobhistory/conf/" + parameters[1]
+            + "?" + JobConstants.ANONYMOUS_PARAMETER;
+    }
 }

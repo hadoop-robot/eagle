@@ -14,22 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.yarn.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppWrapper {
 
-	private AppInfo app;
+    private AppInfo app;
 
-	public AppInfo getApp() {
-		return app;
-	}
+    public AppInfo getApp() {
+        return app;
+    }
 
-	public void setApp(AppInfo app) {
-		this.app = app;
-	}
+    public void setApp(AppInfo app) {
+        this.app = app;
+    }
 }

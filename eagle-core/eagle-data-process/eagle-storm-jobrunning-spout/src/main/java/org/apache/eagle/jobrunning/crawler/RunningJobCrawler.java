@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.crawler;
 
 import org.apache.eagle.jobrunning.common.JobConstants.ResourceType;
 
 public interface RunningJobCrawler {
-	
-	public void crawl() throws Exception;
-	
-	public void addIntoProcessingList(ResourceType type, JobContext context);
-	
-	public void removeFromProcessingList(ResourceType type, JobContext context);
+
+    public void crawl() throws Exception;
+
+    public void addIntoProcessingList(ResourceType type, JobContext context);
+
+    public void removeFromProcessingList(ResourceType type, JobContext context);
 }

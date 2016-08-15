@@ -14,25 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.yarn.model;
 
-import java.util.List;
+package org.apache.eagle.jobrunning.yarn.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+import java.util.List;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Applications {
 
-	private List<AppInfo> app;
+    private List<AppInfo> app;
 
-	public List<AppInfo> getApp() {
-		return app;
-	}
+    public List<AppInfo> getApp() {
+        return app;
+    }
 
-	public void setApp(List<AppInfo> app) {
-		this.app = app;
-	}
-	
+    public void setApp(List<AppInfo> app) {
+        this.app = app;
+    }
+
 }

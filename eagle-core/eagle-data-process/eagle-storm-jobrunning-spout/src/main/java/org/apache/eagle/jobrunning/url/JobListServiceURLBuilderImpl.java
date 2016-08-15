@@ -14,24 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.url;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class JobListServiceURLBuilderImpl implements ServiceURLBuilder {
-	
-	public String build(String ... parameters) {
-		// {rmUrl}/ws/v1/cluster/apps?state=RUNNING 
-		String jobState = parameters[1];
-		if (jobState.equals(JobConstants.JobState.RUNNING.name())) {
-			return parameters[0] + JobConstants.V2_APPS_RUNNING_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;
-		}
-		else if (jobState.equals(JobConstants.JobState.COMPLETED.name())) {
-			return parameters[0] + JobConstants.V2_APPS_COMPLETED_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;		
-		}
-		else if (jobState.equals(JobConstants.JobState.ALL.name())) {
-			return parameters[0] + JobConstants.V2_APPS_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;		
-		}
-		return null;
-	}
+
+    public String build(String... parameters) {
+        // {rmUrl}/ws/v1/cluster/apps?state=RUNNING
+        String jobState = parameters[1];
+        if (jobState.equals(JobConstants.JobState.RUNNING.name())) {
+            return parameters[0] + JobConstants.V2_APPS_RUNNING_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;
+        } else if (jobState.equals(JobConstants.JobState.COMPLETED.name())) {
+            return parameters[0] + JobConstants.V2_APPS_COMPLETED_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;
+        } else if (jobState.equals(JobConstants.JobState.ALL.name())) {
+            return parameters[0] + JobConstants.V2_APPS_URL + "&" + JobConstants.ANONYMOUS_PARAMETER;
+        }
+        return null;
+    }
 }

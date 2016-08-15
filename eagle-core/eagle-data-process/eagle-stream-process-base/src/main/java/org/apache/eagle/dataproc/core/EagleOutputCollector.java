@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.dataproc.core;
 
 import java.io.Serializable;
 
 /**
- * expose simple interface for streaming executor to populate output data
- *
+ * expose simple interface for streaming executor to populate output data.
  */
-public interface EagleOutputCollector extends Serializable{
-	void collect(ValuesArray t);
+public interface EagleOutputCollector extends Serializable {
+    void collect(ValuesArray t);
 }

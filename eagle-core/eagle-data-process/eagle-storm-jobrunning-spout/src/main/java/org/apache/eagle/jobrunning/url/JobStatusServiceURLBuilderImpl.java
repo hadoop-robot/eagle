@@ -14,16 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.url;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class JobStatusServiceURLBuilderImpl implements ServiceURLBuilder {
-		
-	public String build(String ... parameters) {
-		// parameters[0] = rmUrl, parameters[1] = appID
-		// {rmUrl}/ws/v1/cluster/apps/application_xxxxxxxxxxxxx_xxxxx?anonymous=true
-		return parameters[0] + "ws/v1/cluster/apps/" + parameters[1] 
-							 + "?" + JobConstants.ANONYMOUS_PARAMETER;
-	}
+
+    public String build(String... parameters) {
+        // parameters[0] = rmUrl, parameters[1] = appID
+        // {rmUrl}/ws/v1/cluster/apps/application_xxxxxxxxxxxxx_xxxxx?anonymous=true
+        return parameters[0] + "ws/v1/cluster/apps/" + parameters[1]
+            + "?" + JobConstants.ANONYMOUS_PARAMETER;
+    }
 }

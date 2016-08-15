@@ -192,11 +192,7 @@
         <module name="CustomImportOrder">
             <property name="specialImportsRegExp" value="org.apache.eagle"/>
             <property name="sortImportsInGroupAlphabetically" value="true"/>
-
-            <!-- DISABLE GOOGLE STYLE IMPORT ORDER RULE -->
-            <!--
-                <property name="customImportOrderRules" value="STATIC###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE"/>
-            -->
+            <property name="customImportOrderRules" value="STATIC###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE"/>
         </module>
         <module name="MethodParamPad"/>
         <module name="OperatorWrap">

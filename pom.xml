@@ -1137,7 +1137,7 @@
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
-                    <failOnViolation>false</failOnViolation>
+                    <failOnViolation>true</failOnViolation>
                     <failsOnError>true</failsOnError>
                     <violationSeverity>warning</violationSeverity>
                 </configuration>

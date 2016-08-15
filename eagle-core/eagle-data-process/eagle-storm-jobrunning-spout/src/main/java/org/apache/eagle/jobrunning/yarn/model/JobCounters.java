@@ -14,26 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.yarn.model;
 
 import java.util.List;
 
 public class JobCounters {
 
-	private String id;
-	private List<CounterGroup> counterGroup;
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public List<CounterGroup> getCounterGroup() {
-		return counterGroup;
-	}
-	public void setCounterGroup(List<CounterGroup> counterGroup) {
-		this.counterGroup = counterGroup;
-	}
-	
+    private String id;
+    private List<CounterGroup> counterGroup;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<CounterGroup> getCounterGroup() {
+        return counterGroup;
+    }
+
+    public void setCounterGroup(List<CounterGroup> counterGroup) {
+        this.counterGroup = counterGroup;
+    }
+
 }

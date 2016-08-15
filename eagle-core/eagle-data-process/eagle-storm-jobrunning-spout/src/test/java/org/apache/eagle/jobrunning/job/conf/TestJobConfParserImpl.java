@@ -15,6 +15,7 @@
  * limitations under the License.
  *
  */
+
 package org.apache.eagle.jobrunning.job.conf;
 
 import org.jsoup.Jsoup;
@@ -27,7 +28,12 @@ import java.util.Map;
 
 public class TestJobConfParserImpl {
 
-    public static final String SQL = "CREATE TABLE XXX.XXX as SELECT /*+ MAPJOIN(XXX,XXX) */ trim(x.XXX) AS hc.XXX, hc.XXX, SUM(x.XXX) AS XXX FROM XXX.XXX x INNER JOIN XXX.XXX XXX ON x.XXX = XXX.XXX AND XXX.XXX = 1 INNER JOIN XXX.XXX dp ON XXX.XXX = XXX.XXX AND XXX.XXX = 1 INNER JOIN XXX.XXX hc ON XXX.XXX = XXX.XXX AND XXX.XXX=1 LEFT OUTER JOIN XXX.XXX hsc ON hsc.XXX = hc.XXX AND hsc.XXX=1 WHERE x.ds = 'XXX' AND length(x.XXX) > 0 AND x.XXX = 51 GROUP BY trim(x.XXX), hc.XXX, hc.XXX";
+    private static final String SQL = "CREATE TABLE XXX.XXX as SELECT /*+ MAPJOIN(XXX,XXX) */ trim(x.XXX) AS hc.XXX, hc.XXX, SUM(x.XXX) AS XXX FROM XXX.XXX x "
+        + "INNER JOIN XXX.XXX XXX ON x.XXX = XXX.XXX AND XXX.XXX = 1 "
+        + "INNER JOIN XXX.XXX dp ON XXX.XXX = XXX.XXX AND XXX.XXX = 1 "
+        + "INNER JOIN XXX.XXX hc ON XXX.XXX = XXX.XXX AND XXX.XXX=1 "
+        + "LEFT OUTER JOIN XXX.XXX hsc ON hsc.XXX = hc.XXX AND hsc.XXX=1 "
+        + "WHERE x.ds = 'XXX' AND length(x.XXX) > 0 AND x.XXX = 51 GROUP BY trim(x.XXX), hc.XXX, hc.XXX";
 
     @Test
     public void test() throws Exception {

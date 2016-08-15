@@ -14,34 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.storm;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import backtype.storm.spout.SpoutOutputCollector;
 
 import org.apache.eagle.dataproc.core.EagleOutputCollector;
 import org.apache.eagle.dataproc.core.ValuesArray;
 import org.apache.eagle.jobrunning.callback.RunningJobMessageId;
 
-public class JobRunningSpoutCollectorInterceptor implements EagleOutputCollector{
+import backtype.storm.spout.SpoutOutputCollector;
 
-	private static final long serialVersionUID = 1L;
-	private SpoutOutputCollector collector;
-	
-	public void setSpoutOutputCollector(SpoutOutputCollector collector){
-		this.collector = collector;
-	}
+import java.util.ArrayList;
+import java.util.List;
 
-	@Override
-	public void collect(ValuesArray t) {
-		// the first value is fixed as messageId
-		RunningJobMessageId messageId = (RunningJobMessageId) t.get(0);
-		List<Object> list = new ArrayList<Object>();
-		for (int i = 1; i < t.size(); i++) {
-			list.add(t.get(i));
-		}
-		collector.emit(list, messageId);
-	}
+public class JobRunningSpoutCollectorInterceptor implements EagleOutputCollector {
+
+    private static final long serialVersionUID = 1L;
+    private SpoutOutputCollector collector;
+
+    public void setSpoutOutputCollector(SpoutOutputCollector collector) {
+        this.collector = collector;
+    }
+
+    @Override
+    public void collect(ValuesArray t) {
+        // the first value is fixed as messageId
+        RunningJobMessageId messageId = (RunningJobMessageId) t.get(0);
+        List<Object> list = new ArrayList<Object>();
+        for (int i = 1; i < t.size(); i++) {
+            list.add(t.get(i));
+        }
+        collector.emit(list, messageId);
+    }
 }

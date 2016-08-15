@@ -34,10 +34,10 @@ public class HiveJobRunningSourcedStormSpoutProvider {
 	public BaseRichSpout getSpout(Config config, int parallelism){
 		RunningJobEndpointConfig endPointConfig = new RunningJobEndpointConfig();
 		String RMEndPoints = config.getString("dataSourceConfig.RMEndPoints");
-		endPointConfig.RMBasePaths = RMEndPoints.split(",");
+		endPointConfig.rmBasePaths = RMEndPoints.split(",");
 
 		String HSEndPoint = config.getString("dataSourceConfig.HSEndPoint");
-		endPointConfig.HSBasePath = HSEndPoint;
+		endPointConfig.hsBasePath = HSEndPoint;
 
 		ControlConfig controlConfig = new ControlConfig();
 		controlConfig.jobInfoEnabled = true;

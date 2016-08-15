@@ -19,10 +19,11 @@
 
 package org.apache.eagle.dataproc.impl.storm.partition;
 
+import org.apache.eagle.partition.PartitionStrategy;
+
 import backtype.storm.generated.GlobalStreamId;
 import backtype.storm.grouping.CustomStreamGrouping;
 import backtype.storm.task.WorkerTopologyContext;
-import org.apache.eagle.partition.PartitionStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +31,8 @@ import java.util.List;
 
 public class CustomPartitionGrouping implements CustomStreamGrouping {
 
-    public List<Integer> targetTasks;
-    public PartitionStrategy strategy;
+    private List<Integer> targetTasks;
+    private PartitionStrategy strategy;
 
     public CustomPartitionGrouping(PartitionStrategy strategy) {
         this.strategy = strategy;
@@ -45,7 +46,7 @@ public class CustomPartitionGrouping implements CustomStreamGrouping {
     @Override
     public List<Integer> chooseTasks(int taskId, List<Object> values) {
         int numTasks = targetTasks.size();
-        int targetTaskIndex = strategy.balance((String)values.get(0), numTasks);
+        int targetTaskIndex = strategy.balance((String) values.get(0), numTasks);
         return Arrays.asList(targetTasks.get(targetTaskIndex));
     }
 }

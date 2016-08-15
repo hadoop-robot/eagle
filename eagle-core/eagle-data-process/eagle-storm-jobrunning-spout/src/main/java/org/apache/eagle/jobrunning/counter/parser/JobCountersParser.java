@@ -14,13 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.counter.parser;
 
-import java.util.Map;
+package org.apache.eagle.jobrunning.counter.parser;
 
 import org.jsoup.nodes.Document;
 
+import java.util.Map;
+
 public interface JobCountersParser {
-	
-	Map<String, Long> parse(Document doc);
+
+    Map<String, Long> parse(Document doc);
 }

@@ -14,41 +14,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.dataproc.core;
-
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class JsonSerDeserUtils {
-	private static final Logger LOG = LoggerFactory.getLogger(JsonSerDeserUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JsonSerDeserUtils.class);
 
-	public static <T> String serialize(T o) throws Exception{
-		return serialize(o, null);
-	}
-	
-	public static <T> String serialize(T o, List<Module> modules) throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		if (modules != null) { 
-			mapper.registerModules(modules);
-		}
-		return mapper.writeValueAsString(o);
-	}
+    public static <T> String serialize(T o) throws Exception {
+        return serialize(o, null);
+    }
 
-	public static <T> T deserialize(String value, Class<T> cls) throws Exception{
-		return deserialize(value, cls, null);
-	}
-	
-	public static <T> T deserialize(String value, Class<T> cls, List<Module> modules) throws Exception{
-		ObjectMapper mapper = new ObjectMapper();
-		if (modules != null) { 
-			mapper.registerModules(modules);
-		}
-		return mapper.readValue(value, cls);	
-	}
+    public static <T> String serialize(T o, List<Module> modules) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        if (modules != null) {
+            mapper.registerModules(modules);
+        }
+        return mapper.writeValueAsString(o);
+    }
+
+    public static <T> T deserialize(String value, Class<T> cls) throws Exception {
+        return deserialize(value, cls, null);
+    }
+
+    public static <T> T deserialize(String value, Class<T> cls, List<Module> modules) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        if (modules != null) {
+            mapper.registerModules(modules);
+        }
+        return mapper.readValue(value, cls);
+    }
 
 }

@@ -14,42 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.crawler;
 
 public class JobContext {
-	public String jobId;
-	public String user;
-	public Long fetchedTime;
-	
-	public JobContext() {
-		
-	}
-	
-	public JobContext(JobContext context) {
-		this.jobId = new String(context.jobId);
-		this.user = new String(context.user);
-		this.fetchedTime = new Long(context.fetchedTime);
-	}
-	
-	public JobContext(String jobId, String user, Long fetchedTime) {
-		this.jobId = jobId;
-		this.user = user;
-		this.fetchedTime = fetchedTime;
-	}
-	
-	@Override
-	public int hashCode() {	
-		return jobId.hashCode() ;
-	}			
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof JobContext) {
-			JobContext context = (JobContext)obj;
-			if (this.jobId.equals(context.jobId)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public String jobId;
+    public String user;
+    public Long fetchedTime;
+
+    public JobContext() {
+
+    }
+
+    public JobContext(JobContext context) {
+        this.jobId = new String(context.jobId);
+        this.user = new String(context.user);
+        this.fetchedTime = new Long(context.fetchedTime);
+    }
+
+    public JobContext(String jobId, String user, Long fetchedTime) {
+        this.jobId = jobId;
+        this.user = user;
+        this.fetchedTime = fetchedTime;
+    }
+
+    @Override
+    public int hashCode() {
+        return jobId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof JobContext) {
+            JobContext context = (JobContext) obj;
+            if (this.jobId.equals(context.jobId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

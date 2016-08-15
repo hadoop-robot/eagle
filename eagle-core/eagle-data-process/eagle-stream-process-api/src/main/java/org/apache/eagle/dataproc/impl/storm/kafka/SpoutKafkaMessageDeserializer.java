@@ -14,10 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.dataproc.impl.storm.kafka;
 
 import java.io.Serializable;
 
-public interface SpoutKafkaMessageDeserializer extends Serializable{
-	public Object deserialize(byte[] arg0);
+public interface SpoutKafkaMessageDeserializer extends Serializable {
+    Object deserialize(byte[] arg0);
 }

@@ -14,23 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.storm;
 
-import java.util.Map;
+package org.apache.eagle.jobrunning.storm;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
+import java.util.Map;
+
 /**
- * define what content in job running stream should be streamed
+ * define what content in job running stream should be streamed.
  */
 public class JobRunningContentFilterImpl implements JobRunningContentFilter {
-	private static final long serialVersionUID = 1L;
-	
-	@Override
-	public boolean acceptJobConf(Map<String, String> config) {
-		if (config.containsKey(JobConstants.HIVE_QUERY_STRING)) {
-			return true;
-		}
-		return false;
-	}
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public boolean acceptJobConf(Map<String, String> config) {
+        if (config.containsKey(JobConstants.HIVE_QUERY_STRING)) {
+            return true;
+        }
+        return false;
+    }
 }

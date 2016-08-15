@@ -14,31 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.counter.parser;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+package org.apache.eagle.jobrunning.counter.parser;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 public class JobCountersParserImpl implements JobCountersParser {
 
-	@Override
-	public Map<String, Long> parse(Document doc) {
-		Elements elements = doc.select("a[href*=singlejobcounter]");
-		Iterator<Element> iter = elements.iterator();
-		Map<String, Long> counters = new HashMap<String, Long>();
-		while(iter.hasNext()) {
-			Element element = iter.next().parent();
-			String metricName = element.text();
-			long metricValue = Long.parseLong(element.nextElementSibling()
-								   .nextElementSibling().nextElementSibling().text()
-								    .replace(",", "").trim());
-			counters.put(metricName, metricValue);
-		}
-		return counters;
-	}
+    @Override
+    public Map<String, Long> parse(Document doc) {
+        Elements elements = doc.select("a[href*=singlejobcounter]");
+        Iterator<Element> iter = elements.iterator();
+        Map<String, Long> counters = new HashMap<String, Long>();
+        while (iter.hasNext()) {
+            Element element = iter.next().parent();
+            String metricName = element.text();
+            long metricValue = Long.parseLong(element.nextElementSibling()
+                .nextElementSibling().nextElementSibling().text()
+                .replace(",", "").trim());
+            counters.put(metricName, metricValue);
+        }
+        return counters;
+    }
 }

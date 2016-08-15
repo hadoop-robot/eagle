@@ -14,19 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.yarn.model;
 
 
 public class JobCountersWrapper {
 
-	private JobCounters jobCounters;
+    private JobCounters jobCounters;
 
-	public JobCounters getJobCounters() {
-		return jobCounters;
-	}
+    public JobCounters getJobCounters() {
+        return jobCounters;
+    }
 
-	public void setJobCounters(JobCounters jobCounters) {
-		this.jobCounters = jobCounters;
-	}
-	
+    public void setJobCounters(JobCounters jobCounters) {
+        this.jobCounters = jobCounters;
+    }
+
 }

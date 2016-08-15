@@ -14,15 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.counter;
 
 import java.util.List;
 
 public interface CounterKey {
 
-	List<String> getNames();
-	String getDescription();
-	int getIndex();
-	CounterGroupKey getGroupKey();
-	
+    List<String> getNames();
+
+    String getDescription();
+
+    int getIndex();
+
+    CounterGroupKey getGroupKey();
+
 }

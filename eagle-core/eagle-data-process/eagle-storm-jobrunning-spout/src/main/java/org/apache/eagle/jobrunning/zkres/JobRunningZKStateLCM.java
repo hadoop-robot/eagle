@@ -14,22 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.zkres;
 
-import java.util.List;
+package org.apache.eagle.jobrunning.zkres;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
-public interface JobRunningZKStateLCM {
-	
-	List<String> readProcessedJobs(JobConstants.ResourceType type);
-	
-	void addProcessedJob(JobConstants.ResourceType type, String jobID);
+import java.util.List;
 
-	// date format e.g. "20150901"
-	void truncateJobBefore(JobConstants.ResourceType type, String date);
-		
-	void truncateProcessedJob(JobConstants.ResourceType type, String jobID);
-	
-	void truncateEverything();
+public interface JobRunningZKStateLCM {
+
+    List<String> readProcessedJobs(JobConstants.ResourceType type);
+
+    void addProcessedJob(JobConstants.ResourceType type, String jobID);
+
+    // date format e.g. "20150901"
+    void truncateJobBefore(JobConstants.ResourceType type, String date);
+
+    void truncateProcessedJob(JobConstants.ResourceType type, String jobID);
+
+    void truncateEverything();
 }

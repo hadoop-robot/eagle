@@ -14,18 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.ha;
 
 import java.io.IOException;
 
 /**
+ * HAURLSelector.
+ *
  * @since Aug 21, 2014
  */
 public interface HAURLSelector {
-	
-	boolean checkUrl(String url);
-		
-	void reSelectUrl() throws IOException;
-	
-	String getSelectedUrl();
+
+    boolean checkUrl(String url);
+
+    void reSelectUrl() throws IOException;
+
+    String getSelectedUrl();
 }

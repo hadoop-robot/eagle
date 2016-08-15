@@ -14,29 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.job.conf;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+package org.apache.eagle.jobrunning.job.conf;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 public class JobConfParserImpl implements JobConfParser {
-	
-	public Map<String, String> parse(Document doc) {
-		Elements elements = doc.select("table[id=conf]").select("tbody").select("tr");
-		Iterator<Element> iter = elements.iterator();
-		Map<String, String> configs = new HashMap<String, String>();
-		while(iter.hasNext()) {
-			Element element = iter.next();
-			Elements tds = element.children();
-			String key = tds.get(0).text();
-			String value = tds.get(1).text();
-			configs.put(key, value);
-		}
-		return configs;
-	}
+
+    public Map<String, String> parse(Document doc) {
+        Elements elements = doc.select("table[id=conf]").select("tbody").select("tr");
+        Iterator<Element> iter = elements.iterator();
+        Map<String, String> configs = new HashMap<String, String>();
+        while (iter.hasNext()) {
+            Element element = iter.next();
+            Elements tds = element.children();
+            String key = tds.get(0).text();
+            String value = tds.get(1).text();
+            configs.put(key, value);
+        }
+        return configs;
+    }
 }

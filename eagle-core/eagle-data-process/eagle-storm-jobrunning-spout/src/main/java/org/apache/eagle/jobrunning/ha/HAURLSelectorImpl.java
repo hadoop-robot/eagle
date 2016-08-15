@@ -14,87 +14,100 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.ha;
+
+import org.apache.eagle.jobrunning.common.JobConstants;
+import org.apache.eagle.jobrunning.url.ServiceURLBuilder;
+import org.apache.eagle.jobrunning.util.InputStreamUtils;
+
+import org.apache.hadoop.util.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.apache.eagle.jobrunning.url.ServiceURLBuilder;
-import org.apache.eagle.jobrunning.util.InputStreamUtils;
-import org.apache.eagle.jobrunning.common.JobConstants;
-import org.apache.hadoop.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class HaUrlSelectorImpl implements HAURLSelector {
 
-public class HAURLSelectorImpl implements HAURLSelector {
+    private final String[] urls;
+    private volatile String selectedUrl;
+    private final ServiceURLBuilder builder;
 
-	private final String[] urls;
-	private volatile String selectedUrl;
-	private final ServiceURLBuilder builder;
-	
-	private volatile boolean reselectInProgress;
-	private final JobConstants.CompressionType compressionType;
-	private static final long MAX_RETRY_TIME = 3;
-	private static final Logger LOG = LoggerFactory.getLogger(HAURLSelectorImpl.class);
-	
-	public HAURLSelectorImpl(String[] urls, ServiceURLBuilder builder, JobConstants.CompressionType compressionType) {
-		this.urls = urls;
-		this.compressionType = compressionType;
-		this.builder = builder;
-	}
-	
-	public boolean checkUrl(String urlString) {
-		InputStream is = null;
-		try {
-			LOG.info("Getting input stream from url: " + urlString);
-			is = InputStreamUtils.getInputStream(urlString, compressionType);
-		} catch (Exception ex) {
-			LOG.error("Failed to get input stream from url: " + urlString);
-			return false;
-		} finally {
-			if (is != null) { try {	is.close(); } catch (IOException e) {/*Do nothing*/} }
-		}
-		return true;
-	}
+    private volatile boolean reselectInProgress;
+    private final JobConstants.CompressionType compressionType;
+    private static final long MAX_RETRY_TIME = 3;
+    private static final Logger LOG = LoggerFactory.getLogger(HaUrlSelectorImpl.class);
 
-	@Override
-	public String getSelectedUrl() {
-		if (selectedUrl == null) {
-			selectedUrl = urls[0];
-		}
-		return selectedUrl;
-	}
-	
-	@Override
-	public void reSelectUrl() throws IOException {
-		if (reselectInProgress) return;
-		synchronized(this) {
-			if (reselectInProgress) return;
-			reselectInProgress = true;
-			try {
-				LOG.info("Going to reselect url");
-				for (int i = 0; i < urls.length; i++) {		
-					String urlToCheck = urls[i];
-					LOG.info("Going to try url :" + urlToCheck);
-					for (int time = 0; time < MAX_RETRY_TIME; time++) {
-						if (checkUrl(builder.build(urlToCheck, JobConstants.JobState.RUNNING.name()))) {
-							selectedUrl = urls[i];
-							LOG.info("Successfully switch to new url : " + selectedUrl);
-							return;
-						}
-						LOG.info("try url " + urlToCheck + "fail for " + (time+1) + " times, sleep 5 seconds before try again. ");
-						try {
-							Thread.sleep(5 * 1000);
-						}
-						catch (InterruptedException ex) { /* Do Nothing */}
-					}
-				}
-				throw new IOException("No alive url found: "+ StringUtils.join(";", Arrays.asList(this.urls)));
-			}
-			finally {
-				reselectInProgress = false;
-			}
-		}
-	}
+    public HaUrlSelectorImpl(String[] urls, ServiceURLBuilder builder, JobConstants.CompressionType compressionType) {
+        this.urls = urls;
+        this.compressionType = compressionType;
+        this.builder = builder;
+    }
+
+    public boolean checkUrl(String urlString) {
+        InputStream is = null;
+        try {
+            LOG.info("Getting input stream from url: " + urlString);
+            is = InputStreamUtils.getInputStream(urlString, compressionType);
+        } catch (Exception ex) {
+            LOG.error("Failed to get input stream from url: " + urlString);
+            return false;
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    /*Do nothing*/
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String getSelectedUrl() {
+        if (selectedUrl == null) {
+            selectedUrl = urls[0];
+        }
+        return selectedUrl;
+    }
+
+    @Override
+    public void reSelectUrl() throws IOException {
+        if (reselectInProgress) {
+            return;
+        }
+        synchronized (this) {
+            if (reselectInProgress) {
+                return;
+            }
+            reselectInProgress = true;
+            try {
+                LOG.info("Going to reselect url");
+                for (int i = 0; i < urls.length; i++) {
+                    String urlToCheck = urls[i];
+                    LOG.info("Going to try url :" + urlToCheck);
+                    for (int time = 0; time < MAX_RETRY_TIME; time++) {
+                        if (checkUrl(builder.build(urlToCheck, JobConstants.JobState.RUNNING.name()))) {
+                            selectedUrl = urls[i];
+                            LOG.info("Successfully switch to new url : " + selectedUrl);
+                            return;
+                        }
+                        LOG.info("try url " + urlToCheck + "fail for " + (time + 1) + " times, sleep 5 seconds before try again. ");
+                        try {
+                            Thread.sleep(5 * 1000);
+                        } catch (InterruptedException ex) {
+                            /* Do Nothing */
+                        }
+                    }
+                }
+                throw new IOException("No alive url found: " + StringUtils.join(";", Arrays.asList(this.urls)));
+            } finally {
+                reselectInProgress = false;
+            }
+        }
+    }
 }

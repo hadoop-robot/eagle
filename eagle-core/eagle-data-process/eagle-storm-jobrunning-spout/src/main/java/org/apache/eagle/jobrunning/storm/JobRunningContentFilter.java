@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.storm;
 
 import java.io.Serializable;
 import java.util.Map;
 
 /**
- * define what content in job running stream should be streamed
+ * define what content in job running stream should be streamed.
  */
 public interface JobRunningContentFilter extends Serializable {
-	boolean acceptJobConf(Map<String, String> config);
+    boolean acceptJobConf(Map<String, String> config);
 }

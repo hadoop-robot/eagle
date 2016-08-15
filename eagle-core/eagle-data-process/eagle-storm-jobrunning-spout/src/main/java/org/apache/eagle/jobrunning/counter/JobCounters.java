@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.jobrunning.counter;
 
 import java.util.Map;
@@ -21,18 +22,18 @@ import java.util.TreeMap;
 
 
 public final class JobCounters {
-	
-	private Map<String, Map<String, Long>> counters = new TreeMap<String, Map<String, Long>>();
 
-	public Map<String, Map<String, Long>> getCounters() {
-		return counters;
-	}
+    private Map<String, Map<String, Long>> counters = new TreeMap<String, Map<String, Long>>();
 
-	public void setCounters(Map<String, Map<String, Long>> counters) {
-		this.counters = counters;
-	}
-	
-	public String toString(){
-		return counters.toString();
-	}
+    public Map<String, Map<String, Long>> getCounters() {
+        return counters;
+    }
+
+    public void setCounters(Map<String, Map<String, Long>> counters) {
+        this.counters = counters;
+    }
+
+    public String toString() {
+        return counters.toString();
+    }
 }

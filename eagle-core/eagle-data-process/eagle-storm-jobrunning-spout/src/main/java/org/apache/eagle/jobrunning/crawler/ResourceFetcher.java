@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.eagle.jobrunning.crawler;
 
-import java.util.List;
+package org.apache.eagle.jobrunning.crawler;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
 
+import java.util.List;
+
 public interface ResourceFetcher {
 
-	List<Object> getResource(JobConstants.ResourceType resoureType, Object... parameter) throws Exception;
+    List<Object> getResource(JobConstants.ResourceType resoureType, Object... parameter) throws Exception;
 
 }

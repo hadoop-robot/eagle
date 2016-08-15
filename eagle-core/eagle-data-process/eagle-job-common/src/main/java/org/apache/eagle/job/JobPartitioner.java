@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.eagle.job;
 
 public interface JobPartitioner {
-	int partition(int numTotalParts, String key);
+    int partition(int numTotalParts, String key);
 }
