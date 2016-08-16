@@ -17,9 +17,9 @@
 
 package org.apache.eagle.audit.common;
 
-import java.util.List;
-
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+
+import java.util.List;
 
 public class AuditEvent extends java.util.EventObject {
 

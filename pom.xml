@@ -1136,7 +1136,7 @@
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>false</consoleOutput>
-                    <failOnViolation>false</failOnViolation>
+                    <failOnViolation>true</failOnViolation>
                     <failsOnError>true</failsOnError>
                     <violationSeverity>warning</violationSeverity>
                     <excludes>**/generated/**/*</excludes>
@@ -1194,6 +1194,7 @@
                                 <exclude>**/gen/**</exclude>
                                 <!-- README and test data with exact format -->
                                 <exclude>README*</exclude>
+                                <exclude>**/*.db</exclude>
                                 <exclude>**/*.log</exclude>
                                 <exclude>**/*.out</exclude>
                                 <exclude>**/eagle.log*</exclude>

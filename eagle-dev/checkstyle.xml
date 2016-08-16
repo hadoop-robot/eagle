@@ -43,6 +43,9 @@
         <property name="eachLine" value="true"/>
     </module>
 
+    <!-- Make the @SuppressWarnings annotations available to Checkstyle -->
+    <module name="SuppressionCommentFilter"/>
+
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">

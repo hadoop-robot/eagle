@@ -17,9 +17,9 @@
 
 package org.apache.eagle.audit.listener;
 
-import java.util.EventListenerProxy;
-
 import org.apache.eagle.audit.common.AuditEvent;
+
+import java.util.EventListenerProxy;
 
 public class AuditListenerProxy extends EventListenerProxy<AuditListener> implements AuditListener {
 

@@ -17,12 +17,12 @@
 
 package org.apache.eagle.audit.listener;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.apache.eagle.audit.common.AuditEvent;
 import org.apache.eagle.audit.common.AuditListenerMap;
 import org.apache.eagle.audit.entity.GenericAuditEntity;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class AuditSupport implements Serializable {
 
