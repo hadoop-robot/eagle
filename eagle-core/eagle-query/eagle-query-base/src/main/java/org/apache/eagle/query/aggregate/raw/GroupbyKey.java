@@ -50,28 +50,26 @@ public class GroupbyKey implements Writable {
     }
 
     /**
-     * empty constructor
+     * empty constructor.
      */
     public GroupbyKey() {
         this.value = new WritableList<BytesWritable>(BytesWritable.class);
     }
 
     /**
-     * clear for reuse
+     * clear for reuse.
      */
     public void clear() {
         value.clear();
     }
 
     /**
-     * copy constructor
-     *
-     * @param key
+     * copy constructor.
      */
     public GroupbyKey(GroupbyKey key) {
         this();
         ListIterator<BytesWritable> it = key.value.listIterator();
-//		ListIterator<byte[]> it = key.value.listIterator();
+        //  ListIterator<byte[]> it = key.value.listIterator();
         while (it.hasNext()) {
             this.value.add(it.next());
         }
@@ -93,8 +91,8 @@ public class GroupbyKey implements Writable {
             return false;
         }
         GroupbyKey that = (GroupbyKey) obj;
-//		ListIterator<byte[]> e1 = this.value.listIterator();
-//		ListIterator<byte[]> e2 = that.value.listIterator();
+        //  ListIterator<byte[]> e1 = this.value.listIterator();
+        //  ListIterator<byte[]> e2 = that.value.listIterator();
         ListIterator<BytesWritable> e1 = this.value.listIterator();
         ListIterator<BytesWritable> e2 = that.value.listIterator();
         while (e1.hasNext() && e2.hasNext()) {
@@ -119,7 +117,8 @@ public class GroupbyKey implements Writable {
      * Serialize the fields of this object to <code>out</code>.
      *
      * @param out <code>DataOuput</code> to serialize this object into.
-     * @throws java.io.IOException
+     *
+     * @throws java.io.IOException IOException
      */
     @Override
     public void write(DataOutput out) throws IOException {
@@ -133,7 +132,8 @@ public class GroupbyKey implements Writable {
      * existing object where possible.</p>
      *
      * @param in <code>DataInput</code> to deseriablize this object from.
-     * @throws java.io.IOException
+     *
+     * @throws java.io.IOException IOException
      */
     @Override
     public void readFields(DataInput in) throws IOException {

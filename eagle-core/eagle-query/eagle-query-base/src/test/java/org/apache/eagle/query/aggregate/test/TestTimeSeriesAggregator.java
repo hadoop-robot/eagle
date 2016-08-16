@@ -16,20 +16,16 @@
  */
 package org.apache.eagle.query.aggregate.test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
+import org.apache.eagle.log.entity.test.TestEntity;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.eagle.log.entity.test.TestEntity;
+import java.util.*;
 
 public class TestTimeSeriesAggregator {
     private static final Logger LOG = LoggerFactory.getLogger(TestFlatAggregator.class);
@@ -37,11 +33,13 @@ public class TestTimeSeriesAggregator {
     @SuppressWarnings("serial")
     private TestEntity createEntity(final String cluster, final String datacenter, final String rack, int numHosts, long numClusters, long timestamp) {
         TestEntity entity = new TestEntity();
-        Map<String, String> tags = new HashMap<String, String>() {{
-            put("cluster", cluster);
-            put("datacenter", datacenter);
-            put("rack", rack);
-        }};
+        Map<String, String> tags = new HashMap<String, String>() {
+            {
+                put("cluster", cluster);
+                put("datacenter", datacenter);
+                put("rack", rack);
+            }
+        };
         entity.setTags(tags);
         entity.setNumHosts(numHosts);
         entity.setNumClusters(numClusters);

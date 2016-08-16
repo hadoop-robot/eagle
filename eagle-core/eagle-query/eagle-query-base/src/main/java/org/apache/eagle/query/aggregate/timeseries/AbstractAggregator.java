@@ -22,6 +22,7 @@ import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.IllegalAggregateFieldTypeException;
 import org.apache.eagle.query.parser.TokenConstant;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractAggregator implements Aggregator, EntityCreationListener {
-    private final static Logger LOG = LoggerFactory.getLogger(AbstractAggregator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractAggregator.class);
 
     private static final String UNASSIGNED = "unassigned";
     protected List<String> groupbyFields;
@@ -73,7 +74,7 @@ public abstract class AbstractAggregator implements Aggregator, EntityCreationLi
             if (pd == null) {
                 return null;
             }
-//			_groupbyFieldPlacementCache.put(groupbyField, false);
+            //  _groupbyFieldPlacementCache.put(groupbyField, false);
             _groupbyFieldPlacementCache[i] = false;
             return (String) (pd.getReadMethod().invoke(entity));
         } catch (NoSuchMethodException ex) {
@@ -101,12 +102,12 @@ public abstract class AbstractAggregator implements Aggregator, EntityCreationLi
     }
 
     /**
-     * TODO For count aggregation, special treatment is the value is always 0 unless we support count(*) or count(<fieldname>) which counts number of rows or
+     * TODO For count aggregation, special treatment is the value is always 0 unless we support count(*) or count(fieldName) which counts number of rows or
      * number of non-null field
-     * For other aggregation, like sum,min,max,avg, we should resort to qualifiers
+     * For other aggregation, like sum,min,max,avg, we should resort to qualifiers.
      *
-     * @param entity
-     * @return
+     * @param entity entity
+     * @return preagg values
      */
     protected List<Double> createPreAggregatedValues(TaggedLogAPIEntity entity) throws Exception {
         List<Double> values = new ArrayList<Double>();
@@ -129,13 +130,6 @@ public abstract class AbstractAggregator implements Aggregator, EntityCreationLi
                     try {
                         Method m = _aggregateFieldReflectedMethodCache[functionIndex];
                         if (m == null) {
-//						pd = PropertyUtils.getPropertyDescriptor(entity, aggregatedField);
-//						if (pd == null) {
-//							final String errMsg = "Field/tag " + aggregatedField + " is not defined for entity " + entity.getClass().getSimpleName();
-//							logger.error(errMsg);
-//							throw new Exception(errMsg);
-//						}
-//						Object obj = pd.getReadMethod().invoke(entity);
                             String tmp = aggregatedField.substring(0, 1).toUpperCase() + aggregatedField.substring(1);
                             m = entity.getClass().getMethod("get" + tmp);
                             _aggregateFieldReflectedMethodCache[functionIndex] = m;
@@ -153,11 +147,13 @@ public abstract class AbstractAggregator implements Aggregator, EntityCreationLi
         return values;
     }
 
+
     /**
+     * Convert Object to Double.
      * TODO this is a hack, we need elegant way to convert type to a broad precision
      *
-     * @param obj
-     * @return
+     * @param obj object
+     * @return value in double
      */
     protected Double numberToDouble(Object obj) {
         if (obj instanceof Double) {

@@ -19,9 +19,6 @@ package org.apache.eagle.query.aggregate;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @since : 11/7/14,2014
- */
 public class AggregateCondition implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<String> groupbyFields;

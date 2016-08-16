@@ -21,6 +21,7 @@ import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.raw.GroupbyKey;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.GroupbyValue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GroupbyBucket {
-    private final static Logger LOG = LoggerFactory.getLogger(GroupbyBucket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GroupbyBucket.class);
 
     public static Map<String, FunctionFactory> _functionFactories =
         new HashMap<>();
@@ -46,8 +47,7 @@ public class GroupbyBucket {
     }
 
     private List<AggregateFunctionType> types;
-//	private SortedMap<List<String>, List<Function>> group2FunctionMap = 
-//			new TreeMap<List<String>, List<Function>>(new GroupbyFieldsComparator());
+    //  private SortedMap<List<String>, List<Function>> group2FunctionMap = new TreeMap<List<String>, List<Function>>(new GroupbyFieldsComparator());
 
     private Map<List<String>, List<Function>> group2FunctionMap = new HashMap<>(); //new GroupbyFieldsComparator());
 
@@ -113,7 +113,7 @@ public class GroupbyBucket {
         public Function createFunction();
     }
 
-    public static abstract class Function {
+    public abstract static class Function {
         protected int count;
 
         public abstract void run(double v);

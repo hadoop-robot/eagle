@@ -20,7 +20,7 @@ package org.apache.eagle.query.aggregate.timeseries;
  * sum(field1), max(field2) groupby(field3, field4) sort by field1 asc, field3 desc
  * There are 2 SortOption object, then
  * the 1st one is inGroupby=false, index=0, ascendent=true
- * the 2nd one is inGroupby=true, index=1, ascendent=false
+ * the 2nd one is inGroupby=true, index=1, ascendent=false.
  */
 public class SortOption {
     private boolean inGroupby; // sort field defaultly is not from groupby fields

@@ -57,7 +57,7 @@ public class PostFlatAggregateSort {
         }
 
         /**
-         * default to sort by all groupby fields
+         * default to sort by all groupby fields.
          */
         @Override
         public int compare(Map.Entry<List<String>, List<Double>> e1, Map.Entry<List<String>, List<Double>> e2) {

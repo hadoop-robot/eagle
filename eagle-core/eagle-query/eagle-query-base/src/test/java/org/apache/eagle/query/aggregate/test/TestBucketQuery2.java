@@ -18,6 +18,7 @@ package org.apache.eagle.query.aggregate.test;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.BucketQuery;
+
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
@@ -43,7 +44,7 @@ public class TestBucketQuery2 {
     }
 
     @SuppressWarnings("unchecked")
-//	@Test
+    //  @Test
     public void testBucketQuery() {
         SampleTaggedLogAPIEntity e1 = new SampleTaggedLogAPIEntity();
         e1.setTags(new HashMap<String, String>());
@@ -127,7 +128,7 @@ public class TestBucketQuery2 {
         e4.setTags(new HashMap<String, String>());
         e4.getTags().put("cluster", "cluster1");
         // rack is set to null
-//		e4.getTags().put("rack", "rack124");
+        //  e4.getTags().put("rack", "rack124");
         e4.setDescription("this is description 3");
         limit = 2;
         BucketQuery query4 = new BucketQuery(bucketFields, limit);

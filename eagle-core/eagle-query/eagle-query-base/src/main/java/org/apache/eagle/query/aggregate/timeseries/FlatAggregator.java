@@ -16,24 +16,19 @@
  */
 package org.apache.eagle.query.aggregate.timeseries;
 
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.query.aggregate.AggregateFunctionType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.query.aggregate.AggregateFunctionType;
-
 /**
- * Not thread safe
+ * Not thread safe.
  */
 public class FlatAggregator extends AbstractAggregator {
     protected GroupbyBucket bucket;
 
-    /**
-     * @param groupbyFields
-     * @param aggregateFuntionTypes
-     * @param aggregatedFields
-     */
     public FlatAggregator(List<String> groupbyFields, List<AggregateFunctionType> aggregateFuntionTypes, List<String> aggregatedFields) {
         super(groupbyFields, aggregateFuntionTypes, aggregatedFields);
         bucket = new GroupbyBucket(this.aggregateFunctionTypes);

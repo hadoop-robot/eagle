@@ -22,6 +22,7 @@ import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.parser.TokenConstant;
+
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 public class RawGroupbyBucket {
-    private final static Logger LOG = LoggerFactory.getLogger(RawGroupbyBucket.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RawGroupbyBucket.class);
 
     private List<String> aggregatedFields;
     private EntityDefinition entityDefinition;
@@ -162,9 +163,9 @@ public class RawGroupbyBucket {
     }
 
     /**
-     * expensive operation - create objects and format the result
+     * expensive operation - create objects and format the result.
      *
-     * @return
+     * @return GroupbyKeyValues
      */
     public List<GroupbyKeyValue> groupbyKeyValues() {
         List<GroupbyKeyValue> results = new ArrayList<GroupbyKeyValue>();
@@ -180,9 +181,9 @@ public class RawGroupbyBucket {
     }
 
     /**
-     * expensive operation - create objects and format the result
+     * expensive operation - create objects and format the result.
      *
-     * @return
+     * @return aggregated result in Map[List[Key in String],List[Value in Double]] .
      */
     public Map<List<String>, List<Double>> result() {
         Map<List<String>, List<Double>> result = new HashMap<List<String>, List<Double>>();

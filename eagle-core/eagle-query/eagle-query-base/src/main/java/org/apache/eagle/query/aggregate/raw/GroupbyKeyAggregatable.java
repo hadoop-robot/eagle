@@ -24,11 +24,10 @@ import java.util.List;
  *
  * @see org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator
  * @see RawAggregator
- * @since : 11/3/14,2014
  */
 public interface GroupbyKeyAggregatable {
     /**
-     * @return
+     * @return GroupbyKeyValues
      * @see RawAggregator#getGroupbyKeyValues()
      * @see org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator#getGroupbyKeyValues()
      */

@@ -16,12 +16,12 @@
  */
 package org.apache.eagle.query.aggregate.test;
 
-import java.util.Arrays;
-
 import org.apache.eagle.query.aggregate.timeseries.GroupbyFieldsComparator;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 
 public class TestGroupbyFieldComparator {
     @Test

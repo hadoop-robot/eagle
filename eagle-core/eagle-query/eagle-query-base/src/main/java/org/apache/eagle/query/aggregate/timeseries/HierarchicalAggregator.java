@@ -16,11 +16,11 @@
  */
 package org.apache.eagle.query.aggregate.timeseries;
 
-import java.util.List;
-import java.util.SortedMap;
-
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+
+import java.util.List;
+import java.util.SortedMap;
 
 public class HierarchicalAggregator extends AbstractAggregator {
     private HierarchicalAggregateEntity root = new HierarchicalAggregateEntity();

@@ -35,10 +35,8 @@ public enum SortFieldOrderType {
 
     /**
      * This method is thread safe
-     * match and retrieve back the aggregated fields, for count, aggregateFields can be null
+     * match and retrieve back the aggregated fields, for count, aggregateFields can be null.
      *
-     * @param sortFieldOrder
-     * @return
      */
     public SortFieldOrderTypeMatcher matcher(String sortFieldOrder) {
         Matcher m = pattern.matcher(sortFieldOrder);

@@ -16,25 +16,17 @@
  */
 package org.apache.eagle.query.aggregate.raw;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.eagle.common.ByteUtil;
+import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.log.entity.meta.EntitySerDeser;
-import org.apache.eagle.log.entity.meta.IntSerDeser;
-import org.apache.eagle.log.entity.meta.LongSerDeser;
-import org.apache.eagle.log.entity.meta.Qualifier;
-import org.apache.eagle.common.ByteUtil;
+import java.util.*;
 
 public class TestRawAggregator {
     private static final Logger LOG = LoggerFactory.getLogger(TestRawAggregator.class);

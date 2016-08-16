@@ -36,10 +36,10 @@ public enum AggregateFunctionType {
 
     /**
      * This method is thread safe
-     * match and retrieve back the aggregated fields, for count, aggregateFields can be null
+     * match and retrieve back the aggregated fields, for count, aggregateFields can be null.
      *
-     * @param function
-     * @return
+     * @param function aggregation function
+     * @return AggregateFunctionTypeMatcher
      */
     public AggregateFunctionTypeMatcher matcher(String function) {
         Matcher m = pattern.matcher(function);

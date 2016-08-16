@@ -16,26 +16,24 @@
  */
 package org.apache.eagle.query.aggregate.test;
 
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.query.aggregate.*;
+
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.Assert;
-
-import org.apache.eagle.query.aggregate.*;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.query.aggregate.Aggregator;
-
 public class TestAggregator {
-    private final static Logger LOG = LoggerFactory.getLogger(TestAggregator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestAggregator.class);
 
     public static class AggregatedSampleAPIEntityFactory implements AggregateAPIEntityFactory {
         @Override
@@ -99,7 +97,7 @@ public class TestAggregator {
             List<AggregateParams.SortFieldOrder> sortFieldOrders = new ArrayList<AggregateParams.SortFieldOrder>();
             sortFieldOrders.add(new AggregateParams.SortFieldOrder("numTotalAlerts", false));
             Aggregator agg = new Aggregator(new AggregatedSampleAPIEntityFactory(), root, groupbys, counting, sumFunctionFields);
-            List<TestAPIEntity> list = new ArrayList<TestAPIEntity>();
+            final List<TestAPIEntity> list = new ArrayList<TestAPIEntity>();
             TestAPIEntity entity = new TestAPIEntity();
             entity.setTags(new HashMap<String, String>());
             entity.getTags().put("category", "checkHadoopFS");
@@ -123,7 +121,7 @@ public class TestAggregator {
             TestAPIEntity entity3 = new TestAPIEntity();
             entity3.setTags(new HashMap<String, String>());
             entity3.getTags().put("category", "checkHadoopFS");
-            //		entity3.getTags().put("rack", "rack124");
+            // entity3.getTags().put("rack", "rack124");
             entity3.getTags().put("cluster", "cluster2");
             entity3.setNumTotalAlerts("11");
             entity3.setUsedCapacity("82.11");
@@ -179,7 +177,7 @@ public class TestAggregator {
             sortFieldOrders.add(new AggregateParams.SortFieldOrder("count", false));
             sortFieldOrders.add(new AggregateParams.SortFieldOrder("key", false));
             Aggregator agg = new Aggregator(new AggregatedSampleAPIEntityFactory(), root, groupbys, counting, new ArrayList<String>());
-            List<TestAPIEntity> list = new ArrayList<TestAPIEntity>();
+            final List<TestAPIEntity> list = new ArrayList<TestAPIEntity>();
             TestAPIEntity entity = new TestAPIEntity();
             entity.setTags(new HashMap<String, String>());
             entity.getTags().put("category", "checkHadoopFS");
@@ -203,7 +201,7 @@ public class TestAggregator {
             TestAPIEntity entity3 = new TestAPIEntity();
             entity3.setTags(new HashMap<String, String>());
             entity3.getTags().put("category", "checkHadoopFS");
-            //		entity3.getTags().put("rack", "rack124");
+            //  entity3.getTags().put("rack", "rack124");
             entity3.getTags().put("cluster", "cluster2");
             entity3.setNumTotalAlerts("11");
             entity3.setUsedCapacity("82.11");
@@ -220,10 +218,10 @@ public class TestAggregator {
             entity4.setStatus("dead");
             list.add(entity4);
 
-//			long numTotalAlerts = 0;
+            //  long numTotalAlerts = 0;
             for (TestAPIEntity e : list) {
                 agg.accumulate(e);
-//				numTotalAlerts += Long.valueOf(e.getNumTotalAlerts());
+                //  numTotalAlerts += Long.valueOf(e.getNumTotalAlerts());
             }
 
             JsonFactory factory = new JsonFactory();
@@ -234,7 +232,7 @@ public class TestAggregator {
 
             Assert.assertEquals(3, toBeVerified.getNumDirectDescendants());
             Assert.assertEquals(4, toBeVerified.getNumTotalDescendants());
-//			Assert.assertEquals(numTotalAlerts, toBeVerified.getNumTotalAlerts());
+            //  Assert.assertEquals(numTotalAlerts, toBeVerified.getNumTotalAlerts());
 
             LOG.info(result);
 

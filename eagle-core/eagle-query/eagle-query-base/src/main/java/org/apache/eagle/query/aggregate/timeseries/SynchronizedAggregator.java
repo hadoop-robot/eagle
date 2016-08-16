@@ -32,4 +32,4 @@ public class SynchronizedAggregator implements Aggregator {
             agg.accumulate(entity);
         }
     }
-}	
+}

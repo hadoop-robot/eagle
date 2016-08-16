@@ -16,15 +16,15 @@
  */
 package org.apache.eagle.query.aggregate;
 
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 public class BucketQuery {
-    public final static String UNASSIGNED_BUCKET = "unassigned";
+    public static final String UNASSIGNED_BUCKET = "unassigned";
     private List<String> bucketFields;
     private int limit;
     private Map<String, Object> root = new HashMap<String, Object>();

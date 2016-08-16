@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 
-/**
- * @since : 11/6/14,2014
- */
 public class WritableList<E extends Writable> extends ArrayList<E> implements Writable {
     private Class<E> itemTypeClass;
 
@@ -43,7 +40,7 @@ public class WritableList<E extends Writable> extends ArrayList<E> implements Wr
     /**
      * <h3> Get item class by </h3>
      * <pre>
-     * (Class<E>) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+     * (Class[E]) ((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
      * </pre>
      */
     @Deprecated
@@ -65,7 +62,7 @@ public class WritableList<E extends Writable> extends ArrayList<E> implements Wr
      * Serialize the fields of this object to <code>out</code>.
      *
      * @param out <code>DataOuput</code> to serialize this object into.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void write(DataOutput out) throws IOException {
@@ -83,7 +80,7 @@ public class WritableList<E extends Writable> extends ArrayList<E> implements Wr
      * existing object where possible.</p>
      *
      * @param in <code>DataInput</code> to deseriablize this object from.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void readFields(DataInput in) throws IOException {

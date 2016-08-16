@@ -18,9 +18,10 @@ package org.apache.eagle.query.aggregate.test;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.BucketQuery;
-import org.junit.Assert;
+
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -128,7 +129,7 @@ public class TestBucketQuery {
         e4.setTags(new HashMap<String, String>());
         e4.getTags().put("cluster", "cluster1");
         // rack is set to null
-//		e4.getTags().put("rack", "rack124");
+        //  e4.getTags().put("rack", "rack124");
         e4.setDescription("this is description 3");
         limit = 2;
         BucketQuery query4 = new BucketQuery(bucketFields, limit);

@@ -31,11 +31,8 @@ public class PostHierarchicalAggregateSort {
     }
 
     /**
-     * sort aggregated results with sort options
+     * sort aggregated results with sort options.
      *
-     * @param result
-     * @param sortOptions
-     * @return
      */
     public static HierarchicalAggregateEntity sort(HierarchicalAggregateEntity result, List<SortOption> sortOptions) {
         SortedSet<Map.Entry<String, HierarchicalAggregateEntity>> tmp = sortByValue(result, sortOptions);
@@ -55,7 +52,7 @@ public class PostHierarchicalAggregateSort {
         }
 
         /**
-         * default to sort by all groupby fields
+         * default to sort by all groupby fields.
          */
         @Override
         public int compare(Map.Entry<String, HierarchicalAggregateEntity> e1, Map.Entry<String, HierarchicalAggregateEntity> e2) {

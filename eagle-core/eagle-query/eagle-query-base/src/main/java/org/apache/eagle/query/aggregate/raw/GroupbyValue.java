@@ -17,6 +17,7 @@
 package org.apache.eagle.query.aggregate.raw;
 
 import org.apache.eagle.common.ByteUtil;
+
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Writable;
@@ -36,7 +37,6 @@ import java.io.IOException;
  *                           // and so on
  * }
  * </pre>
- * <p>
  * TODO: Add self-described serializer or deserializer for meta bytes array, so that any side of the RPC will know how to read/write meta information
  *
  * @since : 11/4/14,2014
@@ -67,9 +67,7 @@ public class GroupbyValue implements Writable {
         return this.value;
     }
 
-    public WritableList<BytesWritable> getMeta() {
-        return this.meta;
-    }
+
 
     public DoubleWritable get(int index) {
         return this.value.get(index);
@@ -80,6 +78,10 @@ public class GroupbyValue implements Writable {
             return null;
         }
         return this.meta.get(index);
+    }
+
+    public WritableList<BytesWritable> getMeta() {
+        return this.meta;
     }
 
     // Values
@@ -118,7 +120,7 @@ public class GroupbyValue implements Writable {
      * Serialize the fields of this object to <code>out</code>.
      *
      * @param out <code>DataOuput</code> to serialize this object into.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void write(DataOutput out) throws IOException {
@@ -134,7 +136,7 @@ public class GroupbyValue implements Writable {
      * existing object where possible.</p>
      *
      * @param in <code>DataInput</code> to deseriablize this object from.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void readFields(DataInput in) throws IOException {

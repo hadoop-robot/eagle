@@ -59,7 +59,9 @@ public class RawAggregator implements QualifierCreationListener, GroupbyKeyAggre
     }
 
     /**
-     * @return
+     * Get aggregated result in Map[List[Key in String],List[Value in Double]] .
+     *
+     * @return aggregated result in Map[List[Key in String],List[Value in Double]]
      */
     public Map<List<String>, List<Double>> result() {
         return bucket.result();

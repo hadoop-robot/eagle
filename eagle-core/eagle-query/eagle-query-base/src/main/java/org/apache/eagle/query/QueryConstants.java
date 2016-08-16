@@ -16,9 +16,6 @@
  */
 package org.apache.eagle.query;
 
-/**
- * @since 3/25/15
- */
 public class QueryConstants {
-    public final static String CHARSET = "UTF-8";
+    public static final String CHARSET = "UTF-8";
 }

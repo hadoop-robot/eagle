@@ -16,15 +16,15 @@
  */
 package org.apache.eagle.query.aggregate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PostAggregateSorting {
     private static final Logger LOG = LoggerFactory.getLogger(PostAggregateSorting.class);
@@ -36,9 +36,8 @@ public class PostAggregateSorting {
     }
 
     /**
-     * recursively populate sorted list from entity list
+     * recursively populate sorted list from entity list.
      *
-     * @param entity
      */
     public static void sort(AggregateAPIEntity entity, List<AggregateParams.SortFieldOrder> sortFieldOrders) {
         // sort should internally add key field to AggregateAPIEntity before the sorting starts as "key" could be sorted against

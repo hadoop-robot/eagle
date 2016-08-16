@@ -18,12 +18,10 @@ package org.apache.eagle.query;
 
 import java.util.List;
 
-/**
- * @since : 10/30/14,2014
- */
+
 public interface GenericQuery {
     /**
-     * Throw all exceptions to http server
+     * Throw all exceptions to http server.
      *
      * @param <T> result entity type
      * @return result entities list
@@ -32,14 +30,14 @@ public interface GenericQuery {
     <T> List<T> result() throws Exception;
 
     /**
-     * Get last/largest timestamp on all rows
+     * Get last/largest timestamp on all rows.
      *
      * @return last timestamp
      */
     long getLastTimestamp();
 
     /**
-     * Get first timestamp on all rows
+     * Get first timestamp on all rows.
      */
     long getFirstTimeStamp();
 }

@@ -16,11 +16,10 @@
  */
 package org.apache.eagle.query.aggregate.test;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-
-
-import org.junit.Test;
 
 public class TestAlertAggService {
     @Test
@@ -36,21 +35,21 @@ public class TestAlertAggService {
         alertTagNameValues.add(tagNameValue3);
         alertTagNameValues.add(tagNameValue4);
         alertTagNameValues.add(tagNameValue5);
-//		AlertAggResource r = new AlertAggResource();
-//		List<List<String>> result = r.compileAndSplitConditions(alertTagNameValues);
-//		Assert.assertEquals(result.size(), 3);
-//		Assert.assertEquals(result.get(0).size(), 3);
-//		Assert.assertTrue(result.get(0).contains(tagNameValue2));
-//		Assert.assertTrue(result.get(0).contains(tagNameValue1));
-//		Assert.assertTrue(result.get(0).contains(tagNameValue4));
-//		Assert.assertEquals(result.get(1).size(), 3);
-//		Assert.assertTrue(result.get(1).contains(tagNameValue3));
-//		Assert.assertTrue(result.get(1).contains(tagNameValue1));
-//		Assert.assertTrue(result.get(1).contains(tagNameValue4));
-//		Assert.assertEquals(result.get(2).size(), 3);
-//		Assert.assertTrue(result.get(2).contains(tagNameValue5));
-//		Assert.assertTrue(result.get(2).contains(tagNameValue1));
-//		Assert.assertTrue(result.get(2).contains(tagNameValue4));
+        // AlertAggResource r = new AlertAggResource();
+        // List<List<String>> result = r.compileAndSplitConditions(alertTagNameValues);
+        // Assert.assertEquals(result.size(), 3);
+        // Assert.assertEquals(result.get(0).size(), 3);
+        // Assert.assertTrue(result.get(0).contains(tagNameValue2));
+        // Assert.assertTrue(result.get(0).contains(tagNameValue1));
+        // Assert.assertTrue(result.get(0).contains(tagNameValue4));
+        // Assert.assertEquals(result.get(1).size(), 3);
+        // Assert.assertTrue(result.get(1).contains(tagNameValue3));
+        // Assert.assertTrue(result.get(1).contains(tagNameValue1));
+        // Assert.assertTrue(result.get(1).contains(tagNameValue4));
+        // Assert.assertEquals(result.get(2).size(), 3);
+        // Assert.assertTrue(result.get(2).contains(tagNameValue5));
+        // Assert.assertTrue(result.get(2).contains(tagNameValue1));
+        // Assert.assertTrue(result.get(2).contains(tagNameValue4));
     }
 }
 

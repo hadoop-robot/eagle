@@ -30,10 +30,10 @@ import java.io.IOException;
  *  value: GroupbyValue
  * }
  * </pre>
+ * .
  *
  * @see GroupbyKey
  * @see GroupbyValue
- * @since : 11/4/14,2014
  */
 public class GroupbyKeyValue implements Writable {
     private GroupbyKey key;
@@ -69,7 +69,7 @@ public class GroupbyKeyValue implements Writable {
      * Serialize the fields of this object to <code>out</code>.
      *
      * @param out <code>DataOuput</code> to serialize this object into.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void write(DataOutput out) throws IOException {
@@ -84,7 +84,7 @@ public class GroupbyKeyValue implements Writable {
      * existing object where possible.</p>
      *
      * @param in <code>DataInput</code> to deseriablize this object from.
-     * @throws java.io.IOException
+     * @throws java.io.IOException IOException
      */
     @Override
     public void readFields(DataInput in) throws IOException {

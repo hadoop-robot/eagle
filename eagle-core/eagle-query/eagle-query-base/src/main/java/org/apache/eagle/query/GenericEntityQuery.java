@@ -18,15 +18,13 @@ package org.apache.eagle.query;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @since : 10/30/14,2014
- */
 public class GenericEntityQuery implements GenericQuery, EntityCreationListener {
     private static final Logger LOG = LoggerFactory.getLogger(GenericEntityQuery.class);
 

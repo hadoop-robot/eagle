@@ -20,6 +20,7 @@ import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyAggregatable;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,6 @@ import java.util.Map;
 /**
  * TODO Assuming that data point comes in the sequence of occurrence time desc or asc would
  * save memory for holding all the data in the memory
- * <p>
  * <h3>Aggregate Bucket Structure</h3>
  * <pre>
  * {
@@ -40,7 +40,7 @@ import java.util.Map;
  * </pre>
  */
 public class TimeSeriesAggregator extends FlatAggregator implements GroupbyKeyAggregatable {
-    private final static Logger LOG = LoggerFactory.getLogger(TimeSeriesAggregator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TimeSeriesAggregator.class);
     private static final int DEFAULT_DATAPOINT_MAX_COUNT = 1000;
     private long startTime;
     private long endTime;
@@ -52,22 +52,24 @@ public class TimeSeriesAggregator extends FlatAggregator implements GroupbyKeyAg
                                 long startTime, long endTime, long intervalms) {
         super(groupbyFields, aggregateFuntionTypes, aggregatedFields);
         // guard to avoid too many data points returned
-//		validateTimeRange(startTime, endTime, intervalms);
+        //  validateTimeRange(startTime, endTime, intervalms);
         this.startTime = startTime;
         this.endTime = endTime;
         this.intervalms = intervalms;
         this.numFunctions = aggregateFuntionTypes.size();
     }
 
-//	@Deprecated
-//	public static void validateTimeRange(long startTime, long endTime, long intervalms){
-//		if(startTime >= endTime || intervalms <= 0){
-//			throw new IllegalArgumentException("invalid argument, startTime should be less than endTime and interval must be greater than 0, starTime is " + startTime + " and endTime is " + endTime + ", interval is " + intervalms);
-//		}
-//		if((endTime-startTime)/intervalms > DEFAULT_DATAPOINT_MAX_COUNT){
-//			throw new IllegalArgumentException("invalid argument, # of datapoints should be less than " + DEFAULT_DATAPOINT_MAX_COUNT + ", current # of datapoints is " + (endTime-startTime)/intervalms);
-//		}
-//	}
+    //    @Deprecated
+    //    public static void validateTimeRange(long startTime, long endTime, long intervalms){
+    //        if(startTime >= endTime || intervalms <= 0){
+    //          throw new IllegalArgumentException("invalid argument, startTime should be less than endTime and interval must be greater than 0," 
+    //              + " starTime is " + startTime + " and endTime is " + endTime + ", interval is " + intervalms);
+    //        }
+    //        if((endTime-startTime)/intervalms > DEFAULT_DATAPOINT_MAX_COUNT){
+    //          throw new IllegalArgumentException("invalid argument, # of datapoints should be less than " + DEFAULT_DATAPOINT_MAX_COUNT + ", " 
+    //              + "current # of datapoints is " + (endTime-startTime)/intervalms);
+    //        }
+    //  }
 
     public void accumulate(TaggedLogAPIEntity entity) throws Exception {
         List<String> groupbyFieldValues = createGroup(entity);
@@ -95,9 +97,9 @@ public class TimeSeriesAggregator extends FlatAggregator implements GroupbyKeyAg
     }
 
     /**
-     * Support new aggregate result
+     * Support new aggregate result.
      *
-     * @return
+     * @return GroupbyKeyValues
      */
     @Override
     public List<GroupbyKeyValue> getGroupbyKeyValues() {
@@ -110,33 +112,33 @@ public class TimeSeriesAggregator extends FlatAggregator implements GroupbyKeyAg
     public Map<List<String>, List<double[]>> getMetric() {
         // groupbyfields+timeseriesbucket --> aggregatedvalues for different function
         Map<List<String>, List<Double>> result = bucket.result();
-//		Map<List<String>, List<double[]>> timeseriesDatapoints = new HashMap<List<String>, List<double[]>>();
-//		/**
-//		 * bug fix: startTime is inclusive and endTime is exclusive
-//		 */
-////		int numDatapoints =(int)((endTime-startTime)/intervalms + 1);
-//		int numDatapoints =(int)((endTime-1-startTime)/intervalms + 1);
-//		for(Map.Entry<List<String>, List<Double>> entry : result.entrySet()){
-//			// get groups
-//			List<String> groupbyFields = entry.getKey();
-//			List<String> copy = new ArrayList<String>(groupbyFields);
-//			String strTimeseriesIndex = copy.remove(copy.size()-1);
-//			List<double[]> functionValues = timeseriesDatapoints.get(copy);
-//			if(functionValues == null){
-//				functionValues = new ArrayList<double[]>();
-//				timeseriesDatapoints.put(copy, functionValues);
-//				for(int i=0; i<numFunctions; i++){
-//					functionValues.add(new double[numDatapoints]);
-//				}
-//			}
-//			int timeseriesIndex = Integer.valueOf(strTimeseriesIndex);
-//			int functionIndex = 0;
-//			for(double[] values : functionValues){
-//				values[timeseriesIndex] = entry.getValue().get(functionIndex);
-//				functionIndex++;
-//			}
-//		}
-//		return timeseriesDatapoints;
+        //        Map<List<String>, List<double[]>> timeseriesDatapoints = new HashMap<List<String>, List<double[]>>();
+        //        /**
+        //         * bug fix: startTime is inclusive and endTime is exclusive
+        //         */
+        ////        int numDatapoints =(int)((endTime-startTime)/intervalms + 1);
+        //        int numDatapoints =(int)((endTime-1-startTime)/intervalms + 1);
+        //        for(Map.Entry<List<String>, List<Double>> entry : result.entrySet()){
+        //            // get groups
+        //            List<String> groupbyFields = entry.getKey();
+        //            List<String> copy = new ArrayList<String>(groupbyFields);
+        //            String strTimeseriesIndex = copy.remove(copy.size()-1);
+        //            List<double[]> functionValues = timeseriesDatapoints.get(copy);
+        //            if(functionValues == null){
+        //                functionValues = new ArrayList<double[]>();
+        //                timeseriesDatapoints.put(copy, functionValues);
+        //                for(int i=0; i<numFunctions; i++){
+        //                    functionValues.add(new double[numDatapoints]);
+        //                }
+        //            }
+        //            int timeseriesIndex = Integer.valueOf(strTimeseriesIndex);
+        //            int functionIndex = 0;
+        //            for(double[] values : functionValues){
+        //                values[timeseriesIndex] = entry.getValue().get(functionIndex);
+        //                functionIndex++;
+        //            }
+        //        }
+        //        return timeseriesDatapoints;
         return toMetric(result, (int) ((endTime - 1 - startTime) / intervalms + 1), this.numFunctions);
     }
 
@@ -145,8 +147,8 @@ public class TimeSeriesAggregator extends FlatAggregator implements GroupbyKeyAg
         /**
          * bug fix: startTime is inclusive and endTime is exclusive
          */
-//		int numDatapoints =(int)((endTime-startTime)/intervalms + 1);
-//		int numDatapoints =(int)((endTime-1-startTime)/intervalms + 1);
+        //  int numDatapoints =(int)((endTime-startTime)/intervalms + 1);
+        //  int numDatapoints =(int)((endTime-1-startTime)/intervalms + 1);
         for (Map.Entry<List<String>, List<Double>> entry : result.entrySet()) {
             // get groups
             List<String> groupbyFields = entry.getKey();

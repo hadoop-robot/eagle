@@ -20,14 +20,15 @@ import org.apache.eagle.log.entity.filter.HBaseFilterBuilder;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.expression.ExpressionParser;
+import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.aggregate.AggregateFunctionTypeMatcher;
 import org.apache.eagle.query.aggregate.timeseries.SortOption;
 import org.apache.eagle.query.aggregate.timeseries.SortOptionsParser;
 import org.apache.eagle.query.parser.EagleQueryParseException;
 import org.apache.eagle.query.parser.EagleQueryParser;
 import org.apache.eagle.query.parser.ORExpression;
 import org.apache.eagle.query.parser.TokenConstant;
-import org.apache.eagle.query.aggregate.AggregateFunctionType;
-import org.apache.eagle.query.aggregate.AggregateFunctionTypeMatcher;
+
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.slf4j.Logger;
@@ -38,37 +39,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ListQueryCompiler {
-    private final static Logger LOG = LoggerFactory.getLogger(ListQueryCompiler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ListQueryCompiler.class);
     /**
-     * syntax is <EntityName>[<Filter>]{<Projection>}
+     * syntax is &lt;EntityName&gt;[&lt;Filter&gt;]{&lt;Projection&gt;}.
      */
-    private final static String listRegex = "^([^\\[]+)\\[([^\\]]*)\\]\\{(.+)\\}$";
-    private final static Pattern _listPattern = Pattern.compile(listRegex);
+    private static final String listRegex = "^([^\\[]+)\\[([^\\]]*)\\]\\{(.+)\\}$";
+    private static final Pattern _listPattern = Pattern.compile(listRegex);
 
     /**
-     * syntax is @<fieldname>
+     * syntax is @&lt;fieldname&gt;.
      */
-    private final static String _fnAnyPattern = "*";
-    private final static Pattern _fnPattern = TokenConstant.ID_PATTERN;
+    private static final String _fnAnyPattern = "*";
+    private static final Pattern _fnPattern = TokenConstant.ID_PATTERN;
 
     /**
-     * syntax is @<expression>
+     * syntax is @&lt;expression&gt;.
      */
-    private final static String expRegex = "^(EXP\\{.*\\})(\\s+AS)?(\\s+.*)?$";
-    private final static Pattern _expPattern = Pattern.compile(expRegex, Pattern.CASE_INSENSITIVE);
+    private static final String expRegex = "^(EXP\\{.*\\})(\\s+AS)?(\\s+.*)?$";
+    private static final Pattern _expPattern = Pattern.compile(expRegex, Pattern.CASE_INSENSITIVE);
 
     /**
-     * syntax is <EntityName>[<Filter>]<GroupbyFields>{<AggregateFunctions>}
+     * syntax is &lt;EntityName&gt;[&lt;Filter&gt;]&lt;GroupbyFields&gt;{&lt;AggregateFunctions&gt;}.
      */
 
     /**
-     * The regular expression before add EXP{<Expression>} in query
+     * The regular expression before add <code>EXP{&lt;Expression&gt;}</code> in query.
      **/
-    private final static String aggRegex = "^([^\\[]+)\\[([^\\]]*)\\]<([^>]*)>\\{(.+)\\}$";
-    private final static Pattern _aggPattern = Pattern.compile(aggRegex);
+    private static final String aggRegex = "^([^\\[]+)\\[([^\\]]*)\\]<([^>]*)>\\{(.+)\\}$";
+    private static final Pattern _aggPattern = Pattern.compile(aggRegex);
 
-    private final static String sortRegex = "^([^\\[]+)\\[([^\\]]*)\\]<([^>]*)>\\{(.+)\\}\\.\\{(.+)\\}$";
-    private final static Pattern _sortPattern = Pattern.compile(sortRegex);
+    private static final String sortRegex = "^([^\\[]+)\\[([^\\]]*)\\]<([^>]*)>\\{(.+)\\}\\.\\{(.+)\\}$";
+    private static final Pattern _sortPattern = Pattern.compile(sortRegex);
 
     private String _serviceName;
     private Filter _filter;
@@ -81,9 +82,9 @@ public class ListQueryCompiler {
     private Map<String, String> _outputAlias;
 
     /**
-     * Filed that must be required in filter
+     * Filed that must be required in filter.
      *
-     * @return
+     * @return field name set
      */
     public Set<String> getFilterFields() {
         return _filterFields;
@@ -128,9 +129,8 @@ public class ListQueryCompiler {
 
         m = _aggPattern.matcher(query);
         if (m.find()) {
-            if (m.groupCount() != 4)
             //if(m.groupCount() < 4 || m.groupCount() > 5)
-            {
+            if (m.groupCount() != 4) {
                 throw new IllegalArgumentException("Aggregate query syntax is <EntityName>[<Filter>]<GroupbyFields>{<AggregateFunctions>}.{<SortOptions>}");
             }
             compileAggregateQuery(m);
@@ -139,7 +139,9 @@ public class ListQueryCompiler {
             return;
         }
 
-        throw new IllegalArgumentException("List query syntax is <EntityName>[<Filter>]{<Projection>} \n Aggregate query syntax is <EntityName>[<Filter>]<GroupbyFields>{<AggregateFunctions>}.{<SortOptions>}");
+        throw new IllegalArgumentException(
+            "List query syntax is <EntityName>[<Filter>]{<Projection>} \n "
+                + "Aggregate query syntax is <EntityName>[<Filter>]<GroupbyFields>{<AggregateFunctions>}.{<SortOptions>}");
     }
 
     /**
@@ -290,8 +292,9 @@ public class ListQueryCompiler {
         }
 
         // sort options
-        if (m.groupCount() < 5 || m.group(5) == null) // no sort options
-        {
+
+        // if no sort options
+        if (m.groupCount() < 5 || m.group(5) == null) {
             return;
         }
         String sortOptions = m.group(5);
@@ -316,8 +319,8 @@ public class ListQueryCompiler {
      * 1. syntax level - use antlr to pass the queries
      * 2. semantics level - can't distinguish tag or qualifier
      *
-     * @param qy
-     * @return
+     * @param qy query text
+     * @return HBase Filter
      */
     private Filter compileQy(String qy) throws EagleQueryParseException {
         try {
@@ -393,7 +396,7 @@ public class ListQueryCompiler {
     /**
      * Output all fields (i.e. has * in out fields)
      *
-     * @return
+     * @return whether to output all *
      */
     public boolean isOutputAll() {
         return _outputAll;

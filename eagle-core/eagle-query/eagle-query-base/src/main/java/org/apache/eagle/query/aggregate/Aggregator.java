@@ -16,14 +16,14 @@
  */
 package org.apache.eagle.query.aggregate;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 public class Aggregator {
     private static final Logger LOG = LoggerFactory.getLogger(Aggregator.class);
@@ -46,12 +46,12 @@ public class Aggregator {
     }
 
     /**
-     * this locate result can be cached? we don't need check if it's TaggedLogAPIEntity each time when iterating entities
+     * this locate result can be cached? we don't need check if it's TaggedLogAPIEntity each time when iterating entities.
      *
-     * @param groupby
-     * @param obj
-     * @return
-     * @throws Exception
+     * @param groupby groupby
+     * @param obj obj
+     * @return group by field name
+     * @throws Exception Exception
      */
     private String locateGroupbyField(String groupby, TaggedLogAPIEntity obj) {
         if (groupby.equals(GROUPBY_ROOT_FIELD_NAME)) {
@@ -75,10 +75,10 @@ public class Aggregator {
     }
 
     /**
-     * accumulate a list of entities
+     * accumulate a list of entities.
      *
-     * @param entities
-     * @throws Exception
+     * @param entities entities
+     * @throws Exception Exception
      */
     public void accumulateAll(List<TaggedLogAPIEntity> entities) throws Exception {
         for (TaggedLogAPIEntity entity : entities) {
@@ -88,7 +88,7 @@ public class Aggregator {
 
     /**
      * currently only group by tags
-     * groupbys' first item always is site, which is a reserved field
+     * groupbys' first item always is site, which is a reserved field.
      */
     public void accumulate(TaggedLogAPIEntity entity) throws Exception {
         AggregateAPIEntity current = root;
@@ -121,7 +121,7 @@ public class Aggregator {
 
     /**
      * use java bean specifications?
-     * reflection is not efficient, let us find out solutions
+     * reflection is not efficient, let us find out solutions.
      */
     private void sum(Object targetObj, TaggedLogAPIEntity srcObj, String fieldName) throws Exception {
         try {
@@ -162,10 +162,10 @@ public class Aggregator {
     }
 
     /**
-     * count possible not only count for number of descendants but also count for not-null fields
+     * count possible not only count for number of descendants but also count for not-null fields.
      *
-     * @param targetObj
-     * @throws Exception
+     * @param targetObj AggregateAPIEntity
+     * @throws Exception Exception
      */
     private void count(AggregateAPIEntity targetObj) throws Exception {
         targetObj.setNumTotalDescendants(targetObj.getNumTotalDescendants() + 1);

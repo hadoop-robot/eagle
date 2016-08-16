@@ -38,9 +38,7 @@ public class TimeSeriesPostFlatAggregateSort {
     }
 
     /**
-     * sort aggregated results with sort options
-     *
-     * @param entity
+     * sort aggregated results with sort options.
      */
     public static List<Map.Entry<List<String>, List<double[]>>> sort(
         Map<List<String>, List<Double>> mapForSort,
@@ -81,7 +79,7 @@ public class TimeSeriesPostFlatAggregateSort {
         }
 
         /**
-         * default to sort by all groupby fields
+         * default to sort by all groupby fields.
          */
         @Override
         public int compare(Map.Entry<List<String>, List<Double>> e1,
