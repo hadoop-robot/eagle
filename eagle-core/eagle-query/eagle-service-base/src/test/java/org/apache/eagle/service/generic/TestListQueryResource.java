@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.service.generic;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.GenericEntityWriter;
 import org.apache.eagle.log.entity.GenericMetricEntity;
@@ -28,7 +29,7 @@ import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.service.hbase.TestHBaseBase;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
-import org.apache.eagle.common.DateTimeUtil;
+
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 import org.junit.*;
@@ -47,7 +48,7 @@ public class TestListQueryResource extends TestHBaseBase {
     List<String> rowkeys;
     AggregateClient client;
     Scan scan;
-    String TEST_TIME_SERIES_API_SERVICE = "TestTimeSeriesAPIEntity";
+    static final String TEST_TIME_SERIES_API_SERVICE = "TestTimeSeriesAPIEntity";
     EntityDefinition entityDefinition = null;
 
     @Before
@@ -61,7 +62,7 @@ public class TestListQueryResource extends TestHBaseBase {
         table = EagleConfigFactory.load().getHTable("unittest");
         startTime = System.currentTimeMillis();
         try {
-//			rowkeys = prepareTestEntity(200);
+            //  rowkeys = prepareTestEntity(200);
         } catch (Exception e) {
             e.printStackTrace();
             junit.framework.Assert.fail(e.getMessage());
@@ -77,8 +78,8 @@ public class TestListQueryResource extends TestHBaseBase {
             junit.framework.Assert.fail(e.getMessage());
         }
         scan.setFilter(compiler.filter());
-//		scan.setStartRow(EagleBase64Wrapper.decode(rowkeys.get(0)));
-//		scan.setStopRow(EagleBase64Wrapper.decode(rowkeys.get(rowkeys.size()-1)));
+        //  scan.setStartRow(EagleBase64Wrapper.decode(rowkeys.get(0)));
+        //  scan.setStopRow(EagleBase64Wrapper.decode(rowkeys.get(rowkeys.size()-1)));
     }
 
     @After
@@ -337,7 +338,8 @@ public class TestListQueryResource extends TestHBaseBase {
         Assert.assertTrue(response.isSuccess());
 
         // Tag with =, !=, =~, !=~, contains, not contains, in, not in
-        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND (@tag1!=\"value1\" or @tag2=~\"value2\" or ((@tag3 contains \"value3\") or (@tag3 not contains \"value3\")) or @tag4 !=~ \"value4\" or @tag5 in (\"value5-1\",\"value5-2\",\"value5-3\") or @tag6 not in (\"value5-1\",\"value5-2\",\"value5-3\"))]{@cluster}";
+        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND (@tag1!=\"value1\" or @tag2=~\"value2\" or ((@tag3 contains \"value3\") "
+            + "or (@tag3 not contains \"value3\")) or @tag4 !=~ \"value4\" or @tag5 in (\"value5-1\",\"value5-2\",\"value5-3\") or @tag6 not in (\"value5-1\",\"value5-2\",\"value5-3\"))]{@cluster}";
         response = resource.listQuery(query, startTime, endTime, 100, null, false, true, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue(response.isSuccess());
@@ -355,8 +357,8 @@ public class TestListQueryResource extends TestHBaseBase {
         Assert.assertFalse("Tag with unsupported operation, should get exception", response.isSuccess());
 
         // Field with numeric
-        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND " +
-            "(@field1 < 1 or @field2 = 2 or @field3 = 13456789 or @field4 = 987654321 or @field5 = 5.6 or @field7 < \"value7\")]{@cluster}";
+        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND "
+            + "(@field1 < 1 or @field2 = 2 or @field3 = 13456789 or @field4 = 987654321 or @field5 = 5.6 or @field7 < \"value7\")]{@cluster}";
         response = resource.listQuery(query, startTime, endTime, 100, null, false, true, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Field with numeric, should success", response.isSuccess());
@@ -389,13 +391,6 @@ public class TestListQueryResource extends TestHBaseBase {
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is not null, should success: " + query, response.isSuccess());
 
-//		startTime = "2014-02-13 15:00:00";
-//		endTime = "2014-02-13 15:05:00";
-//		query = "TaskAttemptExecutionService[@cluster=\"cluster1\" AND @datacenter=\"dc1\"]{@cluster,@startTime}";
-//		response = resource.listQuery(query, startTime, endTime, 10, null, false, true, 1);
-//		Assert.assertNotNull(response);
-//		Assert.assertTrue(response.isSuccess());
-
         query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND EXP{@field1 + @field2} > 0]{@cluster}";
         response = resource.listQuery(query, startTime, endTime, 100, null, false, true, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
@@ -425,8 +420,8 @@ public class TestListQueryResource extends TestHBaseBase {
     @Test
     public void testObjectTypeFieldQuery() throws IllegalAccessException, InstantiationException {
 
-        String startTime = DateTimeUtil.secondsToHumanDate(System.currentTimeMillis() / 1000);
-        String endTime = DateTimeUtil.secondsToHumanDate((System.currentTimeMillis() + 1000) / 1000);
+        final String startTime = DateTimeUtil.secondsToHumanDate(System.currentTimeMillis() / 1000);
+        final String endTime = DateTimeUtil.secondsToHumanDate((System.currentTimeMillis() + 1000) / 1000);
 
         String[] partitions = new String[2];
         partitions[0] = "cluster";
@@ -440,8 +435,8 @@ public class TestListQueryResource extends TestHBaseBase {
         String query = "TestLogAPIEntity[]{@cluster}";
 
         // Field with numeric
-        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND " +
-            "(@field1 < 1 or @field2 = 2 or @field3 = 13456789 or @field4 = 987654321 or @field5 = 5.6 or @field7 < \"value7\")]{@cluster}";
+        query = "TestLogAPIEntity[@cluster=\"cluster1\" AND @datacenter=\"dc1\" AND "
+            + "(@field1 < 1 or @field2 = 2 or @field3 = 13456789 or @field4 = 987654321 or @field5 = 5.6 or @field7 < \"value7\")]{@cluster}";
         ListQueryAPIResponseEntity response = resource.listQuery(query, startTime, endTime, 100, null, false, true, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Field with numeric, should success", response.isSuccess());
@@ -452,7 +447,6 @@ public class TestListQueryResource extends TestHBaseBase {
         ListQueryResource resource = new ListQueryResource();
         ListQueryAPIResponseEntity response = null;
         String query = null;
-//		String start = DateTimeUtil.secondsToHumanDate(startTime / 1000);
         String start = DateTimeUtil.secondsToHumanDate(0);
 
         String end = DateTimeUtil.secondsToHumanDate((endTime + 24 * 3600) / 1000);
@@ -461,9 +455,6 @@ public class TestListQueryResource extends TestHBaseBase {
         response = resource.listQuery(query, start, end, 100000, null, false, false, 1, 0, false, 0, null);
 
         Assert.assertNotNull(response);
-//		Assert.assertTrue(response.getLastTimestamp() > 0);
-//		Assert.assertTrue(response.getFirstTimestamp() >= 0);
-//		Assert.assertTrue(response.getLastTimestamp() >= response.getFirstTimestamp());
 
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
 
@@ -496,27 +487,15 @@ public class TestListQueryResource extends TestHBaseBase {
         response = resource.listQuery(query, start, end, 100000, null, false, false, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
 
         query = TEST_TIME_SERIES_API_SERVICE + "[@cluster=\"test4UT\" AND @datacenter=\"dc1\"]<@cluster,@datacenter>{max(field1),min(field1),avg(field1),sum(field1),count}.{count desc}";
         response = resource.listQuery(query, start, end, 100000, null, false, false, 1, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
-
-//		ArrayList<Map.Entry<List<String>,List<Double>>> obj = (ArrayList<Map.Entry<List<String>,List<Double>>>) response.getObj();
-//		Assert.assertEquals(1,obj.size());
-//		Assert.assertEquals(2,obj.get(0).getKey().size());
-//		Assert.assertEquals("test4UT",obj.get(0).getKey().get(0));
-//		Assert.assertEquals("dc1",obj.get(0).getKey().get(1));
-//		Assert.assertEquals(new Double(1.0),obj.get(0).getValue().get(0));
-//		Assert.assertEquals(new Double(1.0),obj.get(0).getValue().get(1));
-//		Assert.assertEquals(new Double(1.0), obj.get(0).getValue().get(2));
-//		Assert.assertTrue(obj.get(0).getValue().get(3) > 1.0);
     }
 
     /**
-     * TODO: Add time series aggregation query unit test
+     * TODO: Add time series aggregation query unit test.
      */
     @Test
     public void testTimeSeriesAggregateQuery() {
@@ -555,17 +534,15 @@ public class TestListQueryResource extends TestHBaseBase {
         response = resource.listQuery(query, start, end, 100000, null, false, true, 16, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
 
         query = TEST_TIME_SERIES_API_SERVICE + "[@cluster=\"test4UT\" AND @datacenter=\"dc1\"]<@cluster,@datacenter>{max(field1),min(field1),avg(field1),sum(field1),count}.{count desc}";
         response = resource.listQuery(query, start, end, 100000, null, false, true, 16, 1000, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
     }
 
     /**
-     * TODO: Add time series aggregation query unit test
+     * TODO: Add time series aggregation query unit test.
      */
     @Test
     public void testTimeSeriesAggregateQueryWithoutCoprocessor() {
@@ -589,12 +566,10 @@ public class TestListQueryResource extends TestHBaseBase {
         response = resource.listQuery(query, start, end, 100000, null, false, true, 10, 0, false, 0, null);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
 
         query = TEST_TIME_SERIES_API_SERVICE + "[@cluster=\"test4UT\" AND @datacenter=\"dc1\"]<@cluster,@datacenter>{max(field1),min(field1),avg(field1),sum(field1),count}.{max(field1) desc}";
         response = resource.listQueryWithoutCoprocessor(query, start, end, 100000, null, false, true, 10, 1000, false, 0, null, false);
         Assert.assertNotNull(response);
         Assert.assertTrue("Support is null, should success: " + query, response.isSuccess());
-//		Assert.assertEquals(1, response.getTotalResults());
     }
 }

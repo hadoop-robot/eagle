@@ -16,8 +16,6 @@
  */
 package org.apache.eagle.service.generic;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
@@ -28,42 +26,43 @@ import org.apache.eagle.storage.exception.IllegalDataStorageException;
 import org.apache.eagle.storage.operation.*;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
+
 import com.sun.jersey.api.json.JSONWithPadding;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 
-/**
- * @since 3/18/15
- */
 @Path(GenericEntityServiceResource.ROOT_PATH)
 @SuppressWarnings("unchecked")
 public class GenericEntityServiceResource {
-    public final static String ROOT_PATH = "/entities";
-    public final static String JSONP_PATH = "jsonp";
-    public final static String DELETE_ENTITIES_PATH = "delete";
-    public final static String ROWKEY_PATH = "rowkey";
+    public static final String ROOT_PATH = "/entities";
+    public static final String JSONP_PATH = "jsonp";
+    public static final String DELETE_ENTITIES_PATH = "delete";
+    public static final String ROWKEY_PATH = "rowkey";
 
-    public final static String FIRST_TIMESTAMP = "firstTimestamp";
-    public final static String LAST_TIMESTAMP = "lastTimestamp";
-    public final static String ELAPSEDMS = "elapsedms";
-    public final static String TOTAL_RESULTS = "totalResults";
+    public static final String FIRST_TIMESTAMP = "firstTimestamp";
+    public static final String LAST_TIMESTAMP = "lastTimestamp";
+    public static final String ELAPSEDMS = "elapsedms";
+    public static final String TOTAL_RESULTS = "totalResults";
 
-    private final static Logger LOG = LoggerFactory.getLogger(GenericEntityServiceResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GenericEntityServiceResource.class);
 
-    private List<? extends TaggedLogAPIEntity> unmarshalEntitiesByServie(InputStream inputStream, EntityDefinition entityDefinition) throws IllegalAccessException, InstantiationException, IOException {
+    private List<? extends TaggedLogAPIEntity> unmarshalEntitiesByServie(
+        InputStream inputStream, EntityDefinition entityDefinition) throws IllegalAccessException, InstantiationException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(inputStream, TypeFactory.defaultInstance().constructCollectionType(LinkedList.class, entityDefinition.getEntityClass()));
     }
@@ -288,6 +287,8 @@ public class GenericEntityServiceResource {
 
 
     /**
+     * search query.
+     *
      * @param value       rowkey value
      * @param serviceName entity service name
      * @return GenericServiceAPIResponseEntity
@@ -304,7 +305,7 @@ public class GenericEntityServiceResource {
             if (serviceName == null) {
                 throw new IllegalArgumentException("serviceName is null");
             }
-            RowkeyQueryStatement queryStatement = new RowkeyQueryStatement(value, serviceName);
+            final RowkeyQueryStatement queryStatement = new RowkeyQueryStatement(value, serviceName);
             stopWatch = new StopWatch();
             stopWatch.start();
             dataStorage = DataStorageManager.getDataStorageByEagleConfig();
@@ -336,6 +337,8 @@ public class GenericEntityServiceResource {
     }
 
     /**
+     * Search query.
+     *
      * @param serviceName entity service name
      * @return GenericServiceAPIResponseEntity
      */
@@ -388,22 +391,6 @@ public class GenericEntityServiceResource {
     }
 
 
-    /**
-     * @param query
-     * @param startTime
-     * @param endTime
-     * @param pageSize
-     * @param startRowkey
-     * @param treeAgg
-     * @param timeSeries
-     * @param intervalmin
-     * @param top
-     * @param filterIfMissing
-     * @param parallel
-     * @param metricName
-     * @param verbose
-     * @return
-     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @SuppressWarnings("unchecked")
@@ -468,22 +455,6 @@ public class GenericEntityServiceResource {
         return response;
     }
 
-    /**
-     * @param query
-     * @param startTime
-     * @param endTime
-     * @param pageSize
-     * @param startRowkey
-     * @param treeAgg
-     * @param timeSeries
-     * @param intervalmin
-     * @param top
-     * @param filterIfMissing
-     * @param parallel
-     * @param metricName
-     * @param verbose
-     * @return
-     */
     @GET
     @Path(JSONP_PATH)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -504,11 +475,7 @@ public class GenericEntityServiceResource {
     }
 
     /**
-     * TODO
-     * <p>
-     * Delete by query
-     *
-     * @return
+     * Delete by query.
      */
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
@@ -569,13 +536,8 @@ public class GenericEntityServiceResource {
     }
 
     /**
-     * Delete by entity lists
-     * <p>
+     * Delete by entity lists.
      * Use "POST /entities/delete" instead of "DELETE  /entities" to walk around jersey DELETE issue for request with body
-     *
-     * @param inputStream
-     * @param serviceName
-     * @return
      */
     @POST
     @Path(DELETE_ENTITIES_PATH)

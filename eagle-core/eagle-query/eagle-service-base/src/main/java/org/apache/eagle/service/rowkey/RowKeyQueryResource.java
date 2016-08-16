@@ -19,18 +19,7 @@
  */
 package org.apache.eagle.service.rowkey;
 
-import java.io.IOException;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.eagle.service.common.EagleExceptionWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.log.base.taggedlog.NoSuchRowException;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.HBaseInternalLogHelper;
@@ -39,11 +28,18 @@ import org.apache.eagle.log.entity.RowkeyQueryAPIResponseEntity;
 import org.apache.eagle.log.entity.index.RowKeyLogReader;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.common.EagleBase64Wrapper;
+import org.apache.eagle.service.common.EagleExceptionWrapper;
 
-/**
- * @since Jan 26, 2015
- */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
 @Path("/rowkeyquery")
 public class RowKeyQueryResource {
     private static final Logger LOG = LoggerFactory.getLogger(RowKeyQueryResource.class);
@@ -80,6 +76,7 @@ public class RowKeyQueryResource {
                     reader.close();
                 }
             } catch (IOException e) {
+                // Ignore
             }
         }
     }

@@ -22,9 +22,10 @@ package org.apache.eagle.service.generic;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.test.TestLogAPIEntity;
-import org.apache.eagle.query.parser.ORExpression;
-import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.ListQueryCompiler;
+import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.parser.ORExpression;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,9 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * @since Nov 10, 2014
- */
 public class TestListQueryCompiler {
 
     private static final Logger LOG = LoggerFactory.getLogger(TestListQueryCompiler.class);
@@ -51,9 +49,7 @@ public class TestListQueryCompiler {
         entityDef.setTimeSeries(true);
     }
 
-    /**************************************************************************************************/
-    /*********************************** Test Expression In List Query*********************************/
-    /**************************************************************************************************/
+    /*********************************** Test Expression In List Query. *********************************/
 
     @Test
     public void testListQueryWithoutExpression() throws Exception {
@@ -84,7 +80,7 @@ public class TestListQueryCompiler {
     }
 
     @Test
-    public void testListQueryWithExpressionEndWithRPARENInFilter() throws Exception {
+    public void testListQueryWithExpressionEndWithRparenInFilter() throws Exception {
         String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" AND (EXP{@field5 + @field6} > 0.05)]{@cluster, @field1}";
         ListQueryCompiler compiler = new ListQueryCompiler(query, false);
         ORExpression filter = compiler.getQueryExpression();
@@ -110,7 +106,7 @@ public class TestListQueryCompiler {
     }
 
     @Test
-    public void testListQueryWithExpressionEndWithRBRACEInFilter() throws Exception {
+    public void testListQueryWithExpressionEndWithRBraceInFilter() throws Exception {
         String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" AND EXP{@a + @b} > EXP{0.05 + @c + @d}]{@cluster, EXP{@a + @b}}";
         ListQueryCompiler compiler = new ListQueryCompiler(query, false);
         ORExpression filter = compiler.getQueryExpression();
@@ -118,18 +114,16 @@ public class TestListQueryCompiler {
         List<String> aggFields = compiler.aggregateFields();
         Assert.assertTrue(aggFields == null);
         List<String> outputFields = compiler.outputFields();
-//		Assert.assertEquals(outputFields.size(), 2);
         Assert.assertTrue(outputFields.contains("cluster"));
         Assert.assertTrue(outputFields.contains("EXP{a + b}"));
     }
 
-    /**************************************************************************************************/
-    /*********************************** Test Expression In Group By Query*********************************/
-    /**************************************************************************************************/
+    /*********************************** Test Expression In Group By Query.*********************************/
 
     @Test
     public void testGroupByQueryAggWithoutExpressionInAggFunc() throws Exception {
-        String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" AND EXP{@a + @b} > EXP{@c + @d} AND EXP{@a + @c} < EXP{@b + @d + 0.05}]<@cluster, @datacenter>{sum(@a), avg(@b)}";
+        String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" "
+            + "AND EXP{@a + @b} > EXP{@c + @d} AND EXP{@a + @c} < EXP{@b + @d + 0.05}]<@cluster, @datacenter>{sum(@a), avg(@b)}";
         ListQueryCompiler compiler = new ListQueryCompiler(query, false);
         ORExpression filter = compiler.getQueryExpression();
         LOG.info(filter.toString());
@@ -153,7 +147,8 @@ public class TestListQueryCompiler {
 
     @Test
     public void testGroupByQueryAggWithExpressionInAggFunc() throws Exception {
-        String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" AND EXP{@a + @b} > EXP{@c + @d} AND EXP{@a + @c} < EXP{@b + @d + 0.07}]<@cluster, @datacenter>{sum(EXP{@a+@b+20.0}), avg(EXP{(@a+@c + 2.5)/@d}), count}";
+        String query = "TestLogAPIEntity[@cluster=\"cluster\" AND @datacenter=\"datacenter\" AND EXP{@a + @b} > EXP{@c + @d} "
+            + "AND EXP{@a + @c} < EXP{@b + @d + 0.07}]<@cluster, @datacenter>{sum(EXP{@a+@b+20.0}), avg(EXP{(@a+@c + 2.5)/@d}), count}";
         ListQueryCompiler compiler = new ListQueryCompiler(query, false);
         ORExpression filter = compiler.getQueryExpression();
         LOG.info(filter.toString());
@@ -177,9 +172,7 @@ public class TestListQueryCompiler {
         Assert.assertTrue(aggFields.contains("count"));
     }
 
-    /**************************************************************************************************/
-    /*********************************** Test Expression In Sort Query*********************************/
-    /**************************************************************************************************/
+    /*********************************** Test Expression In Sort Query. *********************************/
 
     @Test
     public void testSortQueryWithoutExpressionInSort() throws Exception {

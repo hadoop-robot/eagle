@@ -16,32 +16,26 @@
  */
 package org.apache.eagle.service.rowkey;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.eagle.service.common.EagleExceptionWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.apache.eagle.common.ByteUtil;
+import org.apache.eagle.common.DateTimeUtil;
+import org.apache.eagle.common.EagleBase64Wrapper;
+import org.apache.eagle.common.service.POSTResultEntityBase;
 import org.apache.eagle.log.base.taggedlog.RowkeyAPIEntity;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.InternalLog;
 import org.apache.eagle.log.entity.old.GenericDeleter;
 import org.apache.eagle.log.entity.old.HBaseLogByRowkeyReader;
-import org.apache.eagle.common.ByteUtil;
-import org.apache.eagle.common.DateTimeUtil;
-import org.apache.eagle.common.EagleBase64Wrapper;
-import org.apache.eagle.common.service.POSTResultEntityBase;
+import org.apache.eagle.service.common.EagleExceptionWrapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 @Deprecated
 @Path("rowkey")
@@ -73,6 +67,7 @@ public class RowkeyResource {
             try {
                 getter.close();
             } catch (Exception ex) {
+                // Ignore
             }
         }
 
@@ -109,11 +104,7 @@ public class RowkeyResource {
     }
 
     /**
-     * for entities, the only required field is encodedRowkey
-     *
-     * @param table
-     * @param columnFamily
-     * @param entities
+     * for entities, the only required field is encodedRowkey.
      */
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)

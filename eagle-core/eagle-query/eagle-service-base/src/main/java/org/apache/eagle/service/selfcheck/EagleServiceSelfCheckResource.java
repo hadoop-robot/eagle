@@ -16,12 +16,13 @@
  */
 package org.apache.eagle.service.selfcheck;
 
+import org.apache.eagle.common.config.EagleConfigFactory;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.eagle.common.config.EagleConfigFactory;
 
 @Path("ValidateInternals")
 public class EagleServiceSelfCheckResource {

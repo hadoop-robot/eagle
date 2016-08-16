@@ -17,7 +17,7 @@
 package org.apache.eagle.service.selfcheck;
 
 /**
- * expose internal configuration or metrics
+ * expose internal configuration or metrics.
  */
 //@XmlRootElement
 //@XmlAccessorType(XmlAccessType.FIELD)

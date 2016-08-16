@@ -20,16 +20,17 @@ import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.meta.IndexDefinition;
 import org.apache.eagle.log.entity.meta.MetricDefinition;
+
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractResourceMethod;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -39,16 +40,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.Map;
-
-/**
- * @since : 7/3/14,2014
- */
 @Path(MetadataResource.PATH_META)
 public class MetadataResource {
-    final static String PATH_META = "meta";
-    final static String PATH_RESOURCE = "resource";
-    final static String PATH_SERVICE = "service";
+    static final String PATH_META = "meta";
+    static final String PATH_RESOURCE = "resource";
+    static final String PATH_SERVICE = "service";
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -141,8 +137,6 @@ public class MetadataResource {
         ArrayNode services = JsonNodeFactory.instance.arrayNode();
 
         for (Map.Entry<String, EntityDefinition> entry : entities.entrySet()) {
-//			ObjectNode serviceNode = JsonNodeFactory.instance.objectNode();
-//			serviceNode.put(entry.getKey(),entityDefationitionAsJson(entry.getValue()));
             services.add(entityDefationitionAsJson(entry.getValue()));
         }
         root.put("count", entities.keySet().size());

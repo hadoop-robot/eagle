@@ -17,7 +17,7 @@
 package org.apache.eagle.service.common;
 
 public class EagleExceptionWrapper {
-    private final static int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 10;
 
     public static String wrap(Exception ex) {
         return wrap(ex, EagleExceptionWrapper.MAX_DEPTH);

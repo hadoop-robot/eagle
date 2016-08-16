@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.service.generic;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.*;
@@ -23,30 +24,30 @@ import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.query.GenericQuery;
 import org.apache.eagle.query.ListQueryCompiler;
+import org.apache.eagle.query.aggregate.timeseries.*;
 import org.apache.eagle.service.common.EagleExceptionWrapper;
 import org.apache.eagle.storage.hbase.query.GenericQueryBuilder;
-import org.apache.eagle.common.DateTimeUtil;
+
 import com.sun.jersey.api.json.JSONWithPadding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.eagle.query.aggregate.timeseries.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
 
 @Path("list")
 public class ListQueryResource {
     private static final Logger LOG = LoggerFactory.getLogger(ListQueryResource.class);
 
     /**
-     * Support old interface without verbose parameter
+     * Support old interface without verbose parameter.
      */
     public ListQueryAPIResponseEntity listQuery(@QueryParam("query") String query,
                                                 @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
@@ -60,17 +61,7 @@ public class ListQueryResource {
     }
 
     /**
-     * TODO refactor the code structure,  now it's messy
-     *
-     * @param query
-     * @param startTime
-     * @param endTime
-     * @param pageSize
-     * @param startRowkey
-     * @param treeAgg
-     * @param timeSeries
-     * @param intervalmin
-     * @return
+     * TODO refactor the code structure,  now it's messy.
      */
     @GET
     @Produces( {MediaType.APPLICATION_JSON})
@@ -95,7 +86,7 @@ public class ListQueryResource {
 
             // 1. Compile query to parse parameters and HBase Filter
             ListQueryCompiler comp = new ListQueryCompiler(query, filterIfMissing);
-            String serviceName = comp.serviceName();
+            final String serviceName = comp.serviceName();
 
             SearchCondition condition = new SearchCondition();
             condition.setOutputVerbose(verbose == null || verbose);
@@ -133,7 +124,7 @@ public class ListQueryResource {
             List<String> outputFields = comp.outputFields();
             List<String> groupbyFields = comp.groupbyFields();
             List<String> aggregateFields = comp.aggregateFields();
-            Set<String> filterFields = comp.getFilterFields();
+            final Set<String> filterFields = comp.getFilterFields();
 
             // Start to generate output fields list {
             condition.setOutputAll(comp.isOutputAll());
@@ -198,17 +189,7 @@ public class ListQueryResource {
     }
 
     /**
-     * <b>TODO</b> remove the legacy deprecated implementation of listQueryWithoutCoprocessor
-     *
-     * @param query
-     * @param startTime
-     * @param endTime
-     * @param pageSize
-     * @param startRowkey
-     * @param treeAgg
-     * @param timeSeries
-     * @param intervalmin
-     * @return
+     * <b>TODO</b> remove the legacy deprecated implementation of listQueryWithoutCoprocessor.
      * @see #listQuery(String, String, String, int, String, boolean, boolean, long, int, boolean, int, String, Boolean)
      */
     @GET
@@ -230,7 +211,7 @@ public class ListQueryResource {
         try {
             validateQueryParameters(startRowkey, pageSize);
             ListQueryCompiler comp = new ListQueryCompiler(query, filterIfMissing);
-            String serviceName = comp.serviceName();
+            final String serviceName = comp.serviceName();
 
             SearchCondition condition = new SearchCondition();
             condition.setFilter(comp.filter());
@@ -267,7 +248,6 @@ public class ListQueryResource {
              * TODO ugly logic, waiting for refactoring
              */
             if (!comp.hasAgg() && !serviceName.equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)) { // pure list query
-//				List<String> outputFields = comp.outputFields();
                 Set<String> filterFields = comp.getFilterFields();
                 if (filterFields != null) {
                     outputFields.addAll(filterFields);
@@ -290,7 +270,6 @@ public class ListQueryResource {
                 if (metricName == null || metricName.isEmpty()) {
                     throw new IllegalArgumentException("metricName should not be empty for metric list query");
                 }
-//				List<String> outputFields = comp.outputFields();
                 Set<String> filterFields = comp.getFilterFields();
                 if (filterFields != null) {
                     outputFields.addAll(filterFields);
@@ -312,7 +291,6 @@ public class ListQueryResource {
                 List<String> groupbyFields = comp.groupbyFields();
                 List<String> aggregateFields = comp.aggregateFields();
                 Set<String> filterFields = comp.getFilterFields();
-//				List<String> outputFields = new ArrayList<String>();
                 if (groupbyFields != null) {
                     outputFields.addAll(groupbyFields);
                 }
@@ -325,7 +303,7 @@ public class ListQueryResource {
                     outputFields.add(GenericMetricEntity.VALUE_FIELD);
                 }
 
-                FlatAggregator agg = new FlatAggregator(groupbyFields, comp.aggregateFunctionTypes(), comp.aggregateFields());
+                final FlatAggregator agg = new FlatAggregator(groupbyFields, comp.aggregateFunctionTypes(), comp.aggregateFields());
                 StreamReader reader = null;
                 if (ed.getMetricDefinition() == null) {
                     reader = new GenericEntityStreamReader(serviceName, condition);
@@ -355,7 +333,6 @@ public class ListQueryResource {
                 List<String> groupbyFields = comp.groupbyFields();
                 List<String> aggregateFields = comp.aggregateFields();
                 Set<String> filterFields = comp.getFilterFields();
-//				List<String> outputFields = new ArrayList<String>();
                 if (groupbyFields != null) {
                     outputFields.addAll(groupbyFields);
                 }
@@ -391,9 +368,8 @@ public class ListQueryResource {
             } else if (!treeAgg && timeSeries) { // time-series based aggregate query, not hierarchical
                 List<String> groupbyFields = comp.groupbyFields();
                 List<String> sortFields = comp.sortFields();
-                List<String> aggregateFields = comp.aggregateFields();
+                final List<String> aggregateFields = comp.aggregateFields();
                 Set<String> filterFields = comp.getFilterFields();
-//				List<String> outputFields = new ArrayList<String>();
                 if (groupbyFields != null) {
                     outputFields.addAll(groupbyFields);
                 }
@@ -461,7 +437,6 @@ public class ListQueryResource {
                 List<String> groupbyFields = comp.groupbyFields();
                 List<String> aggregateFields = comp.aggregateFields();
                 Set<String> filterFields = comp.getFilterFields();
-//				List<String> outputFields = new ArrayList<String>();
                 if (groupbyFields != null) {
                     outputFields.addAll(groupbyFields);
                 }
@@ -525,7 +500,8 @@ public class ListQueryResource {
 
     private void validateQueryParameters(String startRowkey, int pageSize) {
         if (pageSize <= 0) {
-            throw new IllegalArgumentException("Positive pageSize value should be always provided. The list query format is:\n" + "eagle-service/rest/list?query=<querystring>&pageSize=10&startRowkey=xyz&startTime=xxx&endTime=xxx");
+            throw new IllegalArgumentException("Positive pageSize value should be always provided. "
+                + "The list query format is:\n" + "eagle-service/rest/list?query=<querystring>&pageSize=10&startRowkey=xyz&startTime=xxx&endTime=xxx");
         }
 
         if (startRowkey != null && startRowkey.equals("null")) {

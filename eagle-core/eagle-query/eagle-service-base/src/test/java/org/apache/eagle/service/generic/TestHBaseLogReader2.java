@@ -26,6 +26,7 @@ import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
 import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.service.hbase.EmbeddedHbase;
+
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -41,7 +42,7 @@ import java.util.List;
 
 @Ignore
 public class TestHBaseLogReader2 {
-    private final static Logger LOG = LoggerFactory.getLogger(TestHBaseLogReader2.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestHBaseLogReader2.class);
     private static EmbeddedHbase hbase = EmbeddedHbase.getInstance();
 
     @SuppressWarnings("serial")
@@ -55,16 +56,18 @@ public class TestHBaseLogReader2 {
             final String cluster = "cluster1";
             final String datacenter = "dc1";
             String serviceName = "TestTimeSeriesAPIEntity";
-            GenericEntityWriter writer = new GenericEntityWriter(serviceName);
-            List<TestTimeSeriesAPIEntity> entities = new ArrayList<TestTimeSeriesAPIEntity>();
+            final GenericEntityWriter writer = new GenericEntityWriter(serviceName);
+            final List<TestTimeSeriesAPIEntity> entities = new ArrayList<TestTimeSeriesAPIEntity>();
             TestTimeSeriesAPIEntity entity = new TestTimeSeriesAPIEntity();
             long timestamp1 = DateTimeUtil.humanDateToSeconds("2014-04-08 03:00:00") * 1000;
             LOG.info("First entity timestamp:" + timestamp1);
             entity.setTimestamp(timestamp1);
-            entity.setTags(new HashMap<String, String>() {{
-                put("cluster", cluster);
-                put("datacenter", datacenter);
-            }});
+            entity.setTags(new HashMap<String, String>() {
+                {
+                    put("cluster", cluster);
+                    put("datacenter", datacenter);
+                }
+            });
             entity.setField7("field7");
             entities.add(entity);
 
@@ -72,10 +75,12 @@ public class TestHBaseLogReader2 {
             long timestamp2 = DateTimeUtil.humanDateToSeconds("2014-05-08 04:00:00") * 1000;
             LOG.info("Second entity timestamp:" + timestamp2);
             entity.setTimestamp(timestamp2);
-            entity.setTags(new HashMap<String, String>() {{
-                put("cluster", cluster);
-                put("datacenter", datacenter);
-            }});
+            entity.setTags(new HashMap<String, String>() {
+                {
+                    put("cluster", cluster);
+                    put("datacenter", datacenter);
+                }
+            });
             entity.setField7("field7_2");
             entities.add(entity);
             writer.write(entities);
@@ -148,7 +153,6 @@ public class TestHBaseLogReader2 {
     @Test
     public void testMaxByteInBytesComparision() {
         int max = -1000000;
-//		int maxb = -1000000;
         System.out.println("Byte MaxValue: " + Byte.MAX_VALUE);
         System.out.println("Byte MaxValue: " + Byte.MIN_VALUE);
         for (int i = -128; i < 128; i++) {

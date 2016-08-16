@@ -16,6 +16,19 @@
  */
 package org.apache.eagle.service.common;
 
+import org.apache.eagle.common.DateTimeUtil;
+import org.apache.eagle.common.EagleBase64Wrapper;
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.log.entity.GenericEntityBatchReader;
+import org.apache.eagle.log.entity.RowkeyBuilder;
+import org.apache.eagle.log.entity.SearchCondition;
+import org.apache.eagle.log.entity.meta.EntityDefinition;
+import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
+import org.apache.eagle.query.ListQueryCompiler;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,24 +38,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.GenericEntityBatchReader;
-import org.apache.eagle.log.entity.RowkeyBuilder;
-import org.apache.eagle.log.entity.SearchCondition;
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.query.ListQueryCompiler;
-import org.apache.eagle.common.DateTimeUtil;
-import org.apache.eagle.common.EagleBase64Wrapper;
-
 /**
  * Support stream based entity read. Internally it splits entity fetching to multiple threads to improve
  * the performance. However, it doesn't support multi-threading for client to read entities from result set.
  */
-public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
+public class SplitFullScanEntityReader<E extends TaggedLogAPIEntity> {
 
     // class members
     public static final int DEFAULT_BUFFER_SIZE = 10 * 1000;
@@ -89,8 +89,8 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
         this.bufferSize = bufferSize;
     }
 
-    public EntityResultSet<ENTITY> read() throws Exception {
-        final EntityResultSet<ENTITY> resultSet = new EntityResultSet<ENTITY>(new ArrayBlockingQueue<TaggedLogAPIEntity>(bufferSize));
+    public EntityResultSet<E> read() throws Exception {
+        final EntityResultSet<E> resultSet = new EntityResultSet<E>(new ArrayBlockingQueue<TaggedLogAPIEntity>(bufferSize));
         final List<GenericEntityBatchReader> readers = createSplitThreads();
 
         final int size = readers.size();
@@ -98,7 +98,7 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
             final AtomicInteger threadCount = new AtomicInteger(size);
             final AtomicInteger entityCount = new AtomicInteger(0);
             for (GenericEntityBatchReader reader : readers) {
-                final EntityFetchThread<ENTITY> thread = new EntityFetchThread<ENTITY>(reader, threadCount, entityCount, resultSet);
+                final EntityFetchThread<E> thread = new EntityFetchThread<E>(reader, threadCount, entityCount, resultSet);
                 thread.start();
             }
         } else {
@@ -190,7 +190,7 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
 
 
     @SuppressWarnings("unchecked")
-    public static class EntityResultSet<ENTITY extends TaggedLogAPIEntity> {
+    public static class EntityResultSet<T extends TaggedLogAPIEntity> {
         private static final long DEFAULT_TIMEOUT_IN_MS = 1000;
 
         private boolean fetchCompleted = false;
@@ -205,7 +205,7 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
             return queue.size() > 0 || (!fetchCompleted);
         }
 
-        public ENTITY next(long timeout, TimeUnit unit) throws InterruptedException {
+        public T next(long timeout, TimeUnit unit) throws InterruptedException {
             if (fetchCompleted) {
                 return null;
             }
@@ -214,10 +214,10 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
                 fetchCompleted = true;
                 return null;
             }
-            return (ENTITY) entity;
+            return (T) entity;
         }
 
-        public ENTITY next() throws Exception {
+        public T next() throws Exception {
             TaggedLogAPIEntity entity = null;
             while (!fetchCompleted) {
                 try {
@@ -230,7 +230,7 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
                         return null;
                     }
                     if (entity != null) {
-                        return (ENTITY) entity;
+                        return (T) entity;
                     }
                 } catch (InterruptedException ex) {
                     // Just ignore
@@ -248,14 +248,14 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
         }
     }
 
-    private static class EntityFetchThread<ENTITY extends TaggedLogAPIEntity> extends Thread {
+    private static class EntityFetchThread<T extends TaggedLogAPIEntity> extends Thread {
 
         private final GenericEntityBatchReader reader;
         private final AtomicInteger threadCount;
         private final AtomicInteger entityCount;
-        private final EntityResultSet<ENTITY> resultSet;
+        private final EntityResultSet<T> resultSet;
 
-        private EntityFetchThread(GenericEntityBatchReader reader, AtomicInteger threadCount, AtomicInteger entityCount, EntityResultSet<ENTITY> resultSet) {
+        private EntityFetchThread(GenericEntityBatchReader reader, AtomicInteger threadCount, AtomicInteger entityCount, EntityResultSet<T> resultSet) {
             this.reader = reader;
             this.threadCount = threadCount;
             this.entityCount = entityCount;
@@ -265,9 +265,9 @@ public class SplitFullScanEntityReader<ENTITY extends TaggedLogAPIEntity> {
         @Override
         public void run() {
             try {
-                final List<ENTITY> entities = reader.read();
+                final List<T> entities = reader.read();
                 entityCount.addAndGet(entities.size());
-                for (ENTITY entity : entities) {
+                for (T entity : entities) {
                     if (!resultSet.getQueue().offer(entity, MAX_WRITE_TIME_OUT_IN_SECONDS, TimeUnit.SECONDS)) {
                         resultSet.setException(new IOException("Write entity to queue timeout"));
                         resultSet.getQueue().add(COMPLETED_ENTITY);
