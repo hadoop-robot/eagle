@@ -17,13 +17,16 @@
 package org.apache.eagle.storage.spi;
 
 import org.apache.eagle.storage.DataStorage;
+
 import org.junit.Test;
 
 /**
+ * TestDataStorageServiceProvider.
+ *
  * @since 3/20/15
  */
 public class TestDataStorageServiceProvider implements DataStorageServiceProvider {
-    private final static String TEST = "test";
+    private static final String TEST = "test";
 
     @Override
     public String getType() {

@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @since 3/18/15
+ * @since 3/18/15.
  */
 public class CreateStatement implements Statement<ModifyResult<String>> {
     private final List<? extends TaggedLogAPIEntity> entities;

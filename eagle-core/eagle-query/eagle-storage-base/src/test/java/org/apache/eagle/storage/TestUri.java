@@ -22,6 +22,8 @@ import org.junit.Test;
 import java.net.URI;
 
 /**
+ * TestUri.
+ *
  * @since 3/23/15
  */
 public class TestUri {

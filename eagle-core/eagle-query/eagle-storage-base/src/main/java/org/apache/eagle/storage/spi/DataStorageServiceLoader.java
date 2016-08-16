@@ -17,16 +17,19 @@
 package org.apache.eagle.storage.spi;
 
 import org.apache.eagle.storage.exception.IllegalDataStorageTypeException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 /**
+ * DataStorageServiceLoader.
+ *
  * @since 3/20/15
  */
 public class DataStorageServiceLoader {
-    private final Logger LOG = LoggerFactory.getLogger(DataStorageServiceLoader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DataStorageServiceLoader.class);
     private final ServiceLoader<DataStorageServiceProvider> serviceLoader;
     private final Map<String, DataStorageServiceProvider> storageServiceProviders;
 
@@ -68,7 +71,7 @@ public class DataStorageServiceLoader {
     }
 
     /**
-     * Get supported storage types
+     * Get supported storage types.
      *
      * @return supported storage types
      */
@@ -77,7 +80,7 @@ public class DataStorageServiceLoader {
     }
 
     /**
-     * Reload storage providers
+     * Reload storage providers.
      */
     @SuppressWarnings("unused")
     public void reload() {

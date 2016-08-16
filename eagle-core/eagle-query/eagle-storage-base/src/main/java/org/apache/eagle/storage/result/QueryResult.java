@@ -19,6 +19,8 @@ package org.apache.eagle.storage.result;
 import java.util.List;
 
 /**
+ * QueryResult.
+ *
  * @since 3/18/15
  */
 public class QueryResult<E> extends Result {

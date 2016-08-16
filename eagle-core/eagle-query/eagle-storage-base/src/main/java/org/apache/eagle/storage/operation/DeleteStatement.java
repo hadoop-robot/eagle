@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @since 3/18/15
+ * @since 3/18/15.
  */
 public class DeleteStatement implements Statement<ModifyResult<String>> {
     private List<? extends TaggedLogAPIEntity> entities;
@@ -68,9 +68,9 @@ public class DeleteStatement implements Statement<ModifyResult<String>> {
         this.entities = entities;
     }
 
-//    public void setQuery(RawQuery query){
-//        this.query = query;
-//    }
+    //  public void setQuery(RawQuery query){
+    //      this.query = query;
+    //  }
 
     @SuppressWarnings("unchecked")
     @Override

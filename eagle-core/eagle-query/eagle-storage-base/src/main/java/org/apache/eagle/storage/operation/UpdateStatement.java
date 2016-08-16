@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * UpdateStatement.
  * @since 3/18/15
  */
 public class UpdateStatement implements Statement<ModifyResult<String>> {

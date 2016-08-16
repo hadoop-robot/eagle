@@ -22,12 +22,15 @@ import org.apache.eagle.storage.DataStorageBase;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
+
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
 
 /**
+ * TestDataStorage.
+ *
  * @since 3/20/15
  */
 public class TestDataStorage extends DataStorageBase {
@@ -53,14 +56,15 @@ public class TestDataStorage extends DataStorageBase {
     }
 
     @Override
-    public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
+    public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
         return null;
     }
 
     @Override
-    public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
+    public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         return null;
     }
+
 
     @Override
     public <E> QueryResult<E> query(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {

@@ -16,9 +16,6 @@
  */
 package org.apache.eagle.storage.exception;
 
-/**
- * @since 3/20/15
- */
 public class IllegalDataStorageException extends Exception {
     public IllegalDataStorageException() {
         super();

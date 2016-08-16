@@ -20,8 +20,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 
-/**
- */
 public class RawQuery {
     private String query;
     private String startTime;

@@ -21,6 +21,8 @@ import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.operation.RawQuery;
 
 /**
+ * DataStorageBase.
+ *
  * @since 3/23/15
  */
 public abstract class DataStorageBase implements DataStorage<String> {

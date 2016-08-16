@@ -16,15 +16,16 @@
  */
 package org.apache.eagle.storage.operation;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.SearchCondition;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.query.ListQueryCompiler;
-import org.apache.eagle.query.aggregate.timeseries.SortOption;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.aggregate.timeseries.SortOption;
 import org.apache.eagle.storage.exception.QueryCompileException;
-import org.apache.eagle.common.DateTimeUtil;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +36,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * TODO: refactor to remove hbase related fields
- *
- * @since 3/23/15
+ * TODO: refactor to remove hbase related fields.
  */
 public class CompiledQuery {
-    private final static Logger LOG = LoggerFactory.getLogger(CompiledQuery.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CompiledQuery.class);
     private boolean timeSeries;
 
     public boolean isHasAgg() {
@@ -167,7 +166,8 @@ public class CompiledQuery {
 
     private void validateQueryParameters(String startRowkey, int pageSize) {
         if (pageSize < 0) {
-            throw new IllegalArgumentException("Positive pageSize value should be always provided. The list query format is:\n" + "eagle-service/rest/list?query=<querystring>&pageSize=10&startRowkey=xyz&startTime=xxx&endTime=xxx");
+            throw new IllegalArgumentException("Positive pageSize value should be always provided. "
+                + "The list query format is:\n" + "eagle-service/rest/list?query=<querystring>&pageSize=10&startRowkey=xyz&startTime=xxx&endTime=xxx");
         }
 
         if (startRowkey != null && startRowkey.equals("null")) {
@@ -250,7 +250,7 @@ public class CompiledQuery {
         List<String> outputFields = compiler.outputFields();
         List<String> groupbyFields = compiler.groupbyFields();
         List<String> aggregateFields = compiler.aggregateFields();
-        Set<String> filterFields = compiler.getFilterFields();
+        final Set<String> filterFields = compiler.getFilterFields();
 
         // Start to generate output fields list {
         searchCondition.setOutputAll(compiler.isOutputAll());
