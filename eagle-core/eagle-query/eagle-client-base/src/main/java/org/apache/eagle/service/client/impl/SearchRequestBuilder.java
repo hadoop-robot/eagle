@@ -16,11 +16,12 @@
  */
 package org.apache.eagle.service.client.impl;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
-import org.apache.eagle.service.client.IEagleServiceClient;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
-import org.apache.eagle.common.DateTimeUtil;
+import org.apache.eagle.service.client.IEagleServiceClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import java.net.URLEncoder;
 public class SearchRequestBuilder {
     private final EagleServiceSingleEntityQueryRequest request;
     private final IEagleServiceClient client;
-    private final static Logger LOG = LoggerFactory.getLogger(SearchRequestBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchRequestBuilder.class);
 
     public SearchRequestBuilder(IEagleServiceClient client) {
         this.request = new EagleServiceSingleEntityQueryRequest();

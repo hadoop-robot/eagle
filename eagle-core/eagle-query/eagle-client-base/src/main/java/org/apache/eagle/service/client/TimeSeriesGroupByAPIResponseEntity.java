@@ -19,11 +19,11 @@
  */
 package org.apache.eagle.service.client;
 
-import java.util.List;
-import java.util.Map;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import java.util.List;
+import java.util.Map;
 
 //@JsonPropertyOrder({ "success", "exception", "elapsems", "totalResults", "elapsedms", "obj", "lastTimestamp" })
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)

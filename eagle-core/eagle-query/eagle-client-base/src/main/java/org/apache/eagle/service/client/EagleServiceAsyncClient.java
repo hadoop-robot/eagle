@@ -25,83 +25,97 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 /**
+ * EagleServiceAsyncClient.
+ *
  * @see IEagleServiceClient
  */
 public interface EagleServiceAsyncClient extends Closeable {
     /**
-     * @param <E>
-     * @param entities
-     * @param serviceName
-     * @return
+     * @param <E> Entity Type
+     * @param entities Entities
+     * @param serviceName serviceName
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities, final String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities, final String serviceName)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param entityClass
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param entityClass entityClass
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities, final Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities, final Class<E> entityClass)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final String serviceName)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final Class<E> entityClass)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param request
-     * @return
+     * Delete.
+     *
+     * @param request EagleServiceSingleEntityQueryRequest
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    Future<GenericServiceAPIResponseEntity<String>> delete(final EagleServiceSingleEntityQueryRequest request) throws EagleServiceClientException, IOException;
+    Future<GenericServiceAPIResponseEntity<String>> delete(final EagleServiceSingleEntityQueryRequest request)
+        throws EagleServiceClientException, IOException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final String serviceName) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final String serviceName)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities
-     * @param <E>
-     * @return
+     * @param entities Entities
+     * @param <E> Entity Type
+     * @return Future[GenericServiceAPIResponseEntity[String]]
      */
-    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final Class<E> entityClass) throws IOException, EagleServiceClientException;
+    <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final Class<E> entityClass)
+        throws IOException, EagleServiceClientException;
 
     /**
-     * @param request
-     * @return
+     * @param request EagleServiceSingleEntityQueryRequest
+     * @return Future<GenericServiceAPIResponseEntity<String>>
      */
     <E extends Object> Future<GenericServiceAPIResponseEntity<String>> search(final EagleServiceSingleEntityQueryRequest request) throws EagleServiceClientException;
 }

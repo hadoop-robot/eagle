@@ -17,8 +17,8 @@
 package org.apache.eagle.service.client.impl;
 
 import org.apache.eagle.log.entity.GenericMetricEntity;
-import org.apache.eagle.service.client.IEagleServiceClient;
 import org.apache.eagle.service.client.EagleServiceClientException;
+import org.apache.eagle.service.client.IEagleServiceClient;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -61,15 +61,15 @@ public class MetricSender extends BatchSender {
         return this.send(timestamp, new HashMap<String, String>(this.tags), values);
     }
 
-//    public EagleServiceMetricSender send(String metricName,Map<String,String> tags,double ... values) throws IOException, EagleServiceClientException {
-//        return this.send(metricName,System.currentTimeMillis(),tags,values);
-//    }
-//
-//    public EagleServiceMetricSender send(Map<String,String> tags,double ...values) throws IOException, EagleServiceClientException {
-//        return this.send(this.metricName,System.currentTimeMillis(),tags,values);
-//    }
-//
-//    public EagleServiceMetricSender send(double ... values) throws IOException, EagleServiceClientException {
-//        return this.send(System.currentTimeMillis(), new HashMap<String, String>(this.tags), values);
-//    }
+    //    public EagleServiceMetricSender send(String metricName,Map<String,String> tags,double ... values) throws IOException, EagleServiceClientException {
+    //        return this.send(metricName,System.currentTimeMillis(),tags,values);
+    //    }
+    //
+    //    public EagleServiceMetricSender send(Map<String,String> tags,double ...values) throws IOException, EagleServiceClientException {
+    //        return this.send(this.metricName,System.currentTimeMillis(),tags,values);
+    //    }
+    //
+    //      public EagleServiceMetricSender send(double ... values) throws IOException, EagleServiceClientException {
+    //          return this.send(System.currentTimeMillis(), new HashMap<String, String>(this.tags), values);
+    //      }
 }

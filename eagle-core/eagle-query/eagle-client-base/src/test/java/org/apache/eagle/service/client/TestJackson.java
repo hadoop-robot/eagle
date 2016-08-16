@@ -16,17 +16,18 @@
  */
 package org.apache.eagle.service.client;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 // http://wiki.fasterxml.com/JacksonPolymorphicDeserialization
+// CHECKSTYLE: OFF
 public class TestJackson {
 
     @Test
@@ -42,7 +43,7 @@ public class TestJackson {
 
         ObjectMapper om = new ObjectMapper();
         om.enableDefaultTyping();
-//		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        //  om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         String value = om.writeValueAsString(objs);
 
         System.out.println("value = " + value);
@@ -60,3 +61,4 @@ public class TestJackson {
 
     }
 }
+// CHECKSTYLE: ON

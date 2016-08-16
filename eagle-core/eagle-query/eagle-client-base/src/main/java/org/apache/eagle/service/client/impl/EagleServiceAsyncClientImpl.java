@@ -19,9 +19,10 @@ package org.apache.eagle.service.client.impl;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.EagleServiceAsyncClient;
-import org.apache.eagle.service.client.IEagleServiceClient;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
+import org.apache.eagle.service.client.IEagleServiceClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ import java.util.concurrent.Future;
 
 public class EagleServiceAsyncClientImpl implements EagleServiceAsyncClient {
     private final IEagleServiceClient client;
-    private final static Logger LOG = LoggerFactory.getLogger(EagleServiceAsyncClientImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EagleServiceAsyncClientImpl.class);
 
     public EagleServiceAsyncClientImpl(IEagleServiceClient client) {
         this.client = client;

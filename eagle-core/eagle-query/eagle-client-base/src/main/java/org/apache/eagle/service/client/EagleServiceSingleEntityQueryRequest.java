@@ -114,12 +114,12 @@ public class EagleServiceSingleEntityQueryRequest {
 
         final StringBuilder sb = new StringBuilder();
         // query
-//        try {
-//            sb.append("query=").append(URLEncoder.encode(query,"UTF-8"));
+        //  try {
+        //      sb.append("query=").append(URLEncoder.encode(query,"UTF-8"));
         sb.append("query=").append(query);
-//        } catch (UnsupportedEncodingException e) {
-//            throw new EagleServiceClientException(e);
-//        }
+        //  } catch (UnsupportedEncodingException e) {
+        //      throw new EagleServiceClientException(e);
+        //  }
 
         // startRowkey
         if (startRowkey != null) {

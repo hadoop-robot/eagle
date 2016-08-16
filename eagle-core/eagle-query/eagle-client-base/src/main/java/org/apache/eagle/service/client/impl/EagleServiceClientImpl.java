@@ -21,6 +21,7 @@ import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceConnector;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
+
 import com.sun.jersey.api.client.WebResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EagleServiceClientImpl extends EagleServiceBaseClient {
-    private final static Logger LOG = LoggerFactory.getLogger(EagleServiceClientImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EagleServiceClientImpl.class);
 
     public EagleServiceClientImpl(String host, int port) {
         super(host, port);

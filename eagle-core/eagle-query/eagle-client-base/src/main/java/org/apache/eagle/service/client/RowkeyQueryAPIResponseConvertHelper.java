@@ -16,6 +16,13 @@
  */
 package org.apache.eagle.service.client;
 
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.log.entity.RowkeyQueryAPIResponseEntity;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,13 +30,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.RowkeyQueryAPIResponseEntity;
 
 /**
  * TODO: It's just a temporary solution. We need fix jersy and jackson mapping issue so the class
@@ -42,7 +42,8 @@ public final class RowkeyQueryAPIResponseConvertHelper {
     private static final String SETTER_PREFIX = "set";
 
     @SuppressWarnings( {"unchecked"})
-    public static RowkeyQueryAPIResponseEntity convert(Class<? extends TaggedLogAPIEntity> clazz, RowkeyQueryAPIResponseEntity response) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JsonGenerationException, JsonMappingException, IOException {
+    public static RowkeyQueryAPIResponseEntity convert(Class<? extends TaggedLogAPIEntity> clazz, RowkeyQueryAPIResponseEntity response)
+        throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JsonGenerationException, JsonMappingException, IOException {
         if (response == null || response.getObj() == null) {
             return response;
         }

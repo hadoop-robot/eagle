@@ -20,16 +20,18 @@ import org.codehaus.jackson.annotate.JsonTypeName;
 
 
 @JsonTypeName("ClassA")
+@SuppressWarnings("checkstyle")
 public class ClassA extends Base {
-
-    private int a;
+    //CHECKSTYLE:OFF
+    private int varA;
+    //CHECKSTYLE:ON
 
     public int getA() {
-        return a;
+        return varA;
     }
 
     public void setA(int a) {
-        this.a = a;
+        this.varA = a;
     }
 
 }

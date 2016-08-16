@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builder helper class to create EagleServiceQueryRequest
+ * Builder helper class to create EagleServiceQueryRequest.
  */
 public final class EagleServiceQueryBuilder {
 

@@ -17,24 +17,21 @@
 package org.apache.eagle.service.client;
 
 /**
- * Default Eagle service client exception class
+ * Default Eagle service client exception class.
  */
 public class EagleServiceClientException extends Exception {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1710851110199812779L;
 
     /**
-     * Default constructor of EagleServiceClientException
+     * Default constructor of EagleServiceClientException.
      */
     public EagleServiceClientException() {
         super();
     }
 
     /**
-     * Constructor of EagleServiceClientException
+     * Constructor of EagleServiceClientException.
      *
      * @param message error message
      */
@@ -43,7 +40,7 @@ public class EagleServiceClientException extends Exception {
     }
 
     /**
-     * Constructor of EagleServiceClientException
+     * Constructor of EagleServiceClientException.
      *
      * @param message error message
      * @param cause   the cause of the exception
@@ -53,7 +50,7 @@ public class EagleServiceClientException extends Exception {
     }
 
     /**
-     * Constructor of EagleServiceClientException
+     * Constructor of EagleServiceClientException.
      *
      * @param cause the cause of the exception
      */

@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Eagle service query parameter request
+ * Eagle service query parameter request.
  */
 public class EagleServiceQueryRequest {
 

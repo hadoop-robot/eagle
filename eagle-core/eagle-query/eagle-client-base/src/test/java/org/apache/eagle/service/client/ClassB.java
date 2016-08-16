@@ -21,14 +21,14 @@ import org.codehaus.jackson.annotate.JsonTypeName;
 @JsonTypeName("ClassB")
 public class ClassB extends Base {
 
-    private String b;
+    private String varB;
 
     public String getB() {
-        return b;
+        return varB;
     }
 
     public void setB(String b) {
-        this.b = b;
+        this.varB = b;
     }
 
 }

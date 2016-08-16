@@ -16,11 +16,12 @@
  */
 package org.apache.eagle.service.client.impl;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
 import org.apache.eagle.service.client.IEagleServiceClient;
-import org.apache.eagle.common.DateTimeUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ public class DeleteRequestBuilder {
     private List<String> deleteIds = null;
     private EagleServiceSingleEntityQueryRequest request;
 
-    private final static Logger LOG = LoggerFactory.getLogger(DeleteRequestBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteRequestBuilder.class);
     private String serviceName;
 
     public DeleteRequestBuilder(IEagleServiceClient client) {

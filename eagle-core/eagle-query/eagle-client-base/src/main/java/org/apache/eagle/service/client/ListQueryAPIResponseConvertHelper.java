@@ -16,23 +16,19 @@
  */
 package org.apache.eagle.service.client;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.log.entity.ListQueryAPIResponseEntity;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.ListQueryAPIResponseEntity;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * TODO: It's just a temporary solution. We need fix jersy and jackson mapping issue so the class
@@ -45,7 +41,8 @@ public final class ListQueryAPIResponseConvertHelper {
     private static final String SETTER_PREFIX = "set";
 
     @SuppressWarnings( {"unchecked"})
-    public static ListQueryAPIResponseEntity convert(Class<? extends TaggedLogAPIEntity> clazz, ListQueryAPIResponseEntity response) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JsonGenerationException, JsonMappingException, IOException {
+    public static ListQueryAPIResponseEntity convert(Class<? extends TaggedLogAPIEntity> clazz, ListQueryAPIResponseEntity response)
+        throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, JsonGenerationException, JsonMappingException, IOException {
         if (response == null || response.getObj() == null) {
             return response;
         }

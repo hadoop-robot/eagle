@@ -19,8 +19,9 @@ package org.apache.eagle.service.client;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
-import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
 import org.apache.eagle.service.client.impl.ConcurrentSender;
+import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,16 +51,18 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
         for (int i = 0; i < 100; i++) {
             TestTimeSeriesAPIEntity entity = new TestTimeSeriesAPIEntity();
             entity.setTimestamp(System.currentTimeMillis());
-            entity.setTags(new HashMap<String, String>() {{
-                put("cluster", "cluster4ut");
-                put("datacenter", "datacenter4ut");
-                put("timestampStr", System.currentTimeMillis() + "");
-            }});
+            entity.setTags(new HashMap<String, String>() {
+                {
+                    put("cluster", "cluster4ut");
+                    put("datacenter", "datacenter4ut");
+                    put("timestampStr", System.currentTimeMillis() + "");
+                }
+            });
             entity.setField1(1);
             entity.setField2(1);
             entity.setField3(1);
-            entity.setField4(1l);
-            entity.setField5(1l);
+            entity.setField4(1L);
+            entity.setField5(1L);
             entity.setField5(1.2);
             entity.setField6(-1.2);
             entity.setField7("test unit string attribute");
@@ -86,15 +89,17 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
     private TestTimeSeriesAPIEntity newEntity() {
         TestTimeSeriesAPIEntity entity = new TestTimeSeriesAPIEntity();
         entity.setTimestamp(System.currentTimeMillis());
-        entity.setTags(new HashMap<String, String>() {{
-            put("cluster", "cluster4ut");
-            put("datacenter", "datacenter4ut");
-        }});
+        entity.setTags(new HashMap<String, String>() {
+            {
+                put("cluster", "cluster4ut");
+                put("datacenter", "datacenter4ut");
+            }
+        });
         entity.setField1(1);
         entity.setField2(1);
         entity.setField3(1);
-        entity.setField4(1l);
-        entity.setField5(1l);
+        entity.setField4(1L);
+        entity.setField5(1L);
         entity.setField5(1.2);
         entity.setField6(-1.2);
         entity.setField7("test unit string attribute");
@@ -107,15 +112,17 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
         for (int i = 0; i < 100; i++) {
             TestTimeSeriesAPIEntity entity = new TestTimeSeriesAPIEntity();
             entity.setTimestamp(System.currentTimeMillis());
-            entity.setTags(new HashMap<String, String>() {{
-                put("cluster", "cluster4ut");
-                put("datacenter", "datacenter4ut");
-            }});
+            entity.setTags(new HashMap<String, String>() {
+                {
+                    put("cluster", "cluster4ut");
+                    put("datacenter", "datacenter4ut");
+                }
+            });
             entity.setField1(1);
             entity.setField2(1);
             entity.setField3(1);
-            entity.setField4(1l);
-            entity.setField5(1l);
+            entity.setField4(1L);
+            entity.setField5(1L);
             entity.setField5(1.2);
             entity.setField6(-1.2);
             entity.setField7("updated");
@@ -145,16 +152,18 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
         for (int i = 0; i < 100; i++) {
             TestTimeSeriesAPIEntity entity = new TestTimeSeriesAPIEntity();
             entity.setTimestamp(System.currentTimeMillis());
-            entity.setTags(new HashMap<String, String>() {{
-                put("cluster", "cluster4ut");
-                put("datacenter", "datacenter4ut");
-            }});
+            entity.setTags(new HashMap<String, String>() {
+                {
+                    put("cluster", "cluster4ut");
+                    put("datacenter", "datacenter4ut");
+                }
+            });
 
             entity.setField1(1);
             entity.setField2(1);
             entity.setField3(1);
-            entity.setField4(1l);
-            entity.setField5(1l);
+            entity.setField4(1L);
+            entity.setField5(1L);
             entity.setField5(1.2);
             entity.setField6(-1.2);
             entity.setField7(" unit test oriented string attribute");
@@ -189,10 +198,12 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
     public void testMetricsSender() throws IOException, EagleServiceClientException {
         List<GenericMetricEntity> entities = new ArrayList<GenericMetricEntity>();
 
-        Map<String, String> tags = new HashMap<String, String>() {{
-            put("cluster", "cluster4ut");
-            put("datacenter", "datacenter4ut");
-        }};
+        Map<String, String> tags = new HashMap<String, String>() {
+            {
+                put("cluster", "cluster4ut");
+                put("datacenter", "datacenter4ut");
+            }
+        };
 
         for (int i = 0; i < 100; i++) {
             GenericMetricEntity entity = new GenericMetricEntity();
@@ -221,7 +232,8 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
             .send("unit.test.anothermetrics", System.currentTimeMillis(), tags, 0.1, 0.2, 0.3)
             .flush();
 
-        GenericServiceAPIResponseEntity<GenericMetricEntity> metricResponse = client.search("GenericMetricService[@cluster=\"cluster4ut\" AND @datacenter = \"datacenter4ut\"]{*}")
+        GenericServiceAPIResponseEntity<GenericMetricEntity> metricResponse = client.search(
+            "GenericMetricService[@cluster=\"cluster4ut\" AND @datacenter = \"datacenter4ut\"]{*}")
             .startTime(0)
             .endTime(System.currentTimeMillis() + 24 * 3600 * 1000)
             .metricName("unit.test.metrics")
@@ -231,7 +243,8 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
         assert metricEntities != null;
         assert metricResponse.isSuccess();
 
-        GenericServiceAPIResponseEntity<Map> metricAggResponse = client.search("GenericMetricService[@cluster=\"cluster4ut\" AND @datacenter = \"datacenter4ut\"]<@cluster>{sum(value)}")
+        GenericServiceAPIResponseEntity<Map> metricAggResponse = client.search(
+            "GenericMetricService[@cluster=\"cluster4ut\" AND @datacenter = \"datacenter4ut\"]<@cluster>{sum(value)}")
             .startTime(0)
             .endTime(System.currentTimeMillis() + 24 * 3600 * 1000)
             .metricName("unit.test.metrics")
@@ -325,7 +338,8 @@ public class TestEagleServiceClientImpl extends ClientTestBase {
         Assert.assertTrue(response2.isSuccess());
 
         GenericServiceAPIResponseEntity<GenericMetricEntity> response3 =
-            client.search("GenericMetricService[@cluster = \"cluster4ut\" AND @datacenter = \"datacenter4ut\"]{*}").metricName("unit.test.metrics").startTime(0).endTime(System.currentTimeMillis() + 1000).pageSize(1000).send();
+            client.search("GenericMetricService[@cluster = \"cluster4ut\" AND @datacenter = \"datacenter4ut\"]{*}")
+                .metricName("unit.test.metrics").startTime(0).endTime(System.currentTimeMillis() + 1000).pageSize(1000).send();
 
         Assert.assertTrue(response3.isSuccess());
         hbase.deleteTable("eagle_metric");
