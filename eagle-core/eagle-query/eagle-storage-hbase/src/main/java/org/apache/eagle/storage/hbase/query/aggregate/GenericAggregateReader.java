@@ -19,10 +19,11 @@ package org.apache.eagle.storage.hbase.query.aggregate;
 import org.apache.eagle.log.entity.AbstractHBaseLogReader;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.query.aggregate.AggregateCondition;
-import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
+import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
+
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
@@ -32,6 +33,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * GenericAggregateReader.
+ *
  * @since : 11/7/14,2014
  */
 public class GenericAggregateReader extends AbstractHBaseLogReader<List<GroupbyKeyValue>> {

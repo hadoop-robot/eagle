@@ -17,31 +17,27 @@
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
+
 import org.apache.hadoop.hbase.client.coprocessor.Batch;
 
 /**
  * <h1>AggregateResultCallback Interface</h1>
- * <p>
  * Merge coprocessor results from different regions and generate final aggregate result
  * <br/>
  *
  * @see org.apache.hadoop.hbase.client.HTableInterface
- * coprocessorExec(Class<T> protocol, byte[] startKey, byte[] endKey, Batch.Call<T,R> callable) throws IOException, Throwable;
+ * coprocessorExec(Class[T] protocol, byte[] startKey, byte[] endKey, Batch.Call[T,R] callable) throws IOException, Throwable;
  */
 public interface AggregateResultCallback extends Batch.Callback<AggregateProtos.AggregateResult> {
     /**
-     * Generate final result after callback from region servers
+     * Generate final result after callback from region servers.
      *
      * @return AggregateResult
      */
     AggregateResult result();
 
     /**
-     * Compatible for older callback interface in 0.94 or older
-     *
-     * @param region
-     * @param row
-     * @param result
+     * Compatible for older callback interface in 0.94 or older.
      */
     void update(byte[] region, byte[] row, AggregateResult result);
 }

@@ -16,24 +16,7 @@
  */
 package org.apache.eagle.storage.hbase.aggregate.coprocessor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.eagle.common.config.EagleConfigFactory;
-import org.junit.Assert;
-
-import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
-import org.apache.hadoop.hbase.client.HTableInterface;
-import org.apache.hadoop.hbase.client.Scan;
-import org.apache.hadoop.io.BytesWritable;
-import org.apache.hadoop.io.DoubleWritable;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.eagle.log.entity.GenericEntityWriter;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
@@ -44,15 +27,28 @@ import org.apache.eagle.query.aggregate.raw.GroupbyKey;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.GroupbyValue;
 import org.apache.eagle.service.hbase.TestHBaseBase;
+import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
 
-/**
- * @since : 11/10/14,2014
- */
+import org.apache.hadoop.hbase.client.HTableInterface;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.io.BytesWritable;
+import org.apache.hadoop.io.DoubleWritable;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 @Ignore
 public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
 
-    private final static Logger LOG = LoggerFactory.getLogger(TestGroupAggregateTimeSeriesClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestGroupAggregateTimeSeriesClient.class);
 
     HTableInterface table;
     long startTime;
@@ -85,8 +81,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
             Assert.fail(e.getMessage());
         }
         scan.setFilter(compiler.filter());
-//		scan.setStartRow(EagleBase64Wrapper.decode(rowkeys.get(0)));
-//		scan.setStopRow(EagleBase64Wrapper.decode(rowkeys.get(rowkeys.size()-1)));
+        //  scan.setStartRow(EagleBase64Wrapper.decode(rowkeys.get(0)));
+        //  scan.setStopRow(EagleBase64Wrapper.decode(rowkeys.get(rowkeys.size()-1)));
     }
 
     private List<String> prepareData(int count) throws Exception {
@@ -124,7 +120,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
     //@Test
     public void testGroupTimeSeriesAggCountClient() {
         try {
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.count), Arrays.asList("count"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.count), Arrays.asList("count"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("COUNT");
             }
@@ -139,7 +136,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
     //@Test
     public void testGroupTimeSeriesAggMaxClient() {
         try {
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.max), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.max), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("MAX");
             }
@@ -154,7 +152,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
     //@Test
     public void testGroupTimeSeriesAggMinClient() {
         try {
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.min), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.min), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("MIN");
             }
@@ -169,7 +168,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
     //@Test
     public void testGroupTimeSeriesAggAvgClient() {
         try {
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.min), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.min), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("MIN");
             }
@@ -184,7 +184,8 @@ public class TestGroupAggregateTimeSeriesClient extends TestHBaseBase {
     //@Test
     public void testGroupTimeSeriesAggSumClient() {
         try {
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.sum), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.sum), Arrays.asList("field2"), true, startTime, System.currentTimeMillis(), 10).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("SUM");
             }

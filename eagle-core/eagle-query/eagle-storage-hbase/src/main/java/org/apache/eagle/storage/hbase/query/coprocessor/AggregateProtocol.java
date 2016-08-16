@@ -17,43 +17,24 @@
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
+
 import org.apache.hadoop.hbase.client.Scan;
 //import org.apache.hadoop.hbase.ipc.CoprocessorProtocol;
 
 import java.io.IOException;
 import java.util.List;
 
-
 /**
+ * AggregateProtocol definition.
  * TODO: replace with google-protobuf RPC when HBase is upgraded to version 0.96+
  */
 public interface AggregateProtocol {
-
-    /**
-     * @param entityDefinition
-     * @param scan
-     * @param groupbyFields
-     * @param aggregateFuncTypes
-     * @param aggregatedFields
-     * @return AggregateResult
-     * @throws java.io.IOException
-     */
     AggregateResult aggregate(EntityDefinition entityDefinition,
                               Scan scan,
                               List<String> groupbyFields,
                               List<byte[]> aggregateFuncTypes,
                               List<String> aggregatedFields) throws IOException;
 
-    /**
-     * @param entityDefinition
-     * @param scan
-     * @param groupbyFields
-     * @param aggregateFuncTypes
-     * @param aggregatedFields
-     * @param intervalMin
-     * @return AggregateResult
-     * @throws java.io.IOException
-     */
     AggregateResult aggregate(EntityDefinition entityDefinition,
                               Scan scan,
                               List<String> groupbyFields,

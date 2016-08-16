@@ -18,8 +18,9 @@ package org.apache.eagle.storage.hbase.query.coprocessor.impl;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
-import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
 import org.apache.eagle.storage.hbase.query.coprocessor.*;
+import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
+
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.coprocessor.Batch;
@@ -32,12 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Not thread safe
+ * Not thread safe.
  *
  * @since : 11/2/14,2014
  */
 public class AggregateClientImpl implements AggregateClient {
-    private final static Logger LOG = LoggerFactory.getLogger(AggregateClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AggregateClient.class);
     private AggregateResultCallback callback;
 
     private void checkNotNull(Object obj, String name) {
@@ -60,7 +61,7 @@ public class AggregateClientImpl implements AggregateClient {
         checkNotNull(entityDefinition, "entityDefinition");
         final List<AggregateFunctionType> _aggregateFuncTypes = convertToCoprocessorAggregateFunc(aggregateFuncTypes);
         final List<byte[]> _aggregateFuncTypesBytes = AggregateFunctionType.toBytesList(_aggregateFuncTypes);
-//		if(timeSeries) TimeSeriesAggregator.validateTimeRange(startTime,endTime,intervalMin);
+        //  if(timeSeries) TimeSeriesAggregator.validateTimeRange(startTime,endTime,intervalMin);
         callback = new AggregateResultCallbackImpl(aggregateFuncTypes);
         try {
             if (!LOG.isDebugEnabled()) {
@@ -69,42 +70,44 @@ public class AggregateClientImpl implements AggregateClient {
                 LOG.debug("Going to exec coprocessor: " + AggregateProtocol.class.getName());
             }
 
-//			table.coprocessorExec(AggregateProtocol.class,scan.getStartRow(),scan.getStopRow(),new Batch.Call<AggregateProtocol, AggregateResult>(){
-//				@Override
-//				public AggregateResult call(AggregateProtocol instance) throws IOException {
-//					if(timeSeries){
-//						return instance.aggregate(entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields,startTime,endTime,intervalMin);
-//					}else{
-//						return instance.aggregate(entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields);
-//					}
-//				}
-//			},callback);
+            //            table.coprocessorExec(AggregateProtocol.class,scan.getStartRow(),scan.getStopRow(),new Batch.Call<AggregateProtocol, AggregateResult>(){
+            //                @Override
+            //                public AggregateResult call(AggregateProtocol instance) throws IOException {
+            //                    if(timeSeries){
+            //                        return instance.aggregate(entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields,startTime,endTime,intervalMin);
+            //                    }else{
+            //                        return instance.aggregate(entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields);
+            //                    }
+            //                }
+            //              },callback);
 
-            table.coprocessorService(AggregateProtos.AggregateProtocol.class, scan.getStartRow(), scan.getStopRow(), new Batch.Call<AggregateProtos.AggregateProtocol, AggregateProtos.AggregateResult>() {
-                @Override
-                public AggregateProtos.AggregateResult call(AggregateProtos.AggregateProtocol instance) throws IOException {
-                    BlockingRpcCallback<AggregateProtos.AggregateResult> rpcCallback = new BlockingRpcCallback<AggregateProtos.AggregateResult>();
-                    if (timeSeries) {
-                        AggregateProtos.TimeSeriesAggregateRequest timeSeriesAggregateRequest = ProtoBufConverter
-                            .toPBTimeSeriesRequest(
-                                entityDefinition,
-                                scan,
-                                groupbyFields,
-                                _aggregateFuncTypesBytes,
-                                aggregatedFields,
-                                startTime,
-                                endTime,
-                                intervalMin);
-                        instance.timeseriesAggregate(null, timeSeriesAggregateRequest, rpcCallback);
-                        return rpcCallback.get();
-                    } else {
-                        AggregateProtos.AggregateRequest aggregateRequest = ProtoBufConverter.toPBRequest(
-                            entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields);
-                        instance.aggregate(null, aggregateRequest, rpcCallback);
-                        return rpcCallback.get();
+            table.coprocessorService(
+                AggregateProtos.AggregateProtocol.class, scan.getStartRow(), scan.getStopRow(),
+                new Batch.Call<AggregateProtos.AggregateProtocol, AggregateProtos.AggregateResult>() {
+                    @Override
+                    public AggregateProtos.AggregateResult call(AggregateProtos.AggregateProtocol instance) throws IOException {
+                        BlockingRpcCallback<AggregateProtos.AggregateResult> rpcCallback = new BlockingRpcCallback<AggregateProtos.AggregateResult>();
+                        if (timeSeries) {
+                            AggregateProtos.TimeSeriesAggregateRequest timeSeriesAggregateRequest = ProtoBufConverter
+                                .toPBTimeSeriesRequest(
+                                    entityDefinition,
+                                    scan,
+                                    groupbyFields,
+                                    _aggregateFuncTypesBytes,
+                                    aggregatedFields,
+                                    startTime,
+                                    endTime,
+                                    intervalMin);
+                            instance.timeseriesAggregate(null, timeSeriesAggregateRequest, rpcCallback);
+                            return rpcCallback.get();
+                        } else {
+                            AggregateProtos.AggregateRequest aggregateRequest = ProtoBufConverter.toPBRequest(
+                                entityDefinition, scan, groupbyFields, _aggregateFuncTypesBytes, aggregatedFields);
+                            instance.aggregate(null, aggregateRequest, rpcCallback);
+                            return rpcCallback.get();
+                        }
                     }
-                }
-            }, callback);
+                }, callback);
         } catch (Throwable t) {
             LOG.error(t.getMessage(), t);
             throw new IOException(t);
@@ -112,13 +115,14 @@ public class AggregateClientImpl implements AggregateClient {
         return callback.result();
     }
 
-//	@Override
-//	public void result(final GroupbyKeyValueCreationListener[] listeners) {
-//		callback.asyncRead(Arrays.asList(listeners));
-//	}
+    //  @Override
+    //  public void result(final GroupbyKeyValueCreationListener[] listeners) {
+    //      callback.asyncRead(Arrays.asList(listeners));
+    //  }
 
     @Override
-    public AggregateResult aggregate(HTableInterface table, EntityDefinition entityDefinition, Scan scan, List<String> groupbyFields, List<AggregateFunctionType> aggregateFuncTypes, List<String> aggregatedFields) throws IOException {
+    public AggregateResult aggregate(HTableInterface table, EntityDefinition entityDefinition,
+                                     Scan scan, List<String> groupbyFields, List<AggregateFunctionType> aggregateFuncTypes, List<String> aggregatedFields) throws IOException {
         return this.aggregate(table, entityDefinition, scan, groupbyFields, aggregateFuncTypes, aggregatedFields, false, 0, 0, 0);
     }
 
@@ -133,7 +137,7 @@ public class AggregateClientImpl implements AggregateClient {
      * </ul>
      *
      * @param funcs List&lt;AggregateFunctionType&gt;
-     * @return
+     * @return AggregateFunctionTypes
      */
     private List<AggregateFunctionType> convertToCoprocessorAggregateFunc(List<AggregateFunctionType> funcs) {
         List<AggregateFunctionType> copy = new ArrayList<AggregateFunctionType>(funcs);

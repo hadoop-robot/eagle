@@ -19,6 +19,8 @@ package org.apache.eagle.storage.hbase;
 import org.junit.Test;
 
 /**
+ * TestHBaseStorage.
+ *
  * @since 3/23/15
  */
 public class TestHBaseStorage {

@@ -18,6 +18,7 @@ package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 
@@ -25,16 +26,24 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Coprocessor-based Aggregation Universal Client Interface
- * <p>
+ * Coprocessor-based Aggregation Universal Client Interface.
  * <h2>Flat or RAW Aggregation:</h2>
  * <pre>
- * AggregateResult aggregate( HTableInterface table, String serviceName, Scan scan, List<String> groupbyFields, List<AggregateFunctionType> aggregateFuncTypes, List<String> aggregatedFields) throws IOException
+ * AggregateResult aggregate (
+ *   HTableInterface table,
+ *   String serviceName,
+ *   Scan scan,
+ *   List&lt;String&gt;,
+ *   groupbyFields, List&lt;,
+ *   AggregateFunctionType&gt aggregateFuncTypes,
+ *   List&lt;String&gt; aggregatedFields) throws IOException
  * </pre>
- * <p>
  * <h2>Time Series Aggregation:</h2>
  * <pre>
- * AggregateResult aggregate(HTableInterface table, String serviceName, Scan scan, List<String> groupbyFields, List<AggregateFunctionType> aggregateFuncTypes, List<String> aggregatedFields, boolean timeSeries, long startTime, long endTime, long intervalMin) throws IOException
+ * AggregateResult aggregate(
+ *   HTableInterface table, String serviceName, Scan scan, List&lt;String&gt; groupbyFields,
+ *   List&lt;AggregateFunctionType&gt; aggregateFuncTypes, List&lt;String&gt; aggregatedFields,
+ *   boolean timeSeries, long startTime, long endTime, long intervalMin) throws IOException
  * </pre>
  *
  * @since : 11/3/14,2014
@@ -42,7 +51,7 @@ import java.util.List;
 public interface AggregateClient {
 
     /**
-     * Flat Aggregation
+     * Flat Aggregation.
      *
      * @param table              HTable connections
      * @param scan               HBase Scan
@@ -50,7 +59,7 @@ public interface AggregateClient {
      * @param aggregateFuncTypes Aggregate function types
      * @param aggregatedFields   Aggregate field names
      * @return Return AggregateResult
-     * @throws Exception
+     * @throws Exception Exception
      */
     AggregateResult aggregate(final HTableInterface table,                            // HTable connections
                               final EntityDefinition entityDefinition,                               // Eagle service name
@@ -61,7 +70,7 @@ public interface AggregateClient {
     ) throws IOException;
 
     /**
-     * Time Series Aggregation
+     * Time Series Aggregation.
      *
      * @param table              HTable connections
      * @param entityDefinition   Eagle EntityDefinition
@@ -72,7 +81,7 @@ public interface AggregateClient {
      * @param timeSeries         Is time series aggregations?
      * @param intervalMin        The interval in minutes if it's time series aggregation
      * @return Return AggregateResult
-     * @throws Exception
+     * @throws Exception Exception
      */
     AggregateResult aggregate(final HTableInterface table,                                // HTable connections
                               final EntityDefinition entityDefinition,                               // Eagle service name

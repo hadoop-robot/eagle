@@ -16,6 +16,9 @@
  */
 package org.apache.eagle.storage.hbase;
 
+import static org.apache.eagle.audit.common.AuditConstants.*;
+
+import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericEntityWriter;
 import org.apache.eagle.log.entity.HBaseInternalLogHelper;
@@ -29,7 +32,7 @@ import org.apache.eagle.storage.hbase.query.GenericQueryBuilder;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-import org.apache.eagle.common.EagleBase64Wrapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,16 +41,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_EVENT_CREATE;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_EVENT_UPDATE;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_EVENT_DELETE;
-
 /**
+ * HBaseStorage Implementation.
+ *
  * @since 3/18/15
  */
 public class HBaseStorage extends DataStorageBase {
 
-    private final static Logger LOG = LoggerFactory.getLogger(HBaseStorage.class);
+    private static  final Logger LOG = LoggerFactory.getLogger(HBaseStorage.class);
     private HBaseStorageAudit audit = new HBaseStorageAudit();
 
     @Override
@@ -79,38 +80,6 @@ public class HBaseStorage extends DataStorageBase {
         return result;
     }
 
-    /**
-     * @param entities
-     * @param entityDefinition
-     * @param <E>
-     * @return ModifyResult
-     * @throws IOException
-     */
-    @Override
-    public <E extends TaggedLogAPIEntity> ModifyResult<String> delete(List<E> entities, EntityDefinition entityDefinition) throws IOException {
-        ModifyResult<String> result = new ModifyResult<String>();
-        try {
-            GenericDeleter deleter = new GenericDeleter(entityDefinition.getTable(), entityDefinition.getColumnFamily());
-            result.setIdentifiers(deleter.delete(entities));
-        } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
-            result.setSuccess(false);
-            throw new IOException(ex);
-        }
-
-        audit.auditOperation(AUDIT_EVENT_DELETE, entities, null, entityDefinition); // added for jira: EAGLE-47
-        result.setSuccess(true);
-        return result;
-    }
-
-    /**
-     * TODO:
-     *
-     * @param ids
-     * @param entityDefinition
-     * @return
-     * @throws IOException
-     */
     @Override
     public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
@@ -129,14 +98,25 @@ public class HBaseStorage extends DataStorageBase {
         return result;
     }
 
-    /**
-     * TODO:
-     *
-     * @param query
-     * @param entityDefinition
-     * @return
-     * @throws IOException
-     */
+
+    @Override
+    public <E extends TaggedLogAPIEntity> ModifyResult<String> delete(List<E> entities, EntityDefinition entityDefinition) throws IOException {
+        ModifyResult<String> result = new ModifyResult<String>();
+        try {
+            GenericDeleter deleter = new GenericDeleter(entityDefinition.getTable(), entityDefinition.getColumnFamily());
+            result.setIdentifiers(deleter.delete(entities));
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+            result.setSuccess(false);
+            throw new IOException(ex);
+        }
+
+        audit.auditOperation(AUDIT_EVENT_DELETE, entities, null, entityDefinition); // added for jira: EAGLE-47
+        result.setSuccess(true);
+        return result;
+    }
+
+
     @Override
     public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
         if (query.isHasAgg()) {
@@ -172,15 +152,6 @@ public class HBaseStorage extends DataStorageBase {
         return result;
     }
 
-    /**
-     * TODO:
-     *
-     * @param query
-     * @param entityDefinition
-     * @param <E>
-     * @return
-     * @throws IOException
-     */
     @Override
     @SuppressWarnings("unchecked")
     public <E extends Object> QueryResult<E> query(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
@@ -213,13 +184,13 @@ public class HBaseStorage extends DataStorageBase {
     }
 
     /**
-     * Query by HBase rowkey
+     * Query by HBase rowkey.
      *
      * @param ids              hbase rowkey list
      * @param entityDefinition entity definition
      * @param <E>              entity type
-     * @return QueryResult with entity type <E>
-     * @throws IOException
+     * @return QueryResult with entity type
+     * @throws IOException IOException
      */
     @Override
     public <E> QueryResult<E> queryById(List<String> ids, EntityDefinition entityDefinition) throws IOException {

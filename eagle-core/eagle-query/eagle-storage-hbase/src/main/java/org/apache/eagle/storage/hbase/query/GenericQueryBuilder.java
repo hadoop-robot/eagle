@@ -16,26 +16,26 @@
  */
 package org.apache.eagle.storage.hbase.query;
 
-import java.util.List;
-
+import org.apache.eagle.log.entity.SearchCondition;
 import org.apache.eagle.query.GenericEntityQuery;
 import org.apache.eagle.query.GenericQuery;
-import org.apache.eagle.storage.hbase.query.aggregate.GenericAggregateQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.eagle.log.entity.SearchCondition;
 import org.apache.eagle.query.aggregate.AggregateCondition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.timeseries.SortOption;
+import org.apache.eagle.storage.hbase.query.aggregate.GenericAggregateQuery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
- * TODO: decouple into eagle-query-base module
+ * TODO: decouple into eagle-query-base module.
  *
  * @since : 10/30/14,2014
  */
 public class GenericQueryBuilder {
-    private Logger LOG = LoggerFactory.getLogger(GenericQueryBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GenericQueryBuilder.class);
 
     private List<String> outputFields;
     private String serviceName;
@@ -79,27 +79,18 @@ public class GenericQueryBuilder {
     }
 
     /**
-     * TODO: Parameter "parallel" no longer supported, ignore
+     * TODO: Parameter "parallel" no longer supported, ignore.
      *
-     * @param parallel
-     * @return
      */
     @Deprecated
     public GenericQueryBuilder parallel(int parallel) {
-//		throw new IllegalArgumentException("Parameter \"parallel\" no longer supported");
+        //  throw new IllegalArgumentException("Parameter \"parallel\" no longer supported");
         if (parallel > 0) {
             LOG.warn("Parameter \"parallel\" is deprecated, ignore");
         }
         return this;
     }
 
-    /**
-     * @param hasAgg
-     * @param groupByFields
-     * @param aggregateFunctionTypes
-     * @param aggregateFields
-     * @return
-     */
     public GenericQueryBuilder groupBy(boolean hasAgg, List<String> groupByFields, List<AggregateFunctionType> aggregateFunctionTypes, List<String> aggregateFields) {
         this.hasAgg = hasAgg;
         this.groupByFields = groupByFields;
@@ -127,10 +118,7 @@ public class GenericQueryBuilder {
     }
 
     /**
-     * TODO: Parameter "treeAgg" no longer supported, ignore
-     *
-     * @param treeAgg
-     * @return
+     * TODO: Parameter "treeAgg" no longer supported, ignore.
      */
     @Deprecated
     public GenericQueryBuilder treeAgg(boolean treeAgg) {

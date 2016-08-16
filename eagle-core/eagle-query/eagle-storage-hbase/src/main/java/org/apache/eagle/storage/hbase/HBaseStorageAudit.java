@@ -17,11 +17,7 @@
 
 package org.apache.eagle.storage.hbase;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static org.apache.eagle.audit.common.AuditConstants.*;
 
 import org.apache.eagle.audit.common.AuditEvent;
 import org.apache.eagle.audit.entity.GenericAuditEntity;
@@ -33,16 +29,17 @@ import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.storage.DataStorageManager;
 import org.apache.eagle.storage.exception.IllegalDataStorageTypeException;
 import org.apache.eagle.storage.operation.CreateStatement;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_SERVICE_ENDPOINT;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_SERVICE_NAME;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_USER_ID;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_OPERATION;
-import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_TIMESTAMP;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of AuditListener class.
@@ -50,7 +47,7 @@ import static org.apache.eagle.audit.common.AuditConstants.AUDIT_COLUMN_TIMESTAM
  */
 public class HBaseStorageAudit implements AuditListener {
 
-    private final static Logger LOG = LoggerFactory.getLogger(HBaseStorageAudit.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HBaseStorageAudit.class);
     private AuditSupport auditSupport = new AuditSupport(this);
 
     public HBaseStorageAudit() {
@@ -65,11 +62,6 @@ public class HBaseStorageAudit implements AuditListener {
 
     /**
      * Method to be invoked for firing audit event.
-     *
-     * @param operation:        HBase operation. Values like CREATE/UPDATE/DELETE.
-     * @param entities:         List of entities used in HBase operation.
-     * @param encodedRowKeys:   List of encodededRowKeys returned from successful HBase operation. To be passed only from deletebyID method.
-     * @param entityDefinition: EntityDefinition object used in the HBaseOperation.
      */
     public void auditOperation(String operation, List<? extends TaggedLogAPIEntity> entities, List<String> encodedRowKeys, EntityDefinition entityDefinition) {
         if (isAuditingRequired(entityDefinition.getService())) {
@@ -84,7 +76,7 @@ public class HBaseStorageAudit implements AuditListener {
      * Check if audit is required based on the service names and audit configuration.
      *
      * @param serviceName: Name of the service call.
-     * @return
+     * @return isAuditingRequired
      */
     private boolean isAuditingRequired(String serviceName) {
         if (EagleConfigFactory.load().isServiceAuditingEnabled()
@@ -103,7 +95,7 @@ public class HBaseStorageAudit implements AuditListener {
      * @param entities:         List of entities used in HBase operation.
      * @param encodedRowKeys:   List of encodededRowKeys returned from successful HBase operation. To be passed only from deletebyID method.
      * @param entityDefinition: EntityDefinition object used in the HBaseOperation.
-     * @return
+     * @return GenericAuditEntities List
      */
     private List<GenericAuditEntity> buildAuditEntities(String operation, List<? extends TaggedLogAPIEntity> entities, List<String> encodedRowKeys, EntityDefinition entityDefinition) {
         String serviceName = entityDefinition.getService();
@@ -154,7 +146,7 @@ public class HBaseStorageAudit implements AuditListener {
     /**
      * Persists audit entries into HBase.
      *
-     * @param entityList
+     * @param entityList entityList
      */
     private void persistAuditEntity(List<? extends TaggedLogAPIEntity> entityList) {
         try {

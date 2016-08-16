@@ -16,13 +16,14 @@
  */
 package org.apache.eagle.storage.hbase.query.coprocessor.impl;
 
+import org.apache.eagle.common.ByteUtil;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.aggregate.raw.*;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResultCallback;
 import org.apache.eagle.storage.hbase.query.coprocessor.ProtoBufConverter;
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-import org.apache.eagle.common.ByteUtil;
-import org.apache.eagle.query.aggregate.raw.*;
+
 import org.apache.hadoop.hbase.coprocessor.CoprocessorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +35,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * AggregateResultCallbackImpl.
+ * @see AggregateResultCallback
  * @since : 11/3/14,2014
  */
 public class AggregateResultCallbackImpl implements AggregateResultCallback {
-    private final static Logger LOG = LoggerFactory.getLogger(AggregateResultCallback.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AggregateResultCallback.class);
     private Map<GroupbyKey, List<Function>> groupedFuncs = new HashMap<GroupbyKey, List<Function>>();
     private List<FunctionFactory> functionFactories = new ArrayList<FunctionFactory>();
     private int numFuncs = 0;
@@ -57,7 +60,7 @@ public class AggregateResultCallbackImpl implements AggregateResultCallback {
         this._start = System.currentTimeMillis();
     }
 
-    //	@Override
+    //  @Override
     public void update(byte[] region, byte[] row, AggregateResult result) {
         AggregateResult _result = result;
         regionCounter++;
@@ -99,6 +102,18 @@ public class AggregateResultCallbackImpl implements AggregateResultCallback {
         }
     }
 
+    @Override
+    public void update(byte[] region, byte[] row, AggregateProtos.AggregateResult result) {
+        try {
+            if (result == null) {
+                throw new IllegalStateException(new CoprocessorException("result is null"));
+            }
+            this.update(region, row, ProtoBufConverter.fromPBResult(result));
+        } catch (IOException e) {
+            LOG.error("Failed to convert PB-Based message", e);
+        }
+    }
+
     public long getKVCounter() {
         return this.kvCounter;
     }
@@ -122,9 +137,11 @@ public class AggregateResultCallbackImpl implements AggregateResultCallback {
 
         final long _stop = System.currentTimeMillis();
         if (this.getRegionCounter() > 0) {
-            LOG.info(String.format("result = %d rows, startTime = %d, endTime = %d, source = %d rows, regions = %d, , spend = %d ms", mergedKeyValues.size(), this.startTimestamp, this.stopTimestamp, this.getKVCounter(), this.getRegionCounter(), (_stop - _start)));
+            LOG.info(String.format("result = %d rows, startTime = %d, endTime = %d, source = %d rows, regions = %d, , spend = %d ms",
+                mergedKeyValues.size(), this.startTimestamp, this.stopTimestamp, this.getKVCounter(), this.getRegionCounter(), (_stop - _start)));
         } else {
-            LOG.info(String.format("result = %d rows, startTime = %d, endTime = %d, source = %d rows, spend = %d ms", mergedKeyValues.size(), this.startTimestamp, this.stopTimestamp, this.getKVCounter(), (_stop - _start)));
+            LOG.info(String.format("result = %d rows, startTime = %d, endTime = %d, source = %d rows, spend = %d ms",
+                mergedKeyValues.size(), this.startTimestamp, this.stopTimestamp, this.getKVCounter(), (_stop - _start)));
         }
         AggregateResult result = new AggregateResult();
         result.setKeyValues(mergedKeyValues);
@@ -133,15 +150,4 @@ public class AggregateResultCallbackImpl implements AggregateResultCallback {
         return result;
     }
 
-    @Override
-    public void update(byte[] region, byte[] row, AggregateProtos.AggregateResult result) {
-        try {
-            if (result == null) {
-                throw new IllegalStateException(new CoprocessorException("result is null"));
-            }
-            this.update(region, row, ProtoBufConverter.fromPBResult(result));
-        } catch (IOException e) {
-            LOG.error("Failed to convert PB-Based message", e);
-        }
-    }
 }

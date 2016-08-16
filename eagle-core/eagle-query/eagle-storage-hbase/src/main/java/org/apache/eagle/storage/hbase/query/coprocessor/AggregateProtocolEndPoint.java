@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.*;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
@@ -25,7 +26,7 @@ import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.RawAggregator;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-import org.apache.eagle.common.DateTimeUtil;
+
 import com.google.protobuf.RpcCallback;
 import com.google.protobuf.RpcController;
 import com.google.protobuf.Service;
@@ -51,6 +52,7 @@ import java.util.Map;
 
 //public abstract class AbstractAggregateEndPoint extends BaseEndpointCoprocessor{
 public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol implements AggregateProtocol, Coprocessor, CoprocessorService {
+    private static final Logger LOG = LoggerFactory.getLogger(AggregateProtocolEndPoint.class);
 
     private RegionCoprocessorEnvironment env;
 
@@ -82,14 +84,14 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
         // do nothing
     }
 
-//    @Override
-//	public ProtocolSignature getProtocolSignature(String protocol, long version, int clientMethodsHashCode) throws IOException {
-//		if (AggregateProtocol.class.getName().equals(protocol)) {
-////			return new ProtocolSignature(AggregateProtocol.VERSION, null);
-//			return new ProtocolSignature(98l, null);
-//		}
-//		throw new IOException("Unknown protocol: " + protocol);
-//	}
+    //    @Override
+    //  public ProtocolSignature getProtocolSignature(String protocol, long version, int clientMethodsHashCode) throws IOException {
+    //      if (AggregateProtocol.class.getName().equals(protocol)) {
+    ////        return new ProtocolSignature(AggregateProtocol.VERSION, null);
+    //      return new ProtocolSignature(98l, null);
+    //      }
+    //      throw new IOException("Unknown protocol: " + protocol);
+    //  }
 
     protected HRegion getCurrentRegion() {
         return this.env.getRegion();
@@ -97,8 +99,9 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
 
     /**
      * <pre>
-     * Region-unittest,\x82\xB4\x85\xC2\x7F\xFF\xFE\xB6\xC9jNG\xEE!\x5C3\xBB\xAE\xA1:\x05\xA5\xA9x\xB0\xA1"8\x05\xFB(\xD2VY\xDB\x9A\x06\x09\xA9\x98\xC2\xE3\x8D=,1413960230654.aaf2a6c9f2c87c196f43497243bb2424.
-     * RegionID-unittest,1413960230654
+     * Region-unittest,
+     * \x82\xB4\x85\xC2\x7F\xFF\xFE\xB6\xC9jNG\xEE!\x5C3\xBB\xAE\xA1:\x05\xA5\xA9x\xB0\xA1"8\x05\xFB(\xD2VY\xDB\x9A\x06\x09\xA9\x98\xC2\xE3\x8D=,1413960230654.aaf2a6c9f2c87c196f43497243bb2424.
+     * RegionID-unittest,1413960230654.
      * </pre>
      */
     protected String getLogHeader() {
@@ -144,13 +147,9 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
     }
 
     /**
-     * Asynchronous HBase scan read as entity
-     *
-     * @param scan
-     * @throws java.io.IOException
+     * Asynchronous HBase scan read as entity.
      */
     protected InternalReadReport asyncStreamRead(EntityDefinition ed, Scan scan, EntityCreationListener listener) throws IOException {
-//		_init();
         long counter = 0;
         long startTimestamp = 0;
         long stopTimestamp = 0;
@@ -180,14 +179,14 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
 
                     for (Cell kv : results) {
                         String qualifierName = Bytes.toString(kv.getQualifier());
-//						Qualifier qualifier = null;
-//						if(!ed.isTag(qualifierName)){
-//							qualifier = ed.getQualifierNameMap().get(qualifierName);
-//							if(qualifier == null){
-//								LOG.error("qualifier for   " + qualifierName + " not exist");
-//								throw new NullPointerException("qualifier for field "+qualifierName+" not exist");
-//							}
-//						}
+                        //                        Qualifier qualifier = null;
+                        //                        if(!ed.isTag(qualifierName)){
+                        //                            qualifier = ed.getQualifierNameMap().get(qualifierName);
+                        //                            if(qualifier == null){
+                        //                                LOG.error("qualifier for   " + qualifierName + " not exist");
+                        //                                throw new NullPointerException("qualifier for field "+qualifierName+" not exist");
+                        //                            }
+                        //                        }
                         if (kv.getValue() != null) {
                             kvMap.put(qualifierName, kv.getValue());
                         }
@@ -245,7 +244,8 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                         LOG.warn("Empty batch of KeyValue");
                     }
                 }
-            } while (hasMoreRows);
+            } 
+            while (hasMoreRows);
         } catch (IOException ex) {
             LOG.error(ex.getMessage(), ex);
             throw ex;
@@ -258,14 +258,10 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
     }
 
     /**
-     * Asynchronous HBase scan read as RAW qualifier
-     *
-     * @param scan
-     * @param listener
-     * @throws Exception
+     * Asynchronous HBase scan read as RAW qualifier.
      */
     protected InternalReadReport asyncStreamRead(EntityDefinition ed, Scan scan, QualifierCreationListener listener) throws IOException {
-//		_init();
+        //  _init();
         long counter = 0;
         long startTimestamp = 0;
         long stopTimestamp = 0;
@@ -279,7 +275,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                 if (!results.isEmpty()) {
                     counter++;
                     byte[] row = results.get(0).getRow();
-//					if(ed.isTimeSeries()){
+                    //  if(ed.isTimeSeries()){
                     long timestamp = RowkeyBuilder.getTimestamp(row, ed);
                     // Min
                     if (startTimestamp == 0 || startTimestamp > timestamp) {
@@ -289,7 +285,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                     if (stopTimestamp == 0 || stopTimestamp < timestamp) {
                         stopTimestamp = timestamp;
                     }
-//					}
+                    //  }
 
                     for (Cell kv : results) {
                         String qualifierName = Bytes.toString(kv.getQualifier());
@@ -307,7 +303,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                         }
                     }
 
-//					LOG.info("DEBUG: timestamp="+timestamp+", keys=["+StringUtils.join(kvMap.keySet(),",")+"]");
+                    //  LOG.info("DEBUG: timestamp="+timestamp+", keys=["+StringUtils.join(kvMap.keySet(),",")+"]");
 
                     if (!kvMap.isEmpty()) {
                         listener.qualifierCreated(kvMap);
@@ -318,7 +314,8 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                         LOG.warn("Empty batch of KeyValue");
                     }
                 }
-            } while (hasMoreRows);
+            }
+            while (hasMoreRows);
         } catch (IOException ex) {
             LOG.error(ex.getMessage(), ex);
             throw ex;
@@ -331,25 +328,6 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
         return new InternalReadReport(counter, startTimestamp, stopTimestamp);
     }
 
-    @Override
-    public void aggregate(RpcController controller, AggregateProtos.AggregateRequest request, RpcCallback<AggregateProtos.AggregateResult> done) {
-        AggregateResult result = null;
-        try {
-            result = this.aggregate(ProtoBufConverter.fromPBEntityDefinition(request.getEntityDefinition()),
-                ProtoBufConverter.fromPBScan(request.getScan()),
-                ProtoBufConverter.fromPBStringList(request.getGroupbyFieldsList()),
-                ProtoBufConverter.fromPBByteArrayList(request.getAggregateFuncTypesList()),
-                ProtoBufConverter.fromPBStringList(request.getAggregatedFieldsList())
-            );
-        } catch (IOException e) {
-            ResponseConverter.setControllerException(controller, e);
-        }
-        try {
-            done.run(ProtoBufConverter.toPBAggregateResult(result));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to convert result to PB-based message", e);
-        }
-    }
 
     @Override
     public void timeseriesAggregate(RpcController controller, AggregateProtos.TimeSeriesAggregateRequest request, RpcCallback<AggregateProtos.AggregateResult> done) {
@@ -375,28 +353,39 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
             ResponseConverter.setControllerException(controller, e);
         }
     }
-
-    private final static Logger LOG = LoggerFactory.getLogger(AggregateProtocolEndPoint.class);
-
-    /**
-     * @param entityDefinition
-     * @param scan
-     * @param groupbyFields
-     * @param aggregateFuncTypes
-     * @param aggregatedFields
-     * @return
-     * @throws Exception
-     */
+    
+    @Override
+    public void aggregate(RpcController controller, AggregateProtos.AggregateRequest request, RpcCallback<AggregateProtos.AggregateResult> done) {
+        AggregateResult result = null;
+        try {
+            result = this.aggregate(ProtoBufConverter.fromPBEntityDefinition(request.getEntityDefinition()),
+                ProtoBufConverter.fromPBScan(request.getScan()),
+                ProtoBufConverter.fromPBStringList(request.getGroupbyFieldsList()),
+                ProtoBufConverter.fromPBByteArrayList(request.getAggregateFuncTypesList()),
+                ProtoBufConverter.fromPBStringList(request.getAggregatedFieldsList())
+            );
+        } catch (IOException e) {
+            ResponseConverter.setControllerException(controller, e);
+        }
+        try {
+            done.run(ProtoBufConverter.toPBAggregateResult(result));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert result to PB-based message", e);
+        }
+    }
+    
     @Override
     public AggregateResult aggregate(EntityDefinition entityDefinition, Scan scan, List<String> groupbyFields, List<byte[]> aggregateFuncTypes, List<String> aggregatedFields) throws IOException {
-//		LOG.info("Using coprocessor instance: "+this);
+        //  LOG.info("Using coprocessor instance: "+this);
         checkNotNull(entityDefinition, "entityDefinition");
         String serviceName = entityDefinition.getService();
-        LOG.info(this.getLogHeader() + " raw group aggregate on service: " + serviceName + " by: " + groupbyFields + " func: " + AggregateFunctionType.fromBytesList(aggregateFuncTypes) + " fields: " + aggregatedFields);
+        LOG.info(this.getLogHeader() + " raw group aggregate on service: " + serviceName + " by: " + groupbyFields
+            + " func: " + AggregateFunctionType.fromBytesList(aggregateFuncTypes) + " fields: " + aggregatedFields);
+        
         if (LOG.isDebugEnabled()) {
             LOG.debug("SCAN: " + scan.toJSON());
         }
-        long _start = System.currentTimeMillis();
+        final long _start = System.currentTimeMillis();
         final RawAggregator aggregator = new RawAggregator(groupbyFields, AggregateFunctionType.fromBytesList(aggregateFuncTypes), aggregatedFields, entityDefinition);
         InternalReadReport report = this.asyncStreamRead(entityDefinition, scan, aggregator);
 
@@ -407,34 +396,29 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
         result.setStopTimestamp(report.getStopTimestamp());
 
         long _stop = System.currentTimeMillis();
-        LOG.info(String.format("%s: scan = %d rows, group = %d keys, startTime = %d, endTime = %d, spend = %d ms", this.getLogHeader(), report.getCounter(), keyValues.size(), report.getStartTimestamp(), report.getStopTimestamp(), (_stop - _start)));
+        LOG.info(String.format("%s: scan = %d rows, group = %d keys, startTime = %d, endTime = %d, spend = %d ms",
+            this.getLogHeader(), report.getCounter(), keyValues.size(), report.getStartTimestamp(), report.getStopTimestamp(), (_stop - _start)));
 
         return result;
     }
-
+    
     /**
+     * Aggregate RPC through copprocessor.
      * TODO: refactor time series aggregator to remove dependency of business logic entity class
-     *
-     * @param entityDefinition
-     * @param scan
-     * @param groupbyFields
-     * @param aggregateFuncTypes
-     * @param aggregatedFields
-     * @param intervalMin
-     * @return
-     * @throws Exception
      */
     @Override
-    public AggregateResult aggregate(EntityDefinition entityDefinition, Scan scan, List<String> groupbyFields, List<byte[]> aggregateFuncTypes, List<String> aggregatedFields, long startTime, long endTime, long intervalMin) throws IOException {
-//		LOG.info("Using coprocessor instance: "+this);
+    public AggregateResult aggregate(EntityDefinition entityDefinition, Scan scan, List<String> groupbyFields,
+                                     List<byte[]> aggregateFuncTypes, List<String> aggregatedFields, long startTime, long endTime, long intervalMin) throws IOException {
+        //  LOG.info("Using coprocessor instance: "+this);
         checkNotNull(entityDefinition, "entityDefinition");
         String serviceName = entityDefinition.getService();
-        LOG.info(this.getLogHeader() + " time series group aggregate on service: " + serviceName + " by: " + groupbyFields + " func: " + AggregateFunctionType.fromBytesList(aggregateFuncTypes) + " fields: " + aggregatedFields + " intervalMin: " + intervalMin +
-            " from: " + DateTimeUtil.millisecondsToHumanDateWithMilliseconds(startTime) + " to: " + DateTimeUtil.millisecondsToHumanDateWithMilliseconds(endTime));
+        LOG.info(this.getLogHeader() + " time series group aggregate on service: " + serviceName + " by: " + groupbyFields
+            + " func: " + AggregateFunctionType.fromBytesList(aggregateFuncTypes) + " fields: " + aggregatedFields + " intervalMin: " + intervalMin
+            + " from: " + DateTimeUtil.millisecondsToHumanDateWithMilliseconds(startTime) + " to: " + DateTimeUtil.millisecondsToHumanDateWithMilliseconds(endTime));
         if (LOG.isDebugEnabled()) {
             LOG.debug("SCAN: " + scan.toJSON());
         }
-        long _start = System.currentTimeMillis();
+        final long _start = System.currentTimeMillis();
         final TimeSeriesAggregator aggregator = new TimeSeriesAggregator(groupbyFields, AggregateFunctionType.fromBytesList(aggregateFuncTypes), aggregatedFields, startTime, endTime, intervalMin);
         InternalReadReport report = this.asyncStreamRead(entityDefinition, scan, aggregator);
         List<GroupbyKeyValue> keyValues = aggregator.getGroupbyKeyValues();
@@ -445,28 +429,29 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
         result.setStopTimestamp(report.getStopTimestamp());
 
         long _stop = System.currentTimeMillis();
-        LOG.info(String.format("%s: scan = %d rows, group = %d keys, startTime = %d, endTime = %d, spend = %d ms", this.getLogHeader(), report.getCounter(), keyValues.size(), report.getStartTimestamp(), report.getStopTimestamp(), (_stop - _start)));
+        LOG.info(String.format("%s: scan = %d rows, group = %d keys, startTime = %d, endTime = %d, spend = %d ms",
+            this.getLogHeader(), report.getCounter(), keyValues.size(), report.getStartTimestamp(), report.getStopTimestamp(), (_stop - _start)));
 
         return result;
     }
 
-//	/**
-//	 * Initialization per aggregate RPC call
-//	 */
-//	private void _init(){
-//		this.startTimestamp = 0;
-//		this.stopTimestamp = 0;
-//	}
-//
-//	// Min
-//	private long startTimestamp;
-//	// Max
-//	private long stopTimestamp;
-//
-//	public long getStartTimestamp() {
-//		return startTimestamp;
-//	}
-//	public long getStopTimestamp() {
-//		return stopTimestamp;
-//	}
+    //    /**
+    //     * Initialization per aggregate RPC call
+    //     */
+    //    private void _init(){
+    //        this.startTimestamp = 0;
+    //        this.stopTimestamp = 0;
+    //    }
+    //
+    //    // Min
+    //    private long startTimestamp;
+    //    // Max
+    //    private long stopTimestamp;
+    //
+    //    public long getStartTimestamp() {
+    //        return startTimestamp;
+    //    }
+    //    public long getStopTimestamp() {
+    //        return stopTimestamp;
+    //    }
 }

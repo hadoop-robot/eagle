@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.hbase.query.aggregate;
 
+import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.HBaseInternalLogHelper;
 import org.apache.eagle.log.entity.SearchCondition;
@@ -35,7 +36,7 @@ import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesPostFlatAggregateSort;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateResultCallbackImpl;
-import org.apache.eagle.common.DateTimeUtil;
+
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.slf4j.Logger;
@@ -47,7 +48,6 @@ import java.util.*;
 
 /**
  * AggregateQuery
- * <p>
  * <ol>
  * <li>Open HBase connection</li>
  * <li>Aggregate through Coprocessor</li>
@@ -75,31 +75,11 @@ public class GenericAggregateQuery implements GenericQuery {
     private int sortAggFuncNum;
     private int sortFuncNum;
 
-    /**
-     * @param serviceName
-     * @param condition
-     * @param aggregateCondition
-     * @param metricName
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     */
     public GenericAggregateQuery(String serviceName, SearchCondition condition, AggregateCondition aggregateCondition, String metricName)
         throws InstantiationException, IllegalAccessException {
         this(serviceName, condition, aggregateCondition, metricName, null, null, null, 0);
     }
 
-    /**
-     * @param serviceName
-     * @param condition
-     * @param aggregateCondition
-     * @param metricName
-     * @param sortOptions
-     * @param sortFunctionTypes
-     * @param sortFields
-     * @param top
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     */
     public GenericAggregateQuery(String serviceName, SearchCondition condition,
                                  AggregateCondition aggregateCondition, String metricName,
                                  List<SortOption> sortOptions, List<AggregateFunctionType> sortFunctionTypes, List<String> sortFields, int top)
@@ -171,7 +151,7 @@ public class GenericAggregateQuery implements GenericQuery {
     }
 
     /**
-     * TODO: Return List<GroupAggregateAPIEntity>
+     * TODO: Return List[GroupAggregateAPIEntity]
      *
      * @see GenericAggregateQuery.TimeSeriesGroupAggregateQueryReader#result()
      * @see GenericAggregateQuery.FlatGroupAggregateQueryReader#result()
@@ -228,22 +208,22 @@ public class GenericAggregateQuery implements GenericQuery {
 
     ///////////////////////////////////////////////////////////
     // GroupAggregateQueryReader(GroupAggregateLogReader)
-    // 	|_ FlatGroupAggregateQueryReader
-    // 	|_ TimeSeriesGroupAggregateQueryReader
+    //   |_ FlatGroupAggregateQueryReader
+    //  |_ TimeSeriesGroupAggregateQueryReader
     ///////////////////////////////////////////////////////////
-
+    
     /**
-     * Factory method for {@link GroupAggregateQueryReader}
+     * Factory method for {@link GroupAggregateQueryReader}.
      * <pre>
      * {@link GroupAggregateQueryReader}
      * |_ {@link FlatGroupAggregateQueryReader}
      * |_ {@link TimeSeriesGroupAggregateQueryReader}
      * </pre>
      *
-     * @param reader
-     * @param isTimeSeries
-     * @return
-     * @throws IOException
+     * @param reader reader
+     * @param isTimeSeries isTimeSeries
+     * @return GroupAggregateQueryReader 
+     * @throws IOException IOException
      */
     private GroupAggregateQueryReader buildGroupAggregateQueryReader(GenericAggregateReader reader, boolean isTimeSeries) throws IOException {
         if (isTimeSeries) {
@@ -339,16 +319,16 @@ public class GenericAggregateQuery implements GenericQuery {
          * <li>if not sort options, return generate time series data points</li>
          * <li>if requiring sort, sort time series data points by order of flat aggregation</li>
          * </ol>
-         * <p>
          * <h2>Time Series Sort Algorithms</h2>
          * <ol>
          * <li>Flat aggregate on grouped fields without time series bucket index</li>
          * <li>Flat aggregated result according given sortOptions</li>
          * <li>Sort Time Series Result according the same order of flat aggregated keys</li>
          * </ol>
+         * .
          *
-         * @return
-         * @throws Exception
+         * @return aggregated result in List[Entry[List[String],List[double[]]]]
+         * @throws Exception Exception
          * @see #convertToTimeSeriesDataPoints(java.util.List)
          */
         @Override
@@ -358,9 +338,8 @@ public class GenericAggregateQuery implements GenericQuery {
             // aggregated data points only
             Map<List<String>, List<double[]>> timeseriesDataPoints = convertToTimeSeriesDataPoints(result);
 
-            if (this.query.sortOptions == null)
             // return time-series data points without sort
-            {
+            if (this.query.sortOptions == null) {
                 return new ArrayList<Map.Entry<List<String>, List<double[]>>>(timeseriesDataPoints.entrySet());
             }
 
@@ -394,22 +373,22 @@ public class GenericAggregateQuery implements GenericQuery {
             Map<List<String>, List<Double>> mapForSort = this.keyValuesToMap(callbackResult.getKeyValues());
 
             // 2. Flat aggregated result according given sortOptions
-//			List<Map.Entry<List<String>, List<Double>>> flatSort = PostFlatAggregateSort.sort(mapForSort , this.sortOptions, Integer.MAX_VALUE);
-//			mapForSort = new HashMap<List<String>, List<Double>>();
-//			for(Map.Entry<List<String>, List<Double>> entry:flatSort){
-//				mapForSort.put(entry.getKey(),entry.getValue());
-//			}
+            //      List<Map.Entry<List<String>, List<Double>>> flatSort = PostFlatAggregateSort.sort(mapForSort , this.sortOptions, Integer.MAX_VALUE);
+            //      mapForSort = new HashMap<List<String>, List<Double>>();
+            //      for(Map.Entry<List<String>, List<Double>> entry:flatSort){
+            //        mapForSort.put(entry.getKey(),entry.getValue());
+            //      }
 
             // 3. Sort Time Series Result according flat aggregated keys' order
             return TimeSeriesPostFlatAggregateSort.sort(mapForSort, timeseriesDataPoints, this.sortOptions, this.query.top);
         }
 
         /**
-         * Convert raw GroupbyKeyValue list into time-series data points hash map
+         * Convert raw GroupbyKeyValue list into time-series data points hash map.
          *
          * @param result <code>List&lt;GroupbyKeyValue&gt;</code>
          * @return Map&lt;List&lt;String&gt;,List&lt;double[]&gt;&gt;
-         * @throws Exception
+         * @throws Exception Exception
          */
         private Map<List<String>, List<double[]>> convertToTimeSeriesDataPoints(List<GroupbyKeyValue> result) throws Exception {
             Map<List<String>, List<Double>> aggResultMap = this.keyValuesToMap(result);
@@ -419,7 +398,7 @@ public class GenericAggregateQuery implements GenericQuery {
     }
 
     /**
-     * Get last / max timestamp
+     * Get last / max timestamp.
      *
      * @return lastTimestamp
      */
@@ -429,7 +408,7 @@ public class GenericAggregateQuery implements GenericQuery {
     }
 
     /**
-     * Get first / min timestamp
+     * Get first / min timestamp.
      *
      * @return firstTimestamp
      */

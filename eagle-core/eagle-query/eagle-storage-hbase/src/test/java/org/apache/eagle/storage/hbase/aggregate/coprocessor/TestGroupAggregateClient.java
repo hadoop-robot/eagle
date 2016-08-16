@@ -16,16 +16,21 @@
  */
 package org.apache.eagle.storage.hbase.aggregate.coprocessor;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.eagle.common.config.EagleConfigFactory;
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
+import org.apache.eagle.log.entity.GenericEntityWriter;
+import org.apache.eagle.log.entity.meta.EntityDefinition;
+import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
+import org.apache.eagle.log.entity.test.TestLogAPIEntity;
+import org.apache.eagle.query.ListQueryCompiler;
+import org.apache.eagle.query.aggregate.AggregateFunctionType;
+import org.apache.eagle.query.aggregate.raw.GroupbyKey;
+import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
+import org.apache.eagle.query.aggregate.raw.GroupbyValue;
+import org.apache.eagle.service.hbase.TestHBaseBase;
+import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
 
-import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.hadoop.hbase.client.HTableFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
@@ -38,21 +43,12 @@ import org.junit.Ignore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.GenericEntityWriter;
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.log.entity.test.TestLogAPIEntity;
-import org.apache.eagle.query.ListQueryCompiler;
-import org.apache.eagle.query.aggregate.AggregateFunctionType;
-import org.apache.eagle.query.aggregate.raw.GroupbyKey;
-import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
-import org.apache.eagle.query.aggregate.raw.GroupbyValue;
-import org.apache.eagle.service.hbase.TestHBaseBase;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
-/**
- * @since : 10/30/14,2014
- */
 @Ignore
 public class TestGroupAggregateClient extends TestHBaseBase {
     HTableInterface table;
@@ -63,7 +59,7 @@ public class TestGroupAggregateClient extends TestHBaseBase {
     Scan scan;
     int num = 200;
 
-    private final static Logger LOG = LoggerFactory.getLogger(TestGroupAggregateClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestGroupAggregateClient.class);
 
     @Before
     public void setUp() {
@@ -138,7 +134,8 @@ public class TestGroupAggregateClient extends TestHBaseBase {
     public void testGroupAggregateCountClient() {
         try {
             EntityDefinition ed = EntityDefinitionManager.getEntityByServiceName("TestLogAPIEntity");
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.count), Arrays.asList("field2")).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.count), Arrays.asList("field2")).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("COUNT");
             }
@@ -155,7 +152,8 @@ public class TestGroupAggregateClient extends TestHBaseBase {
     public void testGroupAggregateAvgClient() {
         try {
             EntityDefinition ed = EntityDefinitionManager.getEntityByServiceName("TestLogAPIEntity");
-            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"), Arrays.asList(AggregateFunctionType.avg), Arrays.asList("field2")).getKeyValues();
+            List<GroupbyKeyValue> result = client.aggregate(table, ed, scan, Arrays.asList("cluster", "datacenter"),
+                Arrays.asList(AggregateFunctionType.avg), Arrays.asList("field2")).getKeyValues();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("AVG");
             }

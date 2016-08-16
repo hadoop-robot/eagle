@@ -20,6 +20,7 @@ import org.apache.eagle.query.aggregate.raw.GroupbyKey;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.GroupbyValue;
 import org.apache.eagle.query.aggregate.raw.WritableList;
+
 import org.apache.hadoop.io.Writable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +32,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Aggregated writable result consist of group-by key-values list and additional meta information
- * <p>
+ * Aggregated writable result consist of group-by key-values list and additional meta information.
  * <h2>Schema</h2>
  * <pre>
  * {
@@ -44,10 +44,10 @@ import java.util.List;
  */
 public class AggregateResult implements Writable, Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(AggregateResult.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AggregateResult.class);
 
     /**
-     * Automatically generated default serialVersionUID
+     * Automatically generated default serialVersionUID.
      */
     private static final long serialVersionUID = 1L;
 

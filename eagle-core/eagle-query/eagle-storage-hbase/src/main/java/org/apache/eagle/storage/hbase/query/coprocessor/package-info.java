@@ -28,7 +28,7 @@
  *   &lt;name>hbase.coprocessor.region.classes&lt;/name&gt;
  *   &lt;value>AggregateProtocolEndPoint&lt;/value&gt;
  * &lt;/property&gt;
- * 	</pre>
+ * </pre>
  * Or register on related hbase tables
  * <pre> hbase(main):005:0>  alter 't1', METHOD => 'table_att', 'coprocessor'=>'hdfs:///foo.jar|AggregateProtocolEndPoint|1001|'</pre>
  * </li>
