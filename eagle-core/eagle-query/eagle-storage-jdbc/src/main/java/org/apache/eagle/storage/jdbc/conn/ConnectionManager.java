@@ -18,22 +18,12 @@ package org.apache.eagle.storage.jdbc.conn;
 
 import java.sql.Connection;
 
-/**
- * @since 3/27/15
- */
 public interface ConnectionManager {
-    /**
-     * @param config
-     * @throws Exception
-     */
+
     void init(ConnectionConfig config) throws Exception;
 
     ConnectionConfig getConfig();
 
-    /**
-     * @return
-     * @throws Exception
-     */
     Connection getConnection() throws Exception;
 
     /**
@@ -50,15 +40,8 @@ public interface ConnectionManager {
      */
     <T extends StatementExecutor> T getStatementExecutor(String tableName);
 
-    /**
-     * @param connection
-     * @throws Exception
-     */
     void close(Connection connection) throws Exception;
 
-    /**
-     * @throws Exception
-     */
     void shutdown() throws Exception;
 
     boolean isClosed();

@@ -17,9 +17,10 @@
 package org.apache.eagle.storage.jdbc.criteria.impl;
 
 import org.apache.eagle.log.entity.EntityQualifierUtils;
-import org.apache.eagle.storage.jdbc.criteria.CriterionBuilder;
 import org.apache.eagle.query.parser.*;
+import org.apache.eagle.storage.jdbc.criteria.CriterionBuilder;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
+
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criterion;
 import org.apache.torque.criteria.SqlEnum;
@@ -28,9 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-/**
- * @since 3/27/15
- */
 public class ExpressionCriterionBuilder implements CriterionBuilder {
     private final String tableName;
     private final ORExpression expression;
@@ -94,7 +92,7 @@ public class ExpressionCriterionBuilder implements CriterionBuilder {
     }
 
     /**
-     * this place is used for rewriting query for jdbc connection
+     * this place is used for rewriting query for jdbc connection.
      *
      * @param tokenType
      * @param value
@@ -145,7 +143,7 @@ public class ExpressionCriterionBuilder implements CriterionBuilder {
         return fieldName;
     }
 
-    private final static Map<ComparisonOperator, SqlEnum> _opSqlEnum = new HashMap<ComparisonOperator, SqlEnum>();
+    private static final Map<ComparisonOperator, SqlEnum> _opSqlEnum = new HashMap<ComparisonOperator, SqlEnum>();
 
     static {
         _opSqlEnum.put(ComparisonOperator.CONTAINS, SqlEnum.LIKE);

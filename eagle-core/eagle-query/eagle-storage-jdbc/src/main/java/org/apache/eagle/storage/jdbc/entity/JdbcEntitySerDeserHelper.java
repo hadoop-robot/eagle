@@ -23,6 +23,7 @@ import org.apache.eagle.log.entity.meta.Qualifier;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.util.ColumnValues;
@@ -41,21 +42,20 @@ import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @since 3/26/15
- */
 public class JdbcEntitySerDeserHelper {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntitySerDeserHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntitySerDeserHelper.class);
 
     /**
-     * @param row
-     * @param entityDefinition
-     * @param <E>
-     * @return
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * buildEntity.
+     *
+     * @param row Row map
+     * @param entityDefinition Entity Definition
+     * @param <E> Entity type
+     * @return Entity instance
+     * @throws IllegalAccessException IllegalAccessException
+     * @throws InstantiationException InstantiationException
+     * @throws InvocationTargetException InvocationTargetException
+     * @throws NoSuchMethodException NoSuchMethodException
      */
     public static <E extends TaggedLogAPIEntity> E buildEntity(Map<String, Object> row, JdbcEntityDefinition entityDefinition) throws IOException {
         EntityDefinition ed = entityDefinition.getInternal();
@@ -86,8 +86,8 @@ public class JdbcEntitySerDeserHelper {
             }
 
             // set metric as prefix for generic metric
-            if (entityDefinition.getInternal().getService().equals(GenericMetricEntity.GENERIC_METRIC_SERVICE) &&
-                JdbcConstants.METRIC_NAME_COLUMN_NAME.equalsIgnoreCase(entry.getKey())) {
+            if (entityDefinition.getInternal().getService().equals(GenericMetricEntity.GENERIC_METRIC_SERVICE)
+                && JdbcConstants.METRIC_NAME_COLUMN_NAME.equalsIgnoreCase(entry.getKey())) {
                 obj.setPrefix((String) entry.getValue());
                 continue;
             }
@@ -144,12 +144,14 @@ public class JdbcEntitySerDeserHelper {
         return (E) obj;
     }
 
-    private final static Map<String, PropertyDescriptor> _propertyDescriptorCache = new HashMap<String, PropertyDescriptor>();
+    private static final Map<String, PropertyDescriptor> _propertyDescriptorCache = new HashMap<String, PropertyDescriptor>();
 
     /**
-     * @param obj
-     * @param fieldName
-     * @return
+     * getPropertyDescriptor.
+     *
+     * @param obj Object
+     * @param fieldName Field Name
+     * @return PropertyDescriptor
      * @throws IllegalAccessException
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
@@ -165,25 +167,30 @@ public class JdbcEntitySerDeserHelper {
     }
 
     /**
-     * @param resultSet
-     * @param entityDefinition
-     * @param <E>
-     * @return
-     * @throws IOException
-     * @throws SQLException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
+     * readEntity.
+     *
+     * @param resultSet ResultSet
+     * @param entityDefinition JdbcEntityDefinition
+     * @param <E> Entity type
+     * @return Entity
+     * @throws IOException IOException
+     * @throws SQLException SQLException
+     * @throws InvocationTargetException InvocationTargetException
+     * @throws NoSuchMethodException NoSuchMethodException
+     * @throws InstantiationException InstantiationException
+     * @throws IllegalAccessException IllegalAccessException
      */
-    public static <E extends TaggedLogAPIEntity> E readEntity(ResultSet resultSet, JdbcEntityDefinition entityDefinition) throws IOException, SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static <E extends TaggedLogAPIEntity> E readEntity(ResultSet resultSet, JdbcEntityDefinition entityDefinition)
+        throws IOException, SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return buildEntity(readInternal(resultSet, entityDefinition), entityDefinition);
     }
 
     /**
-     * @param resultSet
-     * @param entityDefinition
-     * @return
+     * readInternal.
+     *
+     * @param resultSet ResultSet
+     * @param entityDefinition JdbcEntityDefinition
+     * @return Internal value map
      * @throws SQLException
      * @throws IOException
      */
@@ -217,10 +224,12 @@ public class JdbcEntitySerDeserHelper {
     }
 
     /**
-     * @param entity
-     * @param jdbcEntityDefinition
-     * @param <E>
-     * @return
+     * buildColumnValues.
+     *
+     * @param entity Entity
+     * @param jdbcEntityDefinition Jdbc Entity Definition
+     * @param <E> Entity Type
+     * @return ColumnValues
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
@@ -242,7 +251,7 @@ public class JdbcEntitySerDeserHelper {
             String displayName = entry.getKey();
 
             Qualifier qualifier = entry.getValue();
-//            String qualifierName = qualifier.getQualifierName();
+            //  String qualifierName = qualifier.getQualifierName();
             Method getMethod = getMethods.get(displayName);
             Object fieldValue = getMethod.invoke(entity);
 

@@ -19,6 +19,7 @@ package org.apache.eagle.storage.jdbc.conn.impl;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.conn.ConnectionConfig;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManager;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.torque.Torque;
@@ -28,12 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 
-/**
- * @since 3/27/15
- */
 public class TorqueConnectionManagerImpl implements ConnectionManager {
-    private final static Logger LOG = LoggerFactory.getLogger(TorqueConnectionManagerImpl.class);
-    public final static String DEFAULT_DATA_SOURCE_FACTORY_CLASS = "org.apache.torque.dsfactory.SharedPoolDataSourceFactory";
+    private static final Logger LOG = LoggerFactory.getLogger(TorqueConnectionManagerImpl.class);
+    public static final String DEFAULT_DATA_SOURCE_FACTORY_CLASS = "org.apache.torque.dsfactory.SharedPoolDataSourceFactory";
 
     private ConnectionConfig config;
 
@@ -138,8 +136,8 @@ public class TorqueConnectionManagerImpl implements ConnectionManager {
         configuration.addProperty(String.format("torque.dsfactory.%s.connection.user", databaseName), config.getUserName());
         configuration.addProperty(String.format("torque.dsfactory.%s.connection.password", databaseName), config.getPassword());
         configuration.addProperty(String.format("torque.dsfactory.%s.pool.maxActive", databaseName), Integer.toString(config.getConnectionMaxActive()));
-//        configuration.addProperty(String.format("torque.dsfactory.%s.pool.minIdle",databaseName),Integer.toString(config.getConnectionMinIdle()));
-//        configuration.addProperty(String.format("torque.dsfactory.%s.pool.initialSize",databaseName),Integer.toString(config.getConnectionInitialSize()));
+        //  configuration.addProperty(String.format("torque.dsfactory.%s.pool.minIdle",databaseName),Integer.toString(config.getConnectionMinIdle()));
+        //  configuration.addProperty(String.format("torque.dsfactory.%s.pool.initialSize",databaseName),Integer.toString(config.getConnectionInitialSize()));
 
         return configuration;
     }

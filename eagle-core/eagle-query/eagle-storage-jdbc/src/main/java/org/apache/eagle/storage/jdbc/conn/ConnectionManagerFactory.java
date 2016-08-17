@@ -17,17 +17,15 @@
 package org.apache.eagle.storage.jdbc.conn;
 
 import org.apache.eagle.storage.jdbc.conn.impl.TorqueConnectionManagerImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @since 3/27/15
- */
 public class ConnectionManagerFactory {
-    private final static Logger LOG = LoggerFactory.getLogger(ConnectionManagerFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ConnectionManagerFactory.class);
     private static ConnectionManager instance;
     private static volatile boolean initialized;
-    private final static Object lock = new Object();
+    private static final Object lock = new Object();
 
     private static void initialize(ConnectionConfig config) throws Exception {
         instance = new TorqueConnectionManagerImpl();
@@ -41,7 +39,7 @@ public class ConnectionManagerFactory {
     }
 
     /**
-     * Get instance from eagle configuration
+     * Get instance from eagle configuration.
      *
      * @return
      */

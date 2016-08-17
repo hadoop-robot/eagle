@@ -25,9 +25,6 @@ import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * @since 3/26/15
- */
 public class JdbcEntityDefinition {
     private final EntityDefinition internal;
 
@@ -36,14 +33,14 @@ public class JdbcEntityDefinition {
     }
 
     /**
-     * @return internal entity definition
+     * Get internal entity definition.
      */
     public EntityDefinition getInternal() {
         return this.internal;
     }
 
     /**
-     * As to GenericMetricEntity, return "${tableName}", else return "${tableName}_${prefix}"
+     * As to GenericMetricEntity, return "${tableName}", else return "${tableName}_${prefix}".
      *
      * @return jdbc table name in lowercase
      */
@@ -120,7 +117,7 @@ public class JdbcEntityDefinition {
     }
 
     /**
-     * TODO: Optimize with hashmap
+     * TODO: Optimize with hashmap.
      */
     public String getJavaEntityFieldName(String jdbcColumnName) {
         for (String javaEntityFieldName : this.internal.getDisplayNameMap().keySet()) {
@@ -132,10 +129,7 @@ public class JdbcEntityDefinition {
     }
 
     /**
-     * TODO: Optimize with hashmap
-     *
-     * @param jdbcTagName
-     * @return
+     * TODO: Optimize with hashmap.
      */
     public String getOriginalJavaTagName(String jdbcTagName) {
         for (String tag : this.getInternal().getTags()) {

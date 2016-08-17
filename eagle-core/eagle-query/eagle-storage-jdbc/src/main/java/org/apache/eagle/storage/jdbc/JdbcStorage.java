@@ -18,15 +18,14 @@ package org.apache.eagle.storage.jdbc;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.storage.DataStorageBase;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityDeleter;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityReader;
-import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityDeleterImpl;
-import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityReaderImpl;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityUpdater;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityWriter;
+import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityDeleterImpl;
+import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityReaderImpl;
 import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityUpdaterImpl;
 import org.apache.eagle.storage.jdbc.entity.impl.JdbcEntityWriterImpl;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
@@ -35,22 +34,17 @@ import org.apache.eagle.storage.jdbc.schema.JdbcEntitySchemaManager;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-import org.apache.torque.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @since 3/18/15
- */
 @SuppressWarnings("unchecked")
 public class JdbcStorage extends DataStorageBase {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcStorage.class);
 
     @Override
     public void init() throws IOException {
@@ -117,13 +111,12 @@ public class JdbcStorage extends DataStorageBase {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
+    public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
             JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityDeleter writer = new JdbcEntityDeleterImpl(jdbcEntityDefinition);
-            int num = writer.deleteByIds(ids);
+            int num = writer.deleteByQuery(query);
             result.setSize(num);
             result.setSuccess(true);
         } catch (Exception e) {
@@ -135,12 +128,13 @@ public class JdbcStorage extends DataStorageBase {
     }
 
     @Override
-    public ModifyResult<String> delete(CompiledQuery query, EntityDefinition entityDefinition) throws IOException {
+    @SuppressWarnings("unchecked")
+    public ModifyResult<String> deleteByID(List<String> ids, EntityDefinition entityDefinition) throws IOException {
         ModifyResult<String> result = new ModifyResult<String>();
         try {
             JdbcEntityDefinition jdbcEntityDefinition = JdbcEntityDefinitionManager.getJdbcEntityDefinition(entityDefinition);
             JdbcEntityDeleter writer = new JdbcEntityDeleterImpl(jdbcEntityDefinition);
-            int num = writer.deleteByQuery(query);
+            int num = writer.deleteByIds(ids);
             result.setSize(num);
             result.setSuccess(true);
         } catch (Exception e) {

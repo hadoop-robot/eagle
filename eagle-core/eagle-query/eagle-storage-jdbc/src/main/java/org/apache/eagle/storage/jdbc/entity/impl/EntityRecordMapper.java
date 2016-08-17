@@ -19,6 +19,7 @@ package org.apache.eagle.storage.jdbc.entity.impl;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.CriteriaInterface;
 import org.apache.torque.om.mapper.RecordMapper;
@@ -27,11 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 
-/**
- * @since 3/27/15
- */
 public class EntityRecordMapper<E extends TaggedLogAPIEntity> implements RecordMapper<E> {
-    private final static Logger LOG = LoggerFactory.getLogger(EntityRecordMapper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EntityRecordMapper.class);
 
     private final JdbcEntityDefinition entityDefinition;
 

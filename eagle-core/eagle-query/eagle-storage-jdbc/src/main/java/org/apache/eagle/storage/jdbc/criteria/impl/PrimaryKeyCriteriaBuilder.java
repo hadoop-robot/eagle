@@ -18,6 +18,7 @@ package org.apache.eagle.storage.jdbc.criteria.impl;
 
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.criteria.CriteriaBuilder;
+
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.criteria.Criterion;
@@ -25,9 +26,6 @@ import org.apache.torque.criteria.SqlEnum;
 
 import java.util.List;
 
-/**
- * @since 3/30/15
- */
 public class PrimaryKeyCriteriaBuilder implements CriteriaBuilder {
     private final List<String> keys;
     private final String tableName;

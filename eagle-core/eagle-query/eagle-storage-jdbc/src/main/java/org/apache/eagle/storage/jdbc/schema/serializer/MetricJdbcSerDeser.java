@@ -1,16 +1,4 @@
-package org.apache.eagle.storage.jdbc.schema.serializer;
-
-import org.apache.eagle.log.entity.meta.Qualifier;
-import org.apache.eagle.storage.jdbc.JdbcConstants;
-import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinitionManager;
-import org.apache.torque.util.JdbcTypedValue;
-
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -26,6 +14,17 @@ import java.sql.Types;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.eagle.storage.jdbc.schema.serializer;
+
+import org.apache.eagle.log.entity.meta.Qualifier;
+
+import org.apache.torque.util.JdbcTypedValue;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
 public class MetricJdbcSerDeser implements JdbcSerDeser<double[]> {
     @Override
     public double[] toJavaTypedValue(ResultSet result, Class<?> fieldType, String fieldName, Qualifier qualifier) throws IOException {
@@ -36,11 +35,6 @@ public class MetricJdbcSerDeser implements JdbcSerDeser<double[]> {
         }
     }
 
-    /**
-     * @param fieldValue
-     * @param fieldType
-     * @return
-     */
     @Override
     public JdbcTypedValue toJdbcTypedValue(Object fieldValue, Class<?> fieldType, Qualifier qualifier) {
         double[] metricFieldValues = (double[]) fieldValue;

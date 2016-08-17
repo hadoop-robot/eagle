@@ -35,11 +35,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.UUID;
 
-/**
- * @since 3/27/15
- */
 public class TestTorque {
-    final static Logger LOG = LoggerFactory.getLogger(TestTorque.class);
+    static final Logger LOG = LoggerFactory.getLogger(TestTorque.class);
 
     //@Before
     public void setUp() throws TorqueException {

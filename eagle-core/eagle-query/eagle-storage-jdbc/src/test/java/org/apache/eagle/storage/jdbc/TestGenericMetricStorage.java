@@ -1,24 +1,4 @@
-package org.apache.eagle.storage.jdbc;
-
-import org.apache.eagle.common.DateTimeUtil;
-import org.apache.eagle.log.entity.GenericMetricEntity;
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.storage.exception.QueryCompileException;
-import org.apache.eagle.storage.operation.CompiledQuery;
-import org.apache.eagle.storage.operation.RawQuery;
-import org.apache.eagle.storage.result.ModifyResult;
-import org.apache.eagle.storage.result.QueryResult;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -34,6 +14,27 @@ import java.util.Random;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.eagle.storage.jdbc;
+
+import org.apache.eagle.common.DateTimeUtil;
+import org.apache.eagle.log.entity.GenericMetricEntity;
+import org.apache.eagle.log.entity.meta.EntityDefinition;
+import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
+import org.apache.eagle.storage.exception.QueryCompileException;
+import org.apache.eagle.storage.operation.CompiledQuery;
+import org.apache.eagle.storage.operation.RawQuery;
+import org.apache.eagle.storage.result.ModifyResult;
+import org.apache.eagle.storage.result.QueryResult;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 public class TestGenericMetricStorage extends JdbcStorageTestBase {
 
     EntityDefinition entityDefinition;
@@ -50,10 +51,12 @@ public class TestGenericMetricStorage extends JdbcStorageTestBase {
     private GenericMetricEntity newMetric() {
         GenericMetricEntity instance = new GenericMetricEntity();
         instance.setPrefix(metricName);
-        instance.setTags(new HashMap<String, String>() {{
-            put("site", "unittest_site");
-            put("application", "unittest_application");
-        }});
+        instance.setTags(new HashMap<String, String>() {
+            {
+                put("site", "unittest_site");
+                put("application", "unittest_application");
+            }
+        });
         instance.setValue(new double[] {random.nextDouble()});
         instance.setTimestamp(System.currentTimeMillis());
         return instance;
@@ -75,11 +78,11 @@ public class TestGenericMetricStorage extends JdbcStorageTestBase {
     @Test
     public void testSimpleRead() throws IOException, QueryCompileException, InterruptedException {
         // record insert init time
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         // Write 1000 entities
         testWrite1000Metrics();
         // record insertion finish time
-        long endTime = System.currentTimeMillis();
+        final long endTime = System.currentTimeMillis();
         // init read in time range [startTime, endTime)
         RawQuery rawQuery = new RawQuery();
         rawQuery.setQuery(GenericMetricEntity.GENERIC_METRIC_SERVICE + "[]{*}");
@@ -94,7 +97,7 @@ public class TestGenericMetricStorage extends JdbcStorageTestBase {
 
     @Test
     public void testSimpleGroupAggregateRead() throws IOException, InterruptedException, QueryCompileException {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         testWrite1000Metrics();
         long endTime = System.currentTimeMillis();
         RawQuery rawQuery = new RawQuery();
@@ -111,7 +114,7 @@ public class TestGenericMetricStorage extends JdbcStorageTestBase {
 
     @Test
     public void testTimeSeriesGroupAggregateRead() throws IOException, InterruptedException, QueryCompileException {
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         testWrite1000Metrics();
         long endTime = System.currentTimeMillis();
         RawQuery rawQuery = new RawQuery();

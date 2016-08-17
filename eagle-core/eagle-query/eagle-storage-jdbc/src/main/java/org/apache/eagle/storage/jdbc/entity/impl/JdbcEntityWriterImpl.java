@@ -24,6 +24,7 @@ import org.apache.eagle.storage.jdbc.criteria.impl.PrimaryKeyCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityWriter;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
+
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.ConstraintViolationException;
 import org.apache.torque.criteria.Criteria;
@@ -34,16 +35,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.sql.Savepoint;
 
-/**
- * @since 3/27/15
- */
 public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcEntityWriter<E> {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntityWriterImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntityWriterImpl.class);
 
     private ConnectionManager connectionManager;
     private JdbcEntityDefinition jdbcEntityDefinition;
@@ -93,11 +91,15 @@ public class JdbcEntityWriterImpl<E extends TaggedLogAPIEntity> implements JdbcE
                     }
                 } catch (ClassCastException ex) {
                     assert key != null;
-                    throw new RuntimeException("Key is not in type of String (VARCHAR) , but JdbcType (java.sql.Types): " + key.getJdbcType() + ", value: " + key.getValue(), ex);
+                    throw new RuntimeException("Key is not in type of String (VARCHAR) , "
+                        + "but JdbcType (java.sql.Types): " + key.getJdbcType() + ", value: " + key.getValue(), ex);
                 } catch (ConstraintViolationException e) {
-                    //this message will be different in each DB type ...using duplicate keyword to catch for broader set of DBs. moreover we are already inside ConstraintViolationException exception, do we even need this check?
+                    //this message will be different in each DB type ...using duplicate keyword to catch for broader set of DBs.
+                    // moreover we are already inside ConstraintViolationException exception, do we even need this check?
                     if (e.getMessage().toLowerCase().contains("duplicate")) {
-                        connection.rollback(insertDup); // need to rollback current Insert entity, as it is duplicate record, need to update. Postgresql is strict in transaction handling(need rollback) as compared to MySql
+                        // need to rollback current Insert entity, as it is duplicate record,
+                        // need to update. Postgresql is strict in transaction handling(need rollback) as compared to MySql
+                        connection.rollback(insertDup);
                         String primaryKey = entity.getEncodedRowkey();
                         if (primaryKey == null) {
                             primaryKey = ConnectionManagerFactory.getInstance().getStatementExecutor().getPrimaryKeyBuilder().build(entity);

@@ -16,7 +16,6 @@
  */
 package org.apache.eagle.storage.jdbc.entity.impl;
 
-import com.google.common.collect.Lists;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
@@ -26,6 +25,8 @@ import org.apache.eagle.storage.jdbc.criteria.impl.QueryCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityReader;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
+
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
@@ -35,15 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @since 3/27/15
- */
 public class JdbcEntityReaderImpl implements JdbcEntityReader {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntityReaderImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntityReaderImpl.class);
     private final JdbcEntityDefinition jdbcEntityDefinition;
     private long resultFirstTimestamp = 0;
     private long resultLastTimestamp = 0;
@@ -88,23 +85,6 @@ public class JdbcEntityReaderImpl implements JdbcEntityReader {
         return result;
     }
 
-    private <E> Map timeseriesAggregate(List<E> result, CompiledQuery query) throws Exception {
-        TimeSeriesAggregator aggregator = new TimeSeriesAggregator(query.getGroupByFields(),
-            query.getAggregateFunctionTypes(),
-            query.getAggregateFields(),
-            query.getStartTime(), query.getEndTime(),
-            query.getIntervalMin()
-        );
-        for (E entity : result) {
-            aggregator.accumulate((TaggedLogAPIEntity) entity);
-        }
-        if (this.jdbcEntityDefinition.isGenericMetric()) {
-            return aggregator.getMetric();
-        } else {
-            return aggregator.result();
-        }
-    }
-
     @Override
     public <E> List<E> query(List<String> ids) throws Exception {
         PrimaryKeyCriteriaBuilder criteriaBuilder = new PrimaryKeyCriteriaBuilder(ids, this.jdbcEntityDefinition.getJdbcTableName());
@@ -129,6 +109,23 @@ public class JdbcEntityReaderImpl implements JdbcEntityReader {
             stopWatch.stop();
         }
         return result;
+    }
+
+    private <E> Map timeseriesAggregate(List<E> result, CompiledQuery query) throws Exception {
+        TimeSeriesAggregator aggregator = new TimeSeriesAggregator(query.getGroupByFields(),
+            query.getAggregateFunctionTypes(),
+            query.getAggregateFields(),
+            query.getStartTime(), query.getEndTime(),
+            query.getIntervalMin()
+        );
+        for (E entity : result) {
+            aggregator.accumulate((TaggedLogAPIEntity) entity);
+        }
+        if (this.jdbcEntityDefinition.isGenericMetric()) {
+            return aggregator.getMetric();
+        } else {
+            return aggregator.result();
+        }
     }
 
     public Long getResultFirstTimestamp() {

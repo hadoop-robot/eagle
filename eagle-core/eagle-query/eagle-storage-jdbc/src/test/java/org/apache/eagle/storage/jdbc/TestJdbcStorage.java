@@ -16,8 +16,6 @@
  */
 package org.apache.eagle.storage.jdbc;
 
-import org.junit.Assert;
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
@@ -27,11 +25,17 @@ import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.operation.RawQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
+
+import org.apache.commons.lang.time.StopWatch;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class TestJdbcStorage extends JdbcStorageTestBase {
     EntityDefinition entityDefinition;
@@ -107,7 +111,7 @@ public class TestJdbcStorage extends JdbcStorageTestBase {
     @Test
     public void testWriteAndRead() throws IOException, QueryCompileException {
         // record insert init time
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         // Write 1000 entities
         List<TestTimeSeriesAPIEntity> entityList = new ArrayList<>();
         int i = 0;
@@ -133,7 +137,7 @@ public class TestJdbcStorage extends JdbcStorageTestBase {
     @Test
     public void testWriteAndAggregation() throws IOException, QueryCompileException {
         // record insert init time
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         List<TestTimeSeriesAPIEntity> entityList = new ArrayList<>();
         int i = 0;
         while (i++ < 5) {
@@ -158,7 +162,7 @@ public class TestJdbcStorage extends JdbcStorageTestBase {
     @Test
     public void testWriteAndDelete() throws IOException, QueryCompileException {
         // record insert init time
-        long startTime = System.currentTimeMillis();
+        final long startTime = System.currentTimeMillis();
         // Write 1000 entities
         List<TestTimeSeriesAPIEntity> entityList = new ArrayList<>();
         int i = 0;
@@ -198,8 +202,7 @@ public class TestJdbcStorage extends JdbcStorageTestBase {
     }
 
     /**
-     * TODO: Investigate why writing performance becomes slower as records count increases
-     * <p>
+     * TODO: Investigate why writing performance becomes slower as records count increases.
      * 1) Wrote 100000 records in about 18820 ms for empty table
      * 2) Wrote 100000 records in about 35056 ms when 1M records in table
      *
@@ -229,16 +232,18 @@ public class TestJdbcStorage extends JdbcStorageTestBase {
         TestTimeSeriesAPIEntity instance = new TestTimeSeriesAPIEntity();
         instance.setField1(123);
         instance.setField2(234);
-        instance.setField3(1231312312l);
-        instance.setField4(12312312312l);
+        instance.setField3(1231312312L);
+        instance.setField4(12312312312L);
         instance.setField5(123123.12312);
         instance.setField6(-12312312.012);
         instance.setField7(UUID.randomUUID().toString());
-        instance.setTags(new HashMap<String, String>() {{
-            put("cluster", "c4ut");
-            put("datacenter", "d4ut");
-            put("random", UUID.randomUUID().toString());
-        }});
+        instance.setTags(new HashMap<String, String>() {
+            {
+                put("cluster", "c4ut");
+                put("datacenter", "d4ut");
+                put("random", UUID.randomUUID().toString());
+            }
+        });
         instance.setTimestamp(System.currentTimeMillis());
         return instance;
     }

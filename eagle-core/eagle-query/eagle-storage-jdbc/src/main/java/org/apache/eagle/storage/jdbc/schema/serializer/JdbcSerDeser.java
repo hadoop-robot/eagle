@@ -17,33 +17,22 @@
 package org.apache.eagle.storage.jdbc.schema.serializer;
 
 import org.apache.eagle.log.entity.meta.Qualifier;
-import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
+
 import org.apache.torque.util.JdbcTypedValue;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 
-/**
- * @since 3/26/15
- */
 public interface JdbcSerDeser<T> {
     /**
      * for entity read
-     * convert value from jdbc storage into user-typed object
-     *
-     * @param result
-     * @return
-     * @throws IOException
+     * convert value from jdbc storage into user-typed object.
      */
     T toJavaTypedValue(ResultSet result, Class<?> fieldType, String fieldName, Qualifier qualifier) throws IOException;
 
     /**
      * for write entity
-     * convert user-typed fieldValue into fieldType-compatible value and persist that value into jdbc storage
-     *
-     * @param fieldValue
-     * @param fieldType
-     * @return
+     * convert user-typed fieldValue into fieldType-compatible value and persist that value into jdbc storage.
      */
     JdbcTypedValue toJdbcTypedValue(Object fieldValue, Class<?> fieldType, Qualifier qualifier);
 }

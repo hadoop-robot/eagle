@@ -24,6 +24,7 @@ import org.apache.eagle.storage.jdbc.criteria.impl.QueryCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityDeleter;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
+
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.sql.SqlBuilder;
@@ -33,11 +34,8 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @since 3/27/15
- */
 public class JdbcEntityDeleterImpl<E extends TaggedLogAPIEntity> implements JdbcEntityDeleter<E> {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntityDeleterImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntityDeleterImpl.class);
     private final JdbcEntityDefinition jdbcEntityDefinition;
 
     public JdbcEntityDeleterImpl(JdbcEntityDefinition jdbcEntityDefinition) {

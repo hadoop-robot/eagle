@@ -20,14 +20,13 @@ import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 
 import java.util.List;
 
-/**
- * @since 3/27/15
- */
 public interface JdbcEntityUpdater<E extends TaggedLogAPIEntity> {
     /**
+     * Update entities.
+     *
      * @param entities
      * @return
      * @throws Exception
      */
-    public int update(List<E> entities) throws Exception;
+    int update(List<E> entities) throws Exception;
 }

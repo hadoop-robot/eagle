@@ -20,11 +20,12 @@ import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.SearchCondition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.parser.ORExpression;
+import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.criteria.CriteriaBuilder;
 import org.apache.eagle.storage.jdbc.criteria.CriterionBuilder;
-import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
+
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.criteria.Criterion;
@@ -32,9 +33,6 @@ import org.apache.torque.criteria.SqlEnum;
 
 import java.util.List;
 
-/**
- * @since 3/27/15
- */
 public class QueryCriteriaBuilder implements CriteriaBuilder {
 
     private final CompiledQuery query;

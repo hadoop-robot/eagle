@@ -1,17 +1,4 @@
-package org.apache.eagle.storage.jdbc;
-
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
-import org.apache.eagle.storage.DataStorageManager;
-import org.junit.Before;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -27,10 +14,21 @@ import java.util.TimeZone;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.eagle.storage.jdbc;
+
+import org.apache.eagle.storage.DataStorageManager;
+
+import org.junit.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 public class JdbcStorageTestBase {
     JdbcStorage storage;
     long baseTimestamp;
-    final static Logger LOG = LoggerFactory.getLogger(TestJdbcStorage.class);
+    static final Logger LOG = LoggerFactory.getLogger(TestJdbcStorage.class);
 
     @Before
     public void setUp() throws Exception {

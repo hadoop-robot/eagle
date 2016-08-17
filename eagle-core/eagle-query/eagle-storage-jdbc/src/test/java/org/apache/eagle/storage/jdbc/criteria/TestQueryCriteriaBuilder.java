@@ -24,17 +24,15 @@ import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinitionManager;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.operation.RawQuery;
+
 import org.apache.torque.criteria.Criteria;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @since 3/27/15
- */
 public class TestQueryCriteriaBuilder {
-    private final static Logger LOG = LoggerFactory.getLogger(TestQueryCriteriaBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestQueryCriteriaBuilder.class);
     private JdbcEntityDefinition jdbcEntityDefinition;
 
     @Before

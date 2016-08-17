@@ -19,7 +19,7 @@ package org.apache.eagle.storage.jdbc;
 import java.sql.Types;
 
 /**
- * Jdbc Storage Constants
+ * Jdbc Storage Constants.
  */
 public class JdbcConstants {
     // Eagle JDBC Schema
@@ -31,14 +31,14 @@ public class JdbcConstants {
     public static final int DEFAULT_VARCHAR_SIZE = 30000;
 
     // Eagle JDBC Storage Configuration
-    public final static String EAGLE_DB_USERNAME = "eagle.service.storage-username";
-    public final static String EAGLE_DB_PASSWORD = "eagle.service.storage-password";
-    public final static String EAGLE_CONN_URL = "eagle.service.storage-connection-url";
-    public final static String EAGLE_CONN_PROPS = "eagle.service.storage-connection-props";
-    public final static String EAGLE_ADAPTER = "eagle.service.storage-adapter";
-    public final static String EAGLE_DATABASE = "eagle.service.storage-database";
-    public final static String EAGLE_DRIVER_CLASS = "eagle.service.storage-driver-class";
-    public final static String EAGLE_CONN_MAX_SIZE = "eagle.service.storage-connection-max";
+    public static final String EAGLE_DB_USERNAME = "eagle.service.storage-username";
+    public static final String EAGLE_DB_PASSWORD = "eagle.service.storage-password";
+    public static final String EAGLE_CONN_URL = "eagle.service.storage-connection-url";
+    public static final String EAGLE_CONN_PROPS = "eagle.service.storage-connection-props";
+    public static final String EAGLE_ADAPTER = "eagle.service.storage-adapter";
+    public static final String EAGLE_DATABASE = "eagle.service.storage-database";
+    public static final String EAGLE_DRIVER_CLASS = "eagle.service.storage-driver-class";
+    public static final String EAGLE_CONN_MAX_SIZE = "eagle.service.storage-connection-max";
 
     public static final boolean isReservedField(String columnName) {
         return TIMESTAMP_COLUMN_NAME.equals(columnName) || METRIC_NAME_COLUMN_NAME.equals(columnName) || ROW_KEY_COLUMN_NAME.equals(columnName);

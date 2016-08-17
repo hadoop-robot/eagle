@@ -17,6 +17,7 @@
 package org.apache.eagle.storage.jdbc.schema.serializer;
 
 import org.apache.eagle.log.entity.meta.Qualifier;
+
 import org.apache.torque.util.JdbcTypedValue;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -25,9 +26,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-/**
- * @since 3/26/15
- */
 public class JsonJdbcSerDeser<T extends Object> implements JdbcSerDeser<T> {
     private static ObjectMapper objectMapper = new ObjectMapper();
 

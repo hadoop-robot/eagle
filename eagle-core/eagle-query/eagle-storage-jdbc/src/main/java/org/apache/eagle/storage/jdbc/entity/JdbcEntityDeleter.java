@@ -21,25 +21,10 @@ import org.apache.eagle.storage.operation.CompiledQuery;
 
 import java.util.List;
 
-/**
- * @since 3/27/15
- */
 public interface JdbcEntityDeleter<E extends TaggedLogAPIEntity> {
-    /**
-     * @param entities
-     * @return
-     */
-    public int delete(List<E> entities) throws Exception;
+    int delete(List<E> entities) throws Exception;
 
-    /**
-     * @param ids
-     * @return
-     */
-    public int deleteByIds(List<String> ids) throws Exception;
+    int deleteByIds(List<String> ids) throws Exception;
 
-    /**
-     * @param query
-     * @return
-     */
-    public int deleteByQuery(CompiledQuery query) throws Exception;
+    int deleteByQuery(CompiledQuery query) throws Exception;
 }

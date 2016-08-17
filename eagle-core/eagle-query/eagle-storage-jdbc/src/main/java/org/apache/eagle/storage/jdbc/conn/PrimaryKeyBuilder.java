@@ -17,9 +17,7 @@
 package org.apache.eagle.storage.jdbc.conn;
 
 /**
- * Primary key builder
- *
- * @since 3/29/15
+ * Primary key builder.
  */
 public interface PrimaryKeyBuilder<K> {
     /**

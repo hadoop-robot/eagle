@@ -16,10 +16,7 @@
  */
 package org.apache.eagle.storage.jdbc.entity.impl;
 
-import org.apache.commons.configuration.ConfigurationFactory;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-import org.apache.eagle.log.entity.old.RowkeyHelper;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManager;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
 import org.apache.eagle.storage.jdbc.conn.impl.TorqueStatementPeerImpl;
@@ -27,6 +24,7 @@ import org.apache.eagle.storage.jdbc.criteria.impl.PrimaryKeyCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityUpdater;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
+
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.sql.SqlBuilder;
@@ -35,15 +33,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @since 3/27/15
- */
 public class JdbcEntityUpdaterImpl<E extends TaggedLogAPIEntity> implements JdbcEntityUpdater<E> {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntityUpdaterImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntityUpdaterImpl.class);
     private final JdbcEntityDefinition jdbcEntityDefinition;
 
     public JdbcEntityUpdaterImpl(JdbcEntityDefinition jdbcEntityDefinition) {

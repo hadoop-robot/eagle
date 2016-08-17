@@ -19,6 +19,7 @@ package org.apache.eagle.storage.jdbc.entity.impl;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.CriteriaInterface;
 import org.apache.torque.om.mapper.RecordMapper;
@@ -30,11 +31,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
-/**
- * @since 3/27/15
- */
 public class AggreagteRecordMapper implements RecordMapper<Map> {
-    private final static Logger LOG = LoggerFactory.getLogger(AggreagteRecordMapper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AggreagteRecordMapper.class);
     private final JdbcEntityDefinition jdbcEntityDefinition;
 
     public AggreagteRecordMapper(CompiledQuery query, JdbcEntityDefinition jdbcEntityDefinition) {

@@ -20,9 +20,10 @@ import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
-import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
 import org.apache.eagle.storage.jdbc.schema.serializer.DefaultJdbcSerDeser;
+import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
 import org.apache.eagle.storage.jdbc.schema.serializer.MetricJdbcSerDeser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Manage the basic repository of all entity definitions and JDBC specific metadata
+ * Manage the basic repository of all entity definitions and JDBC specific metadata.
  *
  * @since 3/27/15
  */
 public class JdbcEntityDefinitionManager {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntityDefinitionManager.class);
-    private final static Map<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition> sqlEntityDefinitionCache = new HashMap<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition>();
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntityDefinitionManager.class);
+    private static final Map<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition> sqlEntityDefinitionCache = new HashMap<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition>();
     private static Boolean initialized = false;
 
     public static JdbcEntityDefinition getJdbcEntityDefinition(EntityDefinition entityDefinition) {
@@ -52,14 +53,14 @@ public class JdbcEntityDefinitionManager {
         return jdbcEntityDefinition;
     }
 
-    public static Map<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition> getJdbcEntityDefinitionMap() {
-        checkInit();
-        return sqlEntityDefinitionCache;
-    }
-
     public static JdbcEntityDefinition getJdbcEntityDefinition(Class<? extends TaggedLogAPIEntity> clazz) throws IllegalAccessException, InstantiationException {
         checkInit();
         return getJdbcEntityDefinition(EntityDefinitionManager.getEntityDefinitionByEntityClass(clazz));
+    }
+
+    public static Map<Class<? extends TaggedLogAPIEntity>, JdbcEntityDefinition> getJdbcEntityDefinitionMap() {
+        checkInit();
+        return sqlEntityDefinitionCache;
     }
 
     private static void checkInit() {
@@ -85,13 +86,10 @@ public class JdbcEntityDefinitionManager {
         checkInit();
     }
 
-    public static JdbcSerDeser DEFAULT_JDBC_SERDESER = new DefaultJdbcSerDeser();
-    public static JdbcSerDeser METRIC_JDBC_SERDESER = new MetricJdbcSerDeser();
-    private final static Map<Class<?>, JdbcSerDeser> _columnTypeSerDeserMapping = new HashMap<Class<?>, JdbcSerDeser>();
+    public static final JdbcSerDeser DEFAULT_JDBC_SERDESER = new DefaultJdbcSerDeser();
+    public static final  JdbcSerDeser METRIC_JDBC_SERDESER = new MetricJdbcSerDeser();
+    private static final Map<Class<?>, JdbcSerDeser> _columnTypeSerDeserMapping = new HashMap<Class<?>, JdbcSerDeser>();
 
-    /**
-     * @param serDeser
-     */
     public static void registerJdbcSerDeser(Class<? extends EntitySerDeser> entitySerDeser, JdbcSerDeser serDeser) {
         if (entitySerDeser == null || serDeser == null) {
             throw new IllegalArgumentException("should not be null");
@@ -110,7 +108,7 @@ public class JdbcEntityDefinitionManager {
     }
 
 
-    private final static Map<Class<?>, Integer> _classJdbcType = new HashMap<Class<?>, Integer>();
+    private static final Map<Class<?>, Integer> _classJdbcType = new HashMap<Class<?>, Integer>();
 
     /**
      * Get corresponding SQL types for certain entity field class type

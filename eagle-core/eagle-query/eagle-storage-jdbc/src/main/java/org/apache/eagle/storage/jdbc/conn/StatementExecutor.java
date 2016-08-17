@@ -17,20 +17,20 @@
 package org.apache.eagle.storage.jdbc.conn;
 
 /**
- * An interface for abstract StatementExecutor from detailed implementation
+ * An interface for abstract StatementExecutor from detailed implementation.
  *
  * @since 3/29/15
  */
 public interface StatementExecutor {
     /**
-     * Initialize statement for action like SELECT
+     * Initialize statement for action like SELECT.
      *
      * @param config
      */
     void init(ConnectionConfig config);
 
     /**
-     * Initialize statement for action like CREATE, UPDATE, DELETE which need table name
+     * Initialize statement for action like CREATE, UPDATE, DELETE which need table name.
      *
      * @param config    connection config
      * @param tableName

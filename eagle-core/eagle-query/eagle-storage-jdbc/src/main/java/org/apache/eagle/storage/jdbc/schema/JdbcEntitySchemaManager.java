@@ -17,15 +17,18 @@ package org.apache.eagle.storage.jdbc.schema;
  * limitations under the License.
  */
 
-import org.apache.ddlutils.Platform;
-import org.apache.ddlutils.PlatformFactory;
-import org.apache.ddlutils.model.*;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.meta.Qualifier;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.conn.ConnectionConfig;
 import org.apache.eagle.storage.jdbc.conn.ConnectionConfigFactory;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
+
+import org.apache.ddlutils.Platform;
+import org.apache.ddlutils.PlatformFactory;
+import org.apache.ddlutils.model.Column;
+import org.apache.ddlutils.model.Database;
+import org.apache.ddlutils.model.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +39,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
-    private final static Logger LOG = LoggerFactory.getLogger(JdbcEntitySchemaManager.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcEntitySchemaManager.class);
     private Database database;
     private Platform platform;
 
@@ -154,7 +157,7 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
         tagColumn.setName(tagName);
         tagColumn.setTypeCode(Types.VARCHAR);
         tagColumn.setJavaName(tagName);
-//        tagColumn.setScale(1024);
+        //  tagColumn.setScale(1024);
         tagColumn.setSize(String.valueOf(JdbcConstants.DEFAULT_VARCHAR_SIZE));
         tagColumn.setDefaultValue(null);
         tagColumn.setDescription("eagle entity tag column for " + tagName);
@@ -168,7 +171,7 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
             Column metricColumn = new Column();
             metricColumn.setName(JdbcConstants.METRIC_NAME_COLUMN_NAME);
             metricColumn.setTypeCode(Types.VARCHAR);
-//            metricColumn.setSizeAndScale(1024,1024);
+            //  metricColumn.setSizeAndScale(1024,1024);
             metricColumn.setDescription("eagle entity metric column");
             table.addColumn(metricColumn);
         }
@@ -179,7 +182,7 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
         pkColumn.setPrimaryKey(true);
         pkColumn.setRequired(true);
         pkColumn.setTypeCode(Types.VARCHAR);
-//        pkColumn.setSize("256");
+        //  pkColumn.setSize("256");
 
         pkColumn.setDescription("eagle entity row-key column");
         table.addColumn(pkColumn);
@@ -193,19 +196,19 @@ public class JdbcEntitySchemaManager implements IJdbcEntityDDLManager {
 
         // TAGS
         if (entityDefinition.getInternal().getTags() != null) {
-//            Index index = new UniqueIndex();
+            //  Index index = new UniqueIndex();
             for (String tag : entityDefinition.getInternal().getTags()) {
                 Column tagColumn = createTagColumn(tag);
                 tagColumn.setSize(String.valueOf(JdbcConstants.DEFAULT_VARCHAR_SIZE));
                 table.addColumn(tagColumn);
-//                IndexColumn indexColumn = new IndexColumn();
-//                indexColumn.setName(tag);
-//                indexColumn.setOrdinalPosition(0);
-//                index.addColumn(indexColumn);
-//                index.setName(entityDefinition.getJdbcTableName()+"_tags_unique_index");
+                //  IndexColumn indexColumn = new IndexColumn();
+                //  indexColumn.setName(tag);
+                //  indexColumn.setOrdinalPosition(0);
+                //  index.addColumn(indexColumn);
+                //  index.setName(entityDefinition.getJdbcTableName()+"_tags_unique_index");
             }
-//            TODO: enable index when experiencing performance issue on tag filtering.
-//            table.addIndex(index);
+            //  TODO: enable index when experiencing performance issue on tag filtering.
+            //  table.addIndex(index);
         }
 
         for (Map.Entry<String, Qualifier> entry : entityDefinition.getInternal().getDisplayNameMap().entrySet()) {

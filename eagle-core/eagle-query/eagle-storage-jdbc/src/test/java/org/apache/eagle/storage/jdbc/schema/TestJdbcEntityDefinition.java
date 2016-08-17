@@ -17,9 +17,9 @@
 package org.apache.eagle.storage.jdbc.schema;
 
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
+
 import org.junit.Assert;
 import org.junit.Test;
-
 
 public class TestJdbcEntityDefinition {
     @Test

@@ -19,24 +19,19 @@ package org.apache.eagle.storage.jdbc.conn;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 
-/**
- * @since 3/26/15
- */
 public class ConnectionConfigFactory {
     /**
      * Read connection config from config.properties
-     *
-     * @return
      */
     public static ConnectionConfig getFromEagleConfig() {
-        String username = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DB_USERNAME);
-        String password = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DB_PASSWORD);
-        String connUrl = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_URL);
-        String connProps = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_PROPS);
-        String adapter = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_ADAPTER);
-        String databaseName = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DATABASE);
-        String driverClass = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DRIVER_CLASS);
-        String connMaxSize = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_MAX_SIZE);
+        final String username = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DB_USERNAME);
+        final String password = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DB_PASSWORD);
+        final String connUrl = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_URL);
+        final String connProps = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_PROPS);
+        final String adapter = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_ADAPTER);
+        final String databaseName = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DATABASE);
+        final String driverClass = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_DRIVER_CLASS);
+        final String connMaxSize = EagleConfigFactory.load().getConfig().getString(JdbcConstants.EAGLE_CONN_MAX_SIZE);
 
         ConnectionConfig config = new ConnectionConfig();
         if (username != null) {

@@ -23,6 +23,7 @@ import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.old.RowkeyHelper;
 import org.apache.eagle.storage.jdbc.conn.PrimaryKeyBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

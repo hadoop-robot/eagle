@@ -19,6 +19,7 @@ package org.apache.eagle.storage.jdbc.schema.serializer;
 import org.apache.eagle.log.entity.meta.Qualifier;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinitionManager;
+
 import org.apache.torque.util.JdbcTypedValue;
 
 import java.io.IOException;
@@ -26,9 +27,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-/**
- * @since 3/26/15
- */
 public class DefaultJdbcSerDeser<T, R> implements JdbcSerDeser<T> {
 
     @Override
@@ -48,11 +46,6 @@ public class DefaultJdbcSerDeser<T, R> implements JdbcSerDeser<T> {
         }
     }
 
-    /**
-     * @param fieldValue
-     * @param fieldType
-     * @return
-     */
     @Override
     public JdbcTypedValue toJdbcTypedValue(Object fieldValue, Class<?> fieldType, Qualifier qualifier) {
         int jdbcTypeCode = JdbcEntityDefinitionManager.getJdbcType(fieldType);
