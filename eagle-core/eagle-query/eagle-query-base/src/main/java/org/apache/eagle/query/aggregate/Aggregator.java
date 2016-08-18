@@ -17,7 +17,6 @@
 package org.apache.eagle.query.aggregate;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public class Aggregator {
      * this locate result can be cached? we don't need check if it's TaggedLogAPIEntity each time when iterating entities.
      *
      * @param groupby groupby
-     * @param obj obj
+     * @param obj     obj
      * @return group by field name
      * @throws Exception Exception
      */

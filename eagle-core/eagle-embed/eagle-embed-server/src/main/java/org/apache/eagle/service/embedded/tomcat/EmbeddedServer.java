@@ -17,12 +17,12 @@
 
 package org.apache.eagle.service.embedded.tomcat;
 
-import java.io.File;
-
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.startup.Tomcat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 public class EmbeddedServer {
 

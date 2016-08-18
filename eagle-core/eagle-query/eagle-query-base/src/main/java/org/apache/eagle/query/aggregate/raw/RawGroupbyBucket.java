@@ -22,7 +22,6 @@ import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.parser.TokenConstant;
-
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.slf4j.Logger;

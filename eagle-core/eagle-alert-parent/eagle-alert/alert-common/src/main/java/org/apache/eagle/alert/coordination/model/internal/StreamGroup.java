@@ -16,26 +16,24 @@
  */
 package org.apache.eagle.alert.coordination.model.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.eagle.alert.engine.coordinator.StreamPartition;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @since May 6, 2016
- *
  */
 public class StreamGroup {
 
     private List<StreamPartition> streamPartitions = new ArrayList<StreamPartition>();
-    
+
     public StreamGroup() {
     }
-    
+
     public List<StreamPartition> getStreamPartitions() {
         return streamPartitions;
     }

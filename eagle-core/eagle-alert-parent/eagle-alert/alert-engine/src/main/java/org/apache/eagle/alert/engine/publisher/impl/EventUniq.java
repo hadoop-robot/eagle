@@ -16,7 +16,7 @@
  *
  */
 /**
- * 
+ *
  */
 package org.apache.eagle.alert.engine.publisher.impl;
 
@@ -26,32 +26,32 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @since Mar 19, 2015
  */
 public class EventUniq {
-	public String streamId;
-	public String policyId;
-	public Long timestamp;	 // event's createTimestamp
-	public long createdTime; // created time, for cache removal;
+    public String streamId;
+    public String policyId;
+    public Long timestamp;     // event's createTimestamp
+    public long createdTime; // created time, for cache removal;
 
-	public EventUniq(String streamId, String policyId, long timestamp) {
-		this.streamId = streamId;
-		this.timestamp = timestamp;
-		this.policyId = policyId;
-		this.createdTime = System.currentTimeMillis();
-	}
+    public EventUniq(String streamId, String policyId, long timestamp) {
+        this.streamId = streamId;
+        this.timestamp = timestamp;
+        this.policyId = policyId;
+        this.createdTime = System.currentTimeMillis();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof EventUniq) {
-			EventUniq au = (EventUniq) obj;
-			return (this.streamId.equalsIgnoreCase(au.streamId) & this.policyId.equalsIgnoreCase(au.policyId));
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EventUniq) {
+            EventUniq au = (EventUniq) obj;
+            return (this.streamId.equalsIgnoreCase(au.streamId) & this.policyId.equalsIgnoreCase(au.policyId));
+        }
+        return false;
+    }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(streamId)
-				.append(policyId)
-				.build();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(streamId)
+            .append(policyId)
+            .build();
+    }
 }

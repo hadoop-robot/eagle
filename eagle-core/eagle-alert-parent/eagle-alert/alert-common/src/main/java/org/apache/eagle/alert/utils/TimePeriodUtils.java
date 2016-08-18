@@ -18,7 +18,6 @@ package org.apache.eagle.alert.utils;
 
 import org.joda.time.Period;
 import org.joda.time.Seconds;
-
 import scala.Int;
 
 public class TimePeriodUtils {
@@ -27,10 +26,9 @@ public class TimePeriodUtils {
      *
      * @param seconds
      * @param period
-     *
      * @return formatted timestamp
      */
-    public static long formatSecondsByPeriod(long seconds,Seconds period){
+    public static long formatSecondsByPeriod(long seconds, Seconds period) {
         return seconds - (seconds % Int.int2long(period.getSeconds()));
     }
 
@@ -39,7 +37,7 @@ public class TimePeriodUtils {
      * @param period
      * @return
      */
-    public static long formatSecondsByPeriod(long seconds,Period period){
+    public static long formatSecondsByPeriod(long seconds, Period period) {
         return seconds - (seconds % Int.int2long(period.toStandardSeconds().getSeconds()));
     }
 
@@ -48,15 +46,15 @@ public class TimePeriodUtils {
      * @param period
      * @return milliseconds
      */
-    public static long formatMillisecondsByPeriod(long milliseconds,Period period){
-        return formatSecondsByPeriod(milliseconds/1000,period)*1000;
+    public static long formatMillisecondsByPeriod(long milliseconds, Period period) {
+        return formatSecondsByPeriod(milliseconds / 1000, period) * 1000;
     }
 
-    public static int getSecondsOfPeriod(Period period){
+    public static int getSecondsOfPeriod(Period period) {
         return period.toStandardSeconds().getSeconds();
     }
 
-    public static int getMillisecondsOfPeriod(Period period){
+    public static int getMillisecondsOfPeriod(Period period) {
         return getSecondsOfPeriod(period) * 1000;
     }
 }

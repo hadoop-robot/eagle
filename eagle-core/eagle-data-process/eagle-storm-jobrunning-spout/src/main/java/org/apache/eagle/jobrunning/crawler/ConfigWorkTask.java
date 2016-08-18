@@ -20,7 +20,6 @@ package org.apache.eagle.jobrunning.crawler;
 import org.apache.eagle.jobrunning.callback.RunningJobCallback;
 import org.apache.eagle.jobrunning.common.JobConstants.ResourceType;
 import org.apache.eagle.jobrunning.util.JobUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

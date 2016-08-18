@@ -21,7 +21,7 @@ import org.apache.eagle.app.Application;
 import org.apache.eagle.app.environment.ExecutionRuntime;
 import org.apache.eagle.app.environment.ExecutionRuntimeProvider;
 
-public class SparkExecutionRuntime implements ExecutionRuntime<SparkEnvironment,Object> {
+public class SparkExecutionRuntime implements ExecutionRuntime<SparkEnvironment, Object> {
     @Override
     public void prepare(SparkEnvironment environment) {
         throw new RuntimeException("Not implemented yet");
@@ -47,7 +47,7 @@ public class SparkExecutionRuntime implements ExecutionRuntime<SparkEnvironment,
         throw new RuntimeException("Not implemented yet");
     }
 
-    public static class Provider implements ExecutionRuntimeProvider<SparkEnvironment,Object> {
+    public static class Provider implements ExecutionRuntimeProvider<SparkEnvironment, Object> {
         @Override
         public SparkExecutionRuntime get() {
             return new SparkExecutionRuntime();

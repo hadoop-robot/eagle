@@ -20,9 +20,7 @@ import org.apache.eagle.log.entity.EntityQualifierUtils;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.test.TestLogAPIEntity;
-
 import org.apache.hadoop.hbase.util.Bytes;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

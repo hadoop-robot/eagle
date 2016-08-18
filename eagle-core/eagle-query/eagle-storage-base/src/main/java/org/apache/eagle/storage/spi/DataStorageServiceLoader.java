@@ -17,7 +17,6 @@
 package org.apache.eagle.storage.spi;
 
 import org.apache.eagle.storage.exception.IllegalDataStorageTypeException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

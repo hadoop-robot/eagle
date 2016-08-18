@@ -21,12 +21,11 @@
 
 package org.apache.eagle.dataproc.impl.storm.kafka;
 
-import org.apache.eagle.dataproc.impl.storm.StormSpoutProvider;
-
 import backtype.storm.spout.Scheme;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.topology.base.BaseRichSpout;
 import com.typesafe.config.Config;
+import org.apache.eagle.dataproc.impl.storm.StormSpoutProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.BrokerHosts;

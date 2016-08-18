@@ -17,12 +17,12 @@
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
-
 import org.apache.hadoop.hbase.client.Scan;
-//import org.apache.hadoop.hbase.ipc.CoprocessorProtocol;
 
 import java.io.IOException;
 import java.util.List;
+
+//import org.apache.hadoop.hbase.ipc.CoprocessorProtocol;
 
 /**
  * AggregateProtocol definition.

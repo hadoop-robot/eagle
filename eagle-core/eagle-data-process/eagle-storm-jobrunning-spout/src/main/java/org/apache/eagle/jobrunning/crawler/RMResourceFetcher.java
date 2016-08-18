@@ -17,6 +17,7 @@
 
 package org.apache.eagle.jobrunning.crawler;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.eagle.jobrunning.common.JobConstants;
 import org.apache.eagle.jobrunning.config.RunningJobCrawlConfig;
 import org.apache.eagle.jobrunning.counter.parser.JobCountersParser;
@@ -30,9 +31,6 @@ import org.apache.eagle.jobrunning.util.InputStreamUtils;
 import org.apache.eagle.jobrunning.util.JobUtils;
 import org.apache.eagle.jobrunning.util.URLConnectionUtils;
 import org.apache.eagle.jobrunning.yarn.model.*;
-
-import org.apache.commons.lang.time.DateUtils;
-
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;

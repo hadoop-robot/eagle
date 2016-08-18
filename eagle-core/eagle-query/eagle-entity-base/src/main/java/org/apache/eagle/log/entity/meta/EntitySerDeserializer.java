@@ -16,10 +16,8 @@
  */
 package org.apache.eagle.log.entity.meta;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 import org.apache.commons.beanutils.PropertyUtils;
-
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

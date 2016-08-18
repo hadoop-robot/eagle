@@ -62,8 +62,7 @@ public class EagleCounterMetric extends EagleMetric {
                 LOG.warn("Something must be wrong, event should come in order of userTimeClock");
             }
             value.addAndGet(d);
-        }
-        else {
+        } else {
             flush(latestUserTimeClock);
             value.getAndSet(1);
             latestUserTimeClock = currentUserTimeClock;

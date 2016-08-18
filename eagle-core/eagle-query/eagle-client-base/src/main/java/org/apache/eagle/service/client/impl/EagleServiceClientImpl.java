@@ -16,13 +16,12 @@
  */
 package org.apache.eagle.service.client.impl;
 
+import com.sun.jersey.api.client.WebResource;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceConnector;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
-
-import com.sun.jersey.api.client.WebResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

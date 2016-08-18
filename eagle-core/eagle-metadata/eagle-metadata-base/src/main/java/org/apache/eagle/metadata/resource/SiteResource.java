@@ -31,23 +31,23 @@ public class SiteResource {
     private final SiteEntityService siteEntityService;
 
     @Inject
-    public SiteResource(SiteEntityService siteEntityService){
+    public SiteResource(SiteEntityService siteEntityService) {
         this.siteEntityService = siteEntityService;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Collection<SiteEntity>> getAllSites(){
+    public RESTResponse<Collection<SiteEntity>> getAllSites() {
         return RESTResponse.async(siteEntityService::findAll).get();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> createSite(SiteEntity siteEntity){
-        return RESTResponse.<SiteEntity>async((builder)-> {
+    public RESTResponse<SiteEntity> createSite(SiteEntity siteEntity) {
+        return RESTResponse.<SiteEntity>async((builder) -> {
             SiteEntity entity = siteEntityService.create(siteEntity);
-            builder.message("Successfully created site (siteId:"+entity.getSiteId()+", uuid: "+entity.getUuid()+")");
+            builder.message("Successfully created site (siteId:" + entity.getSiteId() + ", uuid: " + entity.getUuid() + ")");
             builder.data(entity);
         }).get();
     }
@@ -55,30 +55,30 @@ public class SiteResource {
     @GET
     @Path("/{siteId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> getSiteBySiteId(@PathParam("siteId") String siteId){
-        return RESTResponse.async(()->siteEntityService.getBySiteId(siteId)).get();
+    public RESTResponse<SiteEntity> getSiteBySiteId(@PathParam("siteId") String siteId) {
+        return RESTResponse.async(() -> siteEntityService.getBySiteId(siteId)).get();
     }
 
     @DELETE
     @Path("/{siteId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> deleteSiteBySiteId(@PathParam("siteId") String siteId){
-        return RESTResponse.async(()->siteEntityService.deleteBySiteId(siteId)).get();
+    public RESTResponse<SiteEntity> deleteSiteBySiteId(@PathParam("siteId") String siteId) {
+        return RESTResponse.async(() -> siteEntityService.deleteBySiteId(siteId)).get();
     }
 
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> deleteSiteByUUID(UUIDRequest uuidRequest){
-        return RESTResponse.async(()->siteEntityService.deleteByUUID(uuidRequest.getUuid())).get();
+    public RESTResponse<SiteEntity> deleteSiteByUUID(UUIDRequest uuidRequest) {
+        return RESTResponse.async(() -> siteEntityService.deleteByUUID(uuidRequest.getUuid())).get();
     }
 
     @PUT
     @Path("/{siteId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> updateSite(@PathParam("siteId") String siteId,SiteEntity siteEntity){
-        return RESTResponse.async(()-> {
+    public RESTResponse<SiteEntity> updateSite(@PathParam("siteId") String siteId, SiteEntity siteEntity) {
+        return RESTResponse.async(() -> {
             siteEntity.setSiteId(siteId);
             return siteEntityService.update(siteEntity);
         }).get();
@@ -87,8 +87,8 @@ public class SiteResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RESTResponse<SiteEntity> updateSite(SiteEntity siteEntity){
-        return RESTResponse.async(()-> {
+    public RESTResponse<SiteEntity> updateSite(SiteEntity siteEntity) {
+        return RESTResponse.async(() -> {
             return siteEntityService.update(siteEntity);
         }).get();
     }

@@ -23,7 +23,6 @@ import org.apache.eagle.query.aggregate.AggregateCondition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.timeseries.SortOption;
 import org.apache.eagle.storage.hbase.query.aggregate.GenericAggregateQuery;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +79,6 @@ public class GenericQueryBuilder {
 
     /**
      * TODO: Parameter "parallel" no longer supported, ignore.
-     *
      */
     @Deprecated
     public GenericQueryBuilder parallel(int parallel) {

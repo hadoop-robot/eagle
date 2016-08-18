@@ -16,14 +16,14 @@
  */
 package org.apache.alert.coordinator.mock;
 
-import java.util.List;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.eagle.alert.coordination.model.internal.Topology;
 import org.apache.eagle.alert.coordinator.TopologyMgmtService;
 import org.apache.eagle.alert.coordinator.model.AlertBoltUsage;
 import org.apache.eagle.alert.coordinator.model.GroupBoltUsage;
 import org.apache.eagle.alert.coordinator.model.TopologyUsage;
+
+import java.util.List;
 
 @org.junit.Ignore
 public class TestTopologyMgmtService extends TopologyMgmtService {
@@ -35,7 +35,7 @@ public class TestTopologyMgmtService extends TopologyMgmtService {
     private int routerNumber;
     private int i = 0;
     private String namePrefix = "Topology";
-    
+
     // a config used to check if createTopology is enabled. FIXME: another class of mgmt service might be better
     private boolean enableCreateTopology = false;
 

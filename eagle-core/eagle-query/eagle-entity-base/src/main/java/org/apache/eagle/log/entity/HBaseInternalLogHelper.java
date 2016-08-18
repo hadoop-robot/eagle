@@ -22,7 +22,6 @@ import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.query.parser.TokenConstant;
-
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Result;
 import org.slf4j.Logger;
@@ -38,8 +37,8 @@ public class HBaseInternalLogHelper {
     /**
      * Convert result into InternalLog with EntityDefinition.
      *
-     * @param ed EntityDefinition
-     * @param r Result
+     * @param ed         EntityDefinition
+     * @param r          Result
      * @param qualifiers if null, return all qualifiers defined in ed
      * @return InternalLog
      */
@@ -76,9 +75,9 @@ public class HBaseInternalLogHelper {
     /**
      * Build InternalLog.
      *
-     * @param ed EntityDefinition
-     * @param row row bytes
-     * @param timestamp timestamp
+     * @param ed                 EntityDefinition
+     * @param row                row bytes
+     * @param timestamp          timestamp
      * @param allQualifierValues <code>Map &lt; Qualifier name (not display name),Value in bytes array &gt;</code>
      * @return InternalLog
      */

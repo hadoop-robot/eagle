@@ -16,13 +16,12 @@
  */
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
-import org.apache.eagle.log.entity.meta.EntityDefinition;
-import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.protobuf.ByteString;
+import org.apache.eagle.log.entity.meta.EntityDefinition;
+import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
 import org.apache.hadoop.hbase.protobuf.generated.ClientProtos;

@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity.meta;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 
 public class TestArraySerDeser {

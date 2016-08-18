@@ -20,11 +20,11 @@ import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class JVMMetricSource implements MetricSource{
+public class JVMMetricSource implements MetricSource {
 
     private MetricRegistry registry = new MetricRegistry();
 
-    public JVMMetricSource(){
+    public JVMMetricSource() {
         registry.registerAll(new JvmAttributeGaugeSet());
         registry.registerAll(new MemoryUsageGaugeSet());
     }

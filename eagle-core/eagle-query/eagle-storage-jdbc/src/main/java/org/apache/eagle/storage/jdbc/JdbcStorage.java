@@ -34,7 +34,6 @@ import org.apache.eagle.storage.jdbc.schema.JdbcEntitySchemaManager;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -51,7 +51,8 @@ public class Double2DArraySerDeser implements EntitySerDeser<double[][]> {
         return data;
     }
 
-    /** serialize 2d-double array.
+    /**
+     * serialize 2d-double array.
      *
      * @param obj 2d-double array
      * @return byte array

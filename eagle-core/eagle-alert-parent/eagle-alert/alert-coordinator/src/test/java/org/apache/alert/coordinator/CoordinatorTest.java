@@ -16,35 +16,23 @@
  */
 package org.apache.alert.coordinator;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.eagle.alert.config.ConfigBusConsumer;
-import org.apache.eagle.alert.config.ConfigBusProducer;
-import org.apache.eagle.alert.config.ConfigChangeCallback;
-import org.apache.eagle.alert.config.ConfigValue;
-import org.apache.eagle.alert.config.ZKConfig;
-import org.apache.eagle.alert.config.ZKConfigBuilder;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import org.apache.eagle.alert.config.*;
 import org.apache.eagle.alert.coordination.model.ScheduleState;
 import org.apache.eagle.alert.coordinator.Coordinator;
 import org.apache.eagle.alert.coordinator.ScheduleOption;
 import org.apache.eagle.alert.service.IMetadataServiceClient;
 import org.apache.eagle.alert.service.MetadataServiceClientImpl;
 import org.apache.eagle.alert.utils.ZookeeperEmbedded;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @since May 5, 2016
- *
  */
 public class CoordinatorTest {
 
@@ -63,7 +51,7 @@ public class CoordinatorTest {
         zkEmbed.shutdown();
     }
 
-    @SuppressWarnings({ "resource", "unused" })
+    @SuppressWarnings( {"resource", "unused"})
     @Ignore
     @Test
     public void test() throws Exception {
@@ -92,7 +80,7 @@ public class CoordinatorTest {
         Assert.assertTrue(validated.get());
     }
 
-    @SuppressWarnings({ "resource", "unused" })
+    @SuppressWarnings( {"resource", "unused"})
     @Test
     public void test_01() throws Exception {
         before();
@@ -138,7 +126,7 @@ public class CoordinatorTest {
         ConfigFactory.invalidateCaches();
         ConfigFactory.load().getConfig("coordinator");
     }
-    
+
     @Test
     public void test_Schedule() {
         Coordinator.startSchedule();

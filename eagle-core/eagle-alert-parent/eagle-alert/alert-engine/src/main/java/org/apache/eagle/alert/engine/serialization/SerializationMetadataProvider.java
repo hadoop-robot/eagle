@@ -19,8 +19,6 @@ package org.apache.eagle.alert.engine.serialization;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinitionNotFoundException;
 
-import java.io.IOException;
-
 /**
  * Integration interface to provide stream definition for serializer
  */

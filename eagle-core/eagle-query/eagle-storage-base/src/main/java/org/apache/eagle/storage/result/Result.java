@@ -18,6 +18,7 @@ package org.apache.eagle.storage.result;
 
 /**
  * Result.
+ *
  * @since 3/18/15
  */
 public class Result {

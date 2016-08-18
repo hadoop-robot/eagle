@@ -45,7 +45,6 @@ import java.util.*;
 
 /**
  * @since May 1, 2016
- *
  */
 public class MongoImplTest {
     private static Logger LOG = LoggerFactory.getLogger(MongoImplTest.class);
@@ -58,7 +57,7 @@ public class MongoImplTest {
         try {
             MongodStarter starter = MongodStarter.getDefaultInstance();
             mongodExe = starter.prepare(new MongodConfigBuilder().version(Version.V3_2_1)
-                    .net(new Net(27017, Network.localhostIsIPv6())).build());
+                .net(new Net(27017, Network.localhostIsIPv6())).build());
             mongod = mongodExe.start();
         } catch (Exception e) {
             LOG.error("start embed mongod failed, assume some external mongo running. continue run test!", e);
@@ -178,7 +177,7 @@ public class MongoImplTest {
             state.setCode(201);
             result = dao.addScheduleState(state);
             Assert.assertEquals(200, result.code);
-            
+
             ScheduleState getState = dao.getScheduleState();
             Assert.assertEquals(201, getState.getCode());
         }
@@ -259,10 +258,10 @@ public class MongoImplTest {
 
         // Assignments
         Collection<PolicyAssignment> assignments = new ArrayList<>();
-        assignments.add(new PolicyAssignment("syslog_regex", "SG[syslog_stream-]"+timestamp));
+        assignments.add(new PolicyAssignment("syslog_regex", "SG[syslog_stream-]" + timestamp));
 
         ScheduleState state = new ScheduleState(version, spoutSpecsMap, groupSpecsMap, alertSpecsMap, pubMap,
-                assignments, monitoredStreams, policySnapshots, streams);
+            assignments, monitoredStreams, policySnapshots, streams);
 
         OpResult result = dao.addScheduleState(state);
         Assert.assertEquals(200, result.code);

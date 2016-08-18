@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity.index;
 
 import org.apache.eagle.log.entity.LogReader;
-
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;

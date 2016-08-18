@@ -16,18 +16,17 @@
  */
 package org.apache.eagle.alert.engine.coordinator;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 /**
  * @since Apr 5, 2016
- *
  */
-public class PolicyDefinition implements Serializable{
+public class PolicyDefinition implements Serializable {
     private static final long serialVersionUID = 377581499339572414L;
     // unique identifier
     private String name;
@@ -105,53 +104,55 @@ public class PolicyDefinition implements Serializable{
     }
 
     public PolicyStatus getPolicyStatus() {
-		return policyStatus;
-	}
+        return policyStatus;
+    }
 
-	public void setPolicyStatus(PolicyStatus policyStatus) {
-		this.policyStatus = policyStatus;
-	}
-
-	@Override
-    public int hashCode() {
-        return new HashCodeBuilder().
-                append(name).
-                append(description).
-                append(inputStreams).
-                append(outputStreams).
-                append(definition).
-                append(partitionSpec).
-//                append(parallelismHint).
-                build();
+    public void setPolicyStatus(PolicyStatus policyStatus) {
+        this.policyStatus = policyStatus;
     }
 
     @Override
-    public boolean equals(Object that){
-        if(that == this)
+    public int hashCode() {
+        return new HashCodeBuilder().
+            append(name).
+            append(description).
+            append(inputStreams).
+            append(outputStreams).
+            append(definition).
+            append(partitionSpec).
+//                append(parallelismHint).
+    build();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (that == this) {
             return true;
-        if(! (that instanceof PolicyDefinition))
+        }
+        if (!(that instanceof PolicyDefinition)) {
             return false;
-        PolicyDefinition another = (PolicyDefinition)that;
-        if(another.name.equals(this.name) &&
-                another.description.equals(this.description) &&
-                CollectionUtils.isEqualCollection(another.inputStreams, this.inputStreams) &&
-                CollectionUtils.isEqualCollection(another.outputStreams, this.outputStreams) &&
-                another.definition.equals(this.definition) &&
-                CollectionUtils.isEqualCollection(another.partitionSpec, this.partitionSpec) 
+        }
+        PolicyDefinition another = (PolicyDefinition) that;
+        if (another.name.equals(this.name) &&
+            another.description.equals(this.description) &&
+            CollectionUtils.isEqualCollection(another.inputStreams, this.inputStreams) &&
+            CollectionUtils.isEqualCollection(another.outputStreams, this.outputStreams) &&
+            another.definition.equals(this.definition) &&
+            CollectionUtils.isEqualCollection(another.partitionSpec, this.partitionSpec)
 //                && another.parallelismHint == this.parallelismHint
-                ) {
+            ) {
             return true;
         }
         return false;
     }
 
-    public static class Definition implements Serializable{
+    public static class Definition implements Serializable {
         private static final long serialVersionUID = -622366527887848346L;
 
         public String type;
         public String value;
 
-        public Definition(String type,String value){
+        public Definition(String type, String value) {
             this.type = type;
             this.value = value;
         }
@@ -167,15 +168,18 @@ public class PolicyDefinition implements Serializable{
         }
 
         @Override
-        public boolean equals(Object that){
-            if(that == this)
+        public boolean equals(Object that) {
+            if (that == this) {
                 return true;
-            if(!(that instanceof Definition))
+            }
+            if (!(that instanceof Definition)) {
                 return false;
-            Definition another = (Definition)that;
-            if(another.type.equals(this.type) &&
-                    another.value.equals(this.value))
+            }
+            Definition another = (Definition) that;
+            if (another.type.equals(this.type) &&
+                another.value.equals(this.value)) {
                 return true;
+            }
             return false;
         }
 
@@ -197,16 +201,16 @@ public class PolicyDefinition implements Serializable{
 
         @Override
         public String toString() {
-            return String.format("{type=\"%s\",value=\"%s\"",type,value);
+            return String.format("{type=\"%s\",value=\"%s\"", type, value);
         }
     }
-    
+
     public static enum PolicyStatus {
-    	ENABLED, DISABLED
+        ENABLED, DISABLED
     }
 
     @Override
     public String toString() {
-        return String.format("{name=\"%s\",definition=%s}",this.getName(),this.getDefinition().toString());
+        return String.format("{name=\"%s\",definition=%s}", this.getName(), this.getDefinition().toString());
     }
 }

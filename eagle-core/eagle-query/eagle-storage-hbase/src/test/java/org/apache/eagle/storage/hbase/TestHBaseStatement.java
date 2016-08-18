@@ -28,7 +28,6 @@ import org.apache.eagle.storage.operation.QueryStatement;
 import org.apache.eagle.storage.operation.RawQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-
 import org.junit.*;
 
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package org.apache.eagle.alert.engine.publisher;
 
-import java.util.List;
-
 import org.apache.eagle.alert.engine.coordinator.Publishment;
+
+import java.util.List;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

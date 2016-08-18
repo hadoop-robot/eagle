@@ -23,7 +23,6 @@ import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResultCallback;
 import org.apache.eagle.storage.hbase.query.coprocessor.ProtoBufConverter;
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-
 import org.apache.hadoop.hbase.coprocessor.CoprocessorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +35,7 @@ import java.util.Map;
 
 /**
  * AggregateResultCallbackImpl.
+ *
  * @see AggregateResultCallback
  * @since : 11/3/14,2014
  */

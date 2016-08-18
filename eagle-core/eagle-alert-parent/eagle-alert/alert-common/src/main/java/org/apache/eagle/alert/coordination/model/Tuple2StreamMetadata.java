@@ -22,15 +22,15 @@ import java.util.Set;
 
 /**
  * @Since 4/25/16. This metadata controls how tuple is transformed to stream for
- *        example raw data consists of {"metric" : "cpuUsage", "host" :
- *        "xyz.com", "timestamp" : 1346846400, "value" : "0.9"} field "metric"
- *        is used for creating stream name, here "cpuUsage" is stream name
- *
- *        metric could be "cpuUsage", "diskUsage", "memUsage" etc, so
- *        activeStreamNames are subset of all metric names
- *
- *        All other messages which are not one of activeStreamNames will be
- *        filtered out
+ * example raw data consists of {"metric" : "cpuUsage", "host" :
+ * "xyz.com", "timestamp" : 1346846400, "value" : "0.9"} field "metric"
+ * is used for creating stream name, here "cpuUsage" is stream name
+ * <p>
+ * metric could be "cpuUsage", "diskUsage", "memUsage" etc, so
+ * activeStreamNames are subset of all metric names
+ * <p>
+ * All other messages which are not one of activeStreamNames will be
+ * filtered out
  */
 public class Tuple2StreamMetadata {
     /**

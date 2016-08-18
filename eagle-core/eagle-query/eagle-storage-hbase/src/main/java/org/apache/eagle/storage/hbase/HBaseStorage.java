@@ -16,8 +16,6 @@
  */
 package org.apache.eagle.storage.hbase;
 
-import static org.apache.eagle.audit.common.AuditConstants.*;
-
 import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericEntityWriter;
@@ -32,7 +30,6 @@ import org.apache.eagle.storage.hbase.query.GenericQueryBuilder;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +38,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.apache.eagle.audit.common.AuditConstants.*;
+
 /**
  * HBaseStorage Implementation.
  *
@@ -48,7 +47,7 @@ import java.util.List;
  */
 public class HBaseStorage extends DataStorageBase {
 
-    private static  final Logger LOG = LoggerFactory.getLogger(HBaseStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HBaseStorage.class);
     private HBaseStorageAudit audit = new HBaseStorageAudit();
 
     @Override

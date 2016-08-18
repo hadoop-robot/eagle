@@ -21,7 +21,6 @@ package org.apache.eagle.storage.hbase;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;

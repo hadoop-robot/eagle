@@ -16,11 +16,11 @@
  */
 package org.apache.eagle.alert.coordination.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.eagle.alert.engine.coordinator.StreamPartition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

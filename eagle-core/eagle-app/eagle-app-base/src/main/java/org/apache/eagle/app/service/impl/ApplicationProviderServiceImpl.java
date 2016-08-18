@@ -26,13 +26,13 @@ import org.apache.eagle.metadata.model.ApplicationDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
  * Support to load application provider from application.provider.config = "providers.xml" configuration file
  * or application.provider.dir = "lib/apps" with SPI Class loader
- *
+ * <p>
  * TODO: hot-manage application provider loading
  */
 @Singleton
@@ -43,38 +43,38 @@ public class ApplicationProviderServiceImpl implements ApplicationProviderServic
     public final static String APP_PROVIDER_LOADER_CLASS_KEY = "application.provider.loader";
 
     @Inject
-    public ApplicationProviderServiceImpl(Config config){
-        LOG.info("Initializing {}",this.getClass().getCanonicalName());
+    public ApplicationProviderServiceImpl(Config config) {
+        LOG.info("Initializing {}", this.getClass().getCanonicalName());
         this.config = config;
-        String appProviderLoaderClass = this.config.hasPath(APP_PROVIDER_LOADER_CLASS_KEY)?
-                this.config.getString(APP_PROVIDER_LOADER_CLASS_KEY):ApplicationProviderLoader.getDefaultAppProviderLoader();
-        LOG.info("Initializing {} = {}",APP_PROVIDER_LOADER_CLASS_KEY,appProviderLoaderClass);
+        String appProviderLoaderClass = this.config.hasPath(APP_PROVIDER_LOADER_CLASS_KEY) ?
+            this.config.getString(APP_PROVIDER_LOADER_CLASS_KEY) : ApplicationProviderLoader.getDefaultAppProviderLoader();
+        LOG.info("Initializing {} = {}", APP_PROVIDER_LOADER_CLASS_KEY, appProviderLoaderClass);
         appProviderLoader = initializeAppProviderLoader(appProviderLoaderClass);
-        LOG.info("Initialized {}",appProviderLoader);
+        LOG.info("Initialized {}", appProviderLoader);
         reload();
     }
 
-    private ApplicationProviderLoader initializeAppProviderLoader(String appProviderLoaderClass){
+    private ApplicationProviderLoader initializeAppProviderLoader(String appProviderLoaderClass) {
         try {
             return (ApplicationProviderLoader) Class.forName(appProviderLoaderClass).getConstructor(Config.class).newInstance(this.config);
         } catch (Throwable e) {
-            LOG.error("Failed to initialize ApplicationProviderLoader: "+appProviderLoaderClass,e);
-            throw new IllegalStateException("Failed to initialize ApplicationProviderLoader: "+appProviderLoaderClass,e);
+            LOG.error("Failed to initialize ApplicationProviderLoader: " + appProviderLoaderClass, e);
+            throw new IllegalStateException("Failed to initialize ApplicationProviderLoader: " + appProviderLoaderClass, e);
         }
     }
 
-    public synchronized void reload(){
+    public synchronized void reload() {
         appProviderLoader.reset();
         LOG.info("Loading application providers ...");
         appProviderLoader.load();
-        LOG.info("Loaded {} application providers",appProviderLoader.getProviders().size());
+        LOG.info("Loaded {} application providers", appProviderLoader.getProviders().size());
     }
 
-    public Collection<ApplicationProvider> getProviders(){
+    public Collection<ApplicationProvider> getProviders() {
         return appProviderLoader.getProviders();
     }
 
-    public Collection<ApplicationDesc> getApplicationDescs(){
+    public Collection<ApplicationDesc> getApplicationDescs() {
         return getProviders().stream().map(ApplicationProvider::getApplicationDesc).collect(Collectors.toList());
     }
 

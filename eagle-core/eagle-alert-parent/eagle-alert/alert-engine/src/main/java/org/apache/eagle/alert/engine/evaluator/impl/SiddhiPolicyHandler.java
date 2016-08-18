@@ -16,8 +16,6 @@
  */
 package org.apache.eagle.alert.engine.evaluator.impl;
 
-import java.util.Map;
-
 import org.apache.eagle.alert.engine.Collector;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
@@ -34,6 +32,8 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.StreamCallback;
 
+import java.util.Map;
+
 public class SiddhiPolicyHandler implements PolicyStreamHandler {
     private final static Logger LOG = LoggerFactory.getLogger(SiddhiPolicyHandler.class);
     private ExecutionPlanRuntime executionRuntime;
@@ -42,28 +42,30 @@ public class SiddhiPolicyHandler implements PolicyStreamHandler {
     private PolicyDefinition policy;
     private PolicyHandlerContext context;
 
-    public SiddhiPolicyHandler(Map<String, StreamDefinition> sds){
+    public SiddhiPolicyHandler(Map<String, StreamDefinition> sds) {
         this.sds = sds;
     }
 
     private static String generateExecutionPlan(PolicyDefinition policyDefinition, Map<String, StreamDefinition> sds) throws StreamDefinitionNotFoundException {
         StringBuilder builder = new StringBuilder();
-        for(String inputStream:policyDefinition.getInputStreams()) {
+        for (String inputStream : policyDefinition.getInputStreams()) {
             builder.append(SiddhiDefinitionAdapter.buildStreamDefinition(sds.get(inputStream)));
             builder.append("\n");
         }
         builder.append(policyDefinition.getDefinition().value);
-        if(LOG.isDebugEnabled()) LOG.debug("Generated siddhi execution plan: {} from policy: {}", builder.toString(),policyDefinition);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Generated siddhi execution plan: {} from policy: {}", builder.toString(), policyDefinition);
+        }
         return builder.toString();
     }
 
-    private static class AlertStreamCallback extends StreamCallback{
+    private static class AlertStreamCallback extends StreamCallback {
         private final String outputStream;
         private final Collector<AlertStreamEvent> collector;
         private final PolicyHandlerContext context;
         private final StreamDefinition definition;
 
-        public AlertStreamCallback(String outputStream, StreamDefinition streamDefinition, Collector<AlertStreamEvent> collector, PolicyHandlerContext context){
+        public AlertStreamCallback(String outputStream, StreamDefinition streamDefinition, Collector<AlertStreamEvent> collector, PolicyHandlerContext context) {
             this.outputStream = outputStream;
             this.collector = collector;
             this.context = context;
@@ -72,14 +74,15 @@ public class SiddhiPolicyHandler implements PolicyStreamHandler {
 
         /**
          * Possibly more than one event will be triggered for alerting
+         *
          * @param events
          */
         @Override
         public void receive(Event[] events) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Generated {} alerts from policy '{}' in {}", events.length,context.getPolicyDefinition().getName(), context.getPolicyEvaluatorId());
+                LOG.debug("Generated {} alerts from policy '{}' in {}", events.length, context.getPolicyDefinition().getName(), context.getPolicyEvaluatorId());
             }
-            for(Event e : events) {
+            for (Event e : events) {
                 AlertStreamEvent event = new AlertStreamEvent();
                 event.setTimestamp(e.getTimestamp());
                 event.setData(e.getData());
@@ -90,65 +93,66 @@ public class SiddhiPolicyHandler implements PolicyStreamHandler {
                 }
                 event.setCreatedTime(System.currentTimeMillis());
                 event.setSchema(definition);
-                if(LOG.isDebugEnabled())
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("Generate new alert event: {}", event);
+                }
                 collector.emit(event);
             }
-            context.getPolicyCounter().scope(String.format("%s.%s",this.context.getPolicyDefinition().getName(),"alert_count")).incrBy(events.length);
+            context.getPolicyCounter().scope(String.format("%s.%s", this.context.getPolicyDefinition().getName(), "alert_count")).incrBy(events.length);
         }
     }
 
     @Override
     public void prepare(final Collector<AlertStreamEvent> collector, PolicyHandlerContext context) throws Exception {
-        LOG.info("Initializing handler for policy {}: {}",context.getPolicyDefinition(),this);
+        LOG.info("Initializing handler for policy {}: {}", context.getPolicyDefinition(), this);
         this.policy = context.getPolicyDefinition();
         this.siddhiManager = new SiddhiManager();
         String plan = generateExecutionPlan(policy, sds);
         try {
             this.executionRuntime = siddhiManager.createExecutionPlanRuntime(plan);
-            LOG.info("Created siddhi runtime {}",executionRuntime.getName());
-        }catch (Exception parserException){
-            LOG.error("Failed to create siddhi runtime for policy: {}, siddhi plan: \n\n{}\n",context.getPolicyDefinition().getName(),plan,parserException);
+            LOG.info("Created siddhi runtime {}", executionRuntime.getName());
+        } catch (Exception parserException) {
+            LOG.error("Failed to create siddhi runtime for policy: {}, siddhi plan: \n\n{}\n", context.getPolicyDefinition().getName(), plan, parserException);
             throw parserException;
         }
-        for(final String outputStream:policy.getOutputStreams()){
-            if(executionRuntime.getStreamDefinitionMap().containsKey(outputStream)) {
+        for (final String outputStream : policy.getOutputStreams()) {
+            if (executionRuntime.getStreamDefinitionMap().containsKey(outputStream)) {
                 this.executionRuntime.addCallback(outputStream,
-                        new AlertStreamCallback(
+                    new AlertStreamCallback(
                         outputStream, SiddhiDefinitionAdapter.convertFromSiddiDefinition(executionRuntime.getStreamDefinitionMap().get(outputStream))
-                        ,collector, context));
+                        , collector, context));
             } else {
-                throw new IllegalStateException("Undefined output stream "+outputStream);
+                throw new IllegalStateException("Undefined output stream " + outputStream);
             }
         }
         this.executionRuntime.start();
         this.context = context;
-        LOG.info("Initialized policy handler for policy: {}",policy.getName());
+        LOG.info("Initialized policy handler for policy: {}", policy.getName());
     }
 
     public void send(StreamEvent event) throws Exception {
-        context.getPolicyCounter().scope(String.format("%s.%s",this.context.getPolicyDefinition().getName(),"receive_count")).incr();
+        context.getPolicyCounter().scope(String.format("%s.%s", this.context.getPolicyDefinition().getName(), "receive_count")).incr();
         String streamId = event.getStreamId();
         InputHandler inputHandler = executionRuntime.getInputHandler(streamId);
-        if(inputHandler != null){
-            context.getPolicyCounter().scope(String.format("%s.%s",this.context.getPolicyDefinition().getName(),"eval_count")).incr();
-            inputHandler.send(event.getTimestamp(),event.getData());
-            
+        if (inputHandler != null) {
+            context.getPolicyCounter().scope(String.format("%s.%s", this.context.getPolicyDefinition().getName(), "eval_count")).incr();
+            inputHandler.send(event.getTimestamp(), event.getData());
+
             if (LOG.isDebugEnabled()) {
                 LOG.debug("sent event to siddhi stream {} ", streamId);
             }
-        }else{
-            context.getPolicyCounter().scope(String.format("%s.%s",this.context.getPolicyDefinition().getName(),"drop_count")).incr();
-            LOG.warn("No input handler found for stream {}",streamId);
+        } else {
+            context.getPolicyCounter().scope(String.format("%s.%s", this.context.getPolicyDefinition().getName(), "drop_count")).incr();
+            LOG.warn("No input handler found for stream {}", streamId);
         }
     }
 
     public void close() {
-        LOG.info("Closing handler for policy {}",this.policy.getName());
+        LOG.info("Closing handler for policy {}", this.policy.getName());
         this.executionRuntime.shutdown();
-        LOG.info("Shutdown siddhi runtime {}",this.executionRuntime.getName());
+        LOG.info("Shutdown siddhi runtime {}", this.executionRuntime.getName());
         this.siddhiManager.shutdown();
-        LOG.info("Shutdown siddhi manager {}",this.siddhiManager);
-        LOG.info("Closed handler for policy {}",this.policy.getName());
+        LOG.info("Shutdown siddhi manager {}", this.siddhiManager);
+        LOG.info("Closed handler for policy {}", this.policy.getName());
     }
 }

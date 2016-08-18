@@ -24,7 +24,6 @@ import org.apache.eagle.query.aggregate.raw.GroupbyValue;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResultCallback;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateResultCallbackImpl;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -32,7 +32,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Path(ApplicationManagementResource.ROOT_PATH)
 public class ApplicationManagementResource {
@@ -53,11 +56,11 @@ public class ApplicationManagementResource {
             }
             for (TopologyOperationEntity entity : entities) {
                 String status = dao.loadTopologyExecutionStatus(entity.getSite(), entity.getApplication(), entity.getTopology());
-                if(status == null) {
+                if (status == null) {
                     throw new Exception(String.format("Fail to fetch the topology execution status by site=%s, application=%s, topology=%s", entity.getSite(), entity.getApplication(), entity.getTopology()));
                 }
                 int operationsInRunning = dao.loadTopologyOperationsInRunning(entity.getSite(), entity.getApplication(), entity.getTopology());
-                if(operationsInRunning !=0) {
+                if (operationsInRunning != 0) {
                     throw new Exception(operationsInRunning + "operations are running, please wait for a minute");
                 }
                 if (validateOperation(entity.getOperation(), status)) {
@@ -86,7 +89,8 @@ public class ApplicationManagementResource {
                 return TopologyExecutionStatus.isReadyToStart(status);
             case TopologyOperationEntity.OPERATION.STOP:
                 return TopologyExecutionStatus.isReadyToStop(status);
-            default: break;
+            default:
+                break;
         }
         return ret;
     }

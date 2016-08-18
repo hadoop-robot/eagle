@@ -16,6 +16,8 @@
  */
 package org.apache.eagle.storage.jdbc.entity.impl;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
@@ -25,9 +27,6 @@ import org.apache.eagle.storage.jdbc.criteria.impl.QueryCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityReader;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
-
-import com.google.common.collect.Lists;
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.om.mapper.RecordMapper;

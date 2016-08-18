@@ -22,7 +22,6 @@ import org.apache.eagle.log.entity.EntityQualifierUtils;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.Qualifier;
 import org.apache.eagle.query.parser.*;
-
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList.Operator;
@@ -119,6 +118,7 @@ public class HBaseFilterBuilder {
      * TODO: For now we don't support one query to query multiple partitions. In future if partition is defined,
      * for the entity, internally We need to spawn multiple queries and send one query for each partition.
      * </p>
+     *
      * @return Return the partition values for each or expression. Return null if the entity doesn't support partition.
      */
     public List<String[]> getPartitionValues() {

@@ -28,21 +28,21 @@ public class ApplicationContextTest {
      * appConfig.withFallback(envConfig): appConfig will override envConfig, envConfig is used as default config
      */
     @Test
-    public void testTypeSafeConfigMerge(){
-        Config appConfig = ConfigFactory.parseMap(new HashMap<String,String>(){{
-            put("APP_CONFIG",ApplicationContextTest.this.getClass().getCanonicalName());
-            put("SCOPE","APP");
+    public void testTypeSafeConfigMerge() {
+        Config appConfig = ConfigFactory.parseMap(new HashMap<String, String>() {{
+            put("APP_CONFIG", ApplicationContextTest.this.getClass().getCanonicalName());
+            put("SCOPE", "APP");
         }});
 
-        Config envConfig = ConfigFactory.parseMap(new HashMap<String,String>(){{
-            put("ENV_CONFIG",ApplicationContextTest.this.getClass().getCanonicalName());
-            put("SCOPE","ENV");
+        Config envConfig = ConfigFactory.parseMap(new HashMap<String, String>() {{
+            put("ENV_CONFIG", ApplicationContextTest.this.getClass().getCanonicalName());
+            put("SCOPE", "ENV");
         }});
 
         Config mergedConfig = appConfig.withFallback(envConfig);
         Assert.assertTrue(mergedConfig.hasPath("APP_CONFIG"));
         Assert.assertTrue(mergedConfig.hasPath("ENV_CONFIG"));
         Assert.assertEquals("appConfig.withFallback(envConfig): appConfig will override envConfig, envConfig is used as default config",
-                "APP",mergedConfig.getString("SCOPE"));
+            "APP", mergedConfig.getString("SCOPE"));
     }
 }

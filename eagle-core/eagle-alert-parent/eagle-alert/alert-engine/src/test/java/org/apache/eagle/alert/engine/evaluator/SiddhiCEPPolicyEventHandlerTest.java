@@ -16,15 +16,7 @@
  */
 package org.apache.eagle.alert.engine.evaluator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-
+import backtype.storm.metric.api.MultiCountMetric;
 import org.apache.eagle.alert.engine.Collector;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
@@ -38,14 +30,16 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import backtype.storm.metric.api.MultiCountMetric;
+import java.util.*;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class SiddhiCEPPolicyEventHandlerTest {
     private final static Logger LOG = LoggerFactory.getLogger(SiddhiCEPPolicyEventHandlerTest.class);
 
-    private Map<String, StreamDefinition> createDefinition(String ... streamIds) {
+    private Map<String, StreamDefinition> createDefinition(String... streamIds) {
         Map<String, StreamDefinition> sds = new HashMap<>();
-        for(String streamId:streamIds) {
+        for (String streamId : streamIds) {
             // construct StreamDefinition
             StreamDefinition sd = MockSampleMetadataFactory.createSampleStreamDefinition(streamId);
             sds.put(streamId, sd);
@@ -59,22 +53,22 @@ public class SiddhiCEPPolicyEventHandlerTest {
         SiddhiPolicyHandler handler;
         MockStreamCollector collector;
 
-        handler = new SiddhiPolicyHandler(createDefinition("sampleStream_1","sampleStream_2"));
+        handler = new SiddhiPolicyHandler(createDefinition("sampleStream_1", "sampleStream_2"));
         collector = new MockStreamCollector();
         PolicyDefinition policyDefinition = MockSampleMetadataFactory.createSingleMetricSamplePolicy();
         PolicyHandlerContext context = new PolicyHandlerContext();
         context.setPolicyDefinition(policyDefinition);
         context.setPolicyCounter(new MultiCountMetric());
-        handler.prepare(collector,context);
+        handler.prepare(collector, context);
         StreamEvent event = StreamEvent.Builder()
-                .schema(MockSampleMetadataFactory.createSampleStreamDefinition("sampleStream_1"))
-                .streamId("sampleStream_1")
-                .timestamep(System.currentTimeMillis())
-                .attributes(new HashMap<String,Object>(){{
-                    put("name","cpu");
-                    put("value",60.0);
-                    put("bad","bad column value");
-                }}).build();
+            .schema(MockSampleMetadataFactory.createSampleStreamDefinition("sampleStream_1"))
+            .streamId("sampleStream_1")
+            .timestamep(System.currentTimeMillis())
+            .attributes(new HashMap<String, Object>() {{
+                put("name", "cpu");
+                put("value", 60.0);
+                put("bad", "bad column value");
+            }}).build();
         handler.send(event);
         handler.close();
     }
@@ -82,24 +76,24 @@ public class SiddhiCEPPolicyEventHandlerTest {
     @SuppressWarnings("serial")
     @Test
     public void testWithTwoStreamJoinPolicy() throws Exception {
-        Map<String,StreamDefinition> ssd = createDefinition("sampleStream_1","sampleStream_2");
+        Map<String, StreamDefinition> ssd = createDefinition("sampleStream_1", "sampleStream_2");
 
         PolicyDefinition policyDefinition = new PolicyDefinition();
         policyDefinition.setName("SampleJoinPolicyForTest");
-        policyDefinition.setInputStreams(Arrays.asList("sampleStream_1","sampleStream_2"));
+        policyDefinition.setInputStreams(Arrays.asList("sampleStream_1", "sampleStream_2"));
         policyDefinition.setOutputStreams(Collections.singletonList("joinedStream"));
         policyDefinition.setDefinition(new PolicyDefinition.Definition(PolicyStreamHandlers.SIDDHI_ENGINE,
-                "from sampleStream_1#window.length(10) as left " +
+            "from sampleStream_1#window.length(10) as left " +
                 "join sampleStream_2#window.length(10) as right " +
                 "on left.name == right.name and left.value == right.value " +
-                "select left.timestamp,left.name,left.value "+
+                "select left.timestamp,left.name,left.value " +
                 "insert into joinedStream"));
         policyDefinition.setPartitionSpec(Collections.singletonList(MockSampleMetadataFactory.createSampleStreamGroupbyPartition("sampleStream_1", Collections.singletonList("name"))));
         SiddhiPolicyHandler handler;
         Semaphore mutex = new Semaphore(0);
         List<AlertStreamEvent> alerts = new ArrayList<>(0);
         Collector<AlertStreamEvent> collector = (event) -> {
-            LOG.info("Collected {}",event);
+            LOG.info("Collected {}", event);
             Assert.assertTrue(event != null);
             alerts.add(event);
             mutex.release();
@@ -109,53 +103,53 @@ public class SiddhiCEPPolicyEventHandlerTest {
         PolicyHandlerContext context = new PolicyHandlerContext();
         context.setPolicyDefinition(policyDefinition);
         context.setPolicyCounter(new MultiCountMetric());
-        handler.prepare(collector,context);
+        handler.prepare(collector, context);
 
         long ts_1 = System.currentTimeMillis();
-        long ts_2 = System.currentTimeMillis()+1;
+        long ts_2 = System.currentTimeMillis() + 1;
 
         handler.send(StreamEvent.Builder()
-                .schema(ssd.get("sampleStream_1"))
-                .streamId("sampleStream_1")
-                .timestamep(ts_1)
-                .attributes(new HashMap<String,Object>(){{
-                    put("name","cpu");
-                    put("value",60.0);
-                    put("bad","bad column value");
-                }}).build());
+            .schema(ssd.get("sampleStream_1"))
+            .streamId("sampleStream_1")
+            .timestamep(ts_1)
+            .attributes(new HashMap<String, Object>() {{
+                put("name", "cpu");
+                put("value", 60.0);
+                put("bad", "bad column value");
+            }}).build());
 
         handler.send(StreamEvent.Builder()
-                .schema(ssd.get("sampleStream_2"))
-                .streamId("sampleStream_2")
-                .timestamep(ts_2)
-                .attributes(new HashMap<String,Object>(){{
-                    put("name","cpu");
-                    put("value",61.0);
-                }}).build());
+            .schema(ssd.get("sampleStream_2"))
+            .streamId("sampleStream_2")
+            .timestamep(ts_2)
+            .attributes(new HashMap<String, Object>() {{
+                put("name", "cpu");
+                put("value", 61.0);
+            }}).build());
 
         handler.send(StreamEvent.Builder()
-                .schema(ssd.get("sampleStream_2"))
-                .streamId("sampleStream_2")
-                .timestamep(ts_2)
-                .attributes(new HashMap<String,Object>(){{
-                    put("name","disk");
-                    put("value",60.0);
-                }}).build());
+            .schema(ssd.get("sampleStream_2"))
+            .streamId("sampleStream_2")
+            .timestamep(ts_2)
+            .attributes(new HashMap<String, Object>() {{
+                put("name", "disk");
+                put("value", 60.0);
+            }}).build());
 
         handler.send(StreamEvent.Builder()
-                .schema(ssd.get("sampleStream_2"))
-                .streamId("sampleStream_2")
-                .timestamep(ts_2)
-                .attributes(new HashMap<String,Object>(){{
-                    put("name","cpu");
-                    put("value",60.0);
-                }}).build());
+            .schema(ssd.get("sampleStream_2"))
+            .streamId("sampleStream_2")
+            .timestamep(ts_2)
+            .attributes(new HashMap<String, Object>() {{
+                put("name", "cpu");
+                put("value", 60.0);
+            }}).build());
 
         handler.close();
 
-        Assert.assertTrue("Should get result in 5 s",mutex.tryAcquire(5, TimeUnit.SECONDS));
-        Assert.assertEquals(1,alerts.size());
-        Assert.assertEquals("joinedStream",alerts.get(0).getStreamId());
-        Assert.assertEquals("cpu",alerts.get(0).getData()[1]);
+        Assert.assertTrue("Should get result in 5 s", mutex.tryAcquire(5, TimeUnit.SECONDS));
+        Assert.assertEquals(1, alerts.size());
+        Assert.assertEquals("joinedStream", alerts.get(0).getStreamId());
+        Assert.assertEquals("cpu", alerts.get(0).getData()[1]);
     }
 }

@@ -20,9 +20,7 @@ package org.apache.eagle.jobrunning.ha;
 import org.apache.eagle.jobrunning.common.JobConstants;
 import org.apache.eagle.jobrunning.url.ServiceURLBuilder;
 import org.apache.eagle.jobrunning.util.InputStreamUtils;
-
 import org.apache.hadoop.util.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

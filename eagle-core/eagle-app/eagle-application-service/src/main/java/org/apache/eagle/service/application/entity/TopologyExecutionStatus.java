@@ -26,11 +26,11 @@ public class TopologyExecutionStatus {
     public final static String STOPPING = "STOPPING";
     public final static String NEW = "NEW";
 
-    public static boolean isReadyToStart(String status){
+    public static boolean isReadyToStart(String status) {
         return status.equals(STOPPED) || status.equals(NEW);
     }
 
-    public static boolean isReadyToStop(String status){
+    public static boolean isReadyToStop(String status) {
         return status.equals(STARTED);
     }
 

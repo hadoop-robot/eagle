@@ -17,13 +17,11 @@
 package org.apache.eagle.log.entity.repo;
 
 
+import net.sf.extcos.ComponentQuery;
+import net.sf.extcos.ComponentScanner;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
-
-import net.sf.extcos.ComponentQuery;
-import net.sf.extcos.ComponentScanner;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

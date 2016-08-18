@@ -23,7 +23,6 @@ import java.util.concurrent.Executors
 
 import joptsimple._
 import kafka.message._
-import kafka.producer.ConsoleProducer.{LineMessageReader, MessageReader}
 import kafka.producer.{KeyedMessage, Producer, ProducerConfig}
 import kafka.serializer._
 import org.apache.commons.io.FileUtils
@@ -176,9 +175,9 @@ object ProducerTool {
 
     val reader = Class.forName(readerClass).newInstance().asInstanceOf[MessageReader[AnyRef, AnyRef]]
 
-    if (messageData.size()>0) {
+    if (messageData.size() > 0) {
       reader.init(new ByteArrayInputStream(messageData.get(0).getBytes(StandardCharsets.UTF_8)), cmdLineProps)
-    } else if (messageFile.size()>0) {
+    } else if (messageFile.size() > 0) {
       reader.init(FileUtils.openInputStream(new File(messageFile.get(0))), cmdLineProps)
     } else {
       reader.init(System.in, cmdLineProps)

@@ -16,13 +16,8 @@
  */
 package org.apache.eagle.alert.engine.coordinator.impl;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.base.Preconditions;
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.coordination.model.AlertBoltSpec;
 import org.apache.eagle.alert.coordination.model.PublishSpec;
 import org.apache.eagle.alert.coordination.model.RouterSpec;
@@ -37,15 +32,19 @@ import org.apache.eagle.alert.engine.router.StreamRouterBoltSpecListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Preconditions;
-import com.typesafe.config.Config;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * notify 3 components of metadata change Spout, StreamRouterBolt and AlertBolt
  */
-@SuppressWarnings({ "serial" })
+@SuppressWarnings( {"serial"})
 public abstract class AbstractMetadataChangeNotifyService implements IMetadataChangeNotifyService, Closeable,
-        Serializable {
+    Serializable {
     private final static Logger LOG = LoggerFactory.getLogger(AbstractMetadataChangeNotifyService.class);
     private final List<StreamRouterBoltSpecListener> streamRouterBoltSpecListeners = new ArrayList<>();
     private final List<SpoutSpecListener> spoutSpecListeners = new ArrayList<>();

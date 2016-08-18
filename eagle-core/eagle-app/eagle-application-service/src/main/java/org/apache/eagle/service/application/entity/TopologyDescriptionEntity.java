@@ -26,18 +26,15 @@ import org.apache.eagle.service.application.AppManagerConstants;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.HashMap;
-import java.util.Map;
 
-
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Table("eagle_metadata")
 @ColumnFamily("f")
 @Prefix("topologyDescription")
 @Service(Constants.TOPOLOGY_DESCRIPTION_SERVICE_ENDPOINT_NAME)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TimeSeries(false)
-@Tags({"topology"})
+@Tags( {"topology"})
 public class TopologyDescriptionEntity extends TaggedLogAPIEntity {
     @Column("a")
     private String exeClass;
@@ -48,6 +45,7 @@ public class TopologyDescriptionEntity extends TaggedLogAPIEntity {
     @Column("d")
     private String version;
     private String context;
+
     public String getContext() {
         return context;
     }

@@ -22,7 +22,7 @@ public class MetricSourceWrapper implements MetricSource {
     private final MetricRegistry registry;
     private final String name;
 
-    public MetricSourceWrapper(String name, MetricRegistry registry){
+    public MetricSourceWrapper(String name, MetricRegistry registry) {
         this.name = name;
         this.registry = registry;
     }

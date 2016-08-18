@@ -1,12 +1,11 @@
 package org.apache.eagle.alert.metric;
 
-import java.util.Map;
-
+import com.codahale.metrics.MetricRegistry;
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.metric.sink.MetricSink;
 import org.apache.eagle.alert.metric.source.MetricSource;
 
-import com.codahale.metrics.MetricRegistry;
-import com.typesafe.config.Config;
+import java.util.Map;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -47,18 +46,16 @@ public interface IMetricSystem {
     void report();
 
     /**
-     *
      * @param sink metric sink
      */
-    void register(MetricSink sink,Config config);
+    void register(MetricSink sink, Config config);
 
     /**
-     *
      * @param source metric source
      */
     void register(MetricSource source);
 
-    void tags(Map<String,Object> metricTags);
+    void tags(Map<String, Object> metricTags);
 
     MetricRegistry registry();
 }

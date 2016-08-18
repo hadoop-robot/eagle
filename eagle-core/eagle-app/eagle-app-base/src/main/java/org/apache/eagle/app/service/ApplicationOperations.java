@@ -31,23 +31,27 @@ public final class ApplicationOperations {
     private final static String START = "START";
     private final static String STOP = "STOP";
 
-    public static class InstallOperation implements Operation{
+    public static class InstallOperation implements Operation {
         private String siteId;
         private String appType;
         private ApplicationEntity.Mode mode = ApplicationEntity.Mode.LOCAL;
-        private Map<String,Object> configuration;
+        private Map<String, Object> configuration;
 
-        public InstallOperation(){}
-        public InstallOperation(String siteId,String appType){
+        public InstallOperation() {
+        }
+
+        public InstallOperation(String siteId, String appType) {
             this.setSiteId(siteId);
             this.setAppType(appType);
         }
-        public InstallOperation(String siteId,String appType,ApplicationEntity.Mode mode){
+
+        public InstallOperation(String siteId, String appType, ApplicationEntity.Mode mode) {
             this.setSiteId(siteId);
             this.setAppType(appType);
             this.setMode(mode);
         }
-        public InstallOperation(String siteId,String appType,ApplicationEntity.Mode mode,Map<String,Object> configuration){
+
+        public InstallOperation(String siteId, String appType, ApplicationEntity.Mode mode, Map<String, Object> configuration) {
             this.setSiteId(siteId);
             this.setAppType(appType);
             this.setMode(mode);
@@ -55,17 +59,20 @@ public final class ApplicationOperations {
         }
 
         public String getSiteId() {
-           return siteId;
-       }
+            return siteId;
+        }
+
         public void setSiteId(String siteId) {
-           this.siteId = siteId;
-       }
+            this.siteId = siteId;
+        }
+
         public String getAppType() {
-           return appType;
-       }
+            return appType;
+        }
+
         public void setAppType(String appType) {
-           this.appType = appType;
-       }
+            this.appType = appType;
+        }
 
         public Map<String, Object> getConfiguration() {
             return configuration;
@@ -89,14 +96,18 @@ public final class ApplicationOperations {
         }
     }
 
-    public static class UninstallOperation implements Operation{
+    public static class UninstallOperation implements Operation {
         private String uuid;
         private String appId;
-        public UninstallOperation(){}
-        public UninstallOperation(String uuid){
+
+        public UninstallOperation() {
+        }
+
+        public UninstallOperation(String uuid) {
             this.setUuid(uuid);
         }
-        public UninstallOperation(String uuid,String appId){
+
+        public UninstallOperation(String uuid, String appId) {
             this.setUuid(uuid);
             this.setAppId(appId);
         }
@@ -104,6 +115,7 @@ public final class ApplicationOperations {
         public String getUuid() {
             return uuid;
         }
+
         public void setUuid(String uuid) {
             this.uuid = uuid;
         }
@@ -122,20 +134,26 @@ public final class ApplicationOperations {
         }
     }
 
-    public static class StartOperation implements Operation{
+    public static class StartOperation implements Operation {
         private String uuid;
         private String appId;
-        public StartOperation(){}
-        public StartOperation(String uuid){
+
+        public StartOperation() {
+        }
+
+        public StartOperation(String uuid) {
             this.setUuid(uuid);
         }
-        public StartOperation(String uuid,String appId){
+
+        public StartOperation(String uuid, String appId) {
             this.setUuid(uuid);
             this.setAppId(appId);
         }
+
         public String getUuid() {
             return uuid;
         }
+
         public void setUuid(String uuid) {
             this.uuid = uuid;
         }
@@ -154,21 +172,26 @@ public final class ApplicationOperations {
         }
     }
 
-    public static class StopOperation implements Operation{
+    public static class StopOperation implements Operation {
         private String uuid;
         private String appId;
 
-        public StopOperation(){}
-        public StopOperation(String uuid){
+        public StopOperation() {
+        }
+
+        public StopOperation(String uuid) {
             this.setUuid(uuid);
         }
-        public StopOperation(String uuid,String appId){
+
+        public StopOperation(String uuid, String appId) {
             this.setUuid(uuid);
             this.setAppId(appId);
         }
+
         public String getUuid() {
             return uuid;
         }
+
         public void setUuid(String uuid) {
             this.uuid = uuid;
         }

@@ -17,7 +17,6 @@
 package org.apache.eagle.storage.spi;
 
 import org.apache.eagle.storage.DataStorage;
-
 import org.junit.Test;
 
 /**

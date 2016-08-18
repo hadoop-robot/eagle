@@ -19,7 +19,6 @@ package org.apache.eagle.storage.jdbc.schema.serializer;
 import org.apache.eagle.log.entity.meta.Qualifier;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinitionManager;
-
 import org.apache.torque.util.JdbcTypedValue;
 
 import java.io.IOException;

@@ -16,24 +16,12 @@
  */
 package org.apache.eagle.alert.engine.coordinator.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.config.ConfigBusConsumer;
 import org.apache.eagle.alert.config.ConfigChangeCallback;
 import org.apache.eagle.alert.config.ConfigValue;
 import org.apache.eagle.alert.config.ZKConfig;
-import org.apache.eagle.alert.coordination.model.AlertBoltSpec;
-import org.apache.eagle.alert.coordination.model.PublishSpec;
-import org.apache.eagle.alert.coordination.model.RouterSpec;
-import org.apache.eagle.alert.coordination.model.ScheduleState;
-import org.apache.eagle.alert.coordination.model.SpoutSpec;
-import org.apache.eagle.alert.coordination.model.VersionedPolicyDefinition;
-import org.apache.eagle.alert.coordination.model.VersionedStreamDefinition;
+import org.apache.eagle.alert.coordination.model.*;
 import org.apache.eagle.alert.engine.coordinator.MetadataType;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
@@ -42,7 +30,12 @@ import org.apache.eagle.alert.service.MetadataServiceClientImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.typesafe.config.Config;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * <b>TODO</b>: performance tuning: It is not JVM level service, so it may cause
@@ -81,21 +74,21 @@ public class ZKMetadataChangeNotifyService extends AbstractMetadataChangeNotifyS
     }
 
     /**
-     * @seeAlso Coordinator
      * @return
+     * @seeAlso Coordinator
      */
     private String getMetadataTopicSuffix() {
         switch (type) {
-        case ALERT_BOLT:
-            return "alert";
-        case ALERT_PUBLISH_BOLT:
-            return "publisher";
-        case SPOUT:
-            return "spout";
-        case STREAM_ROUTER_BOLT:
-            return "router";
-        default:
-            throw new RuntimeException(String.format("unexpected metadata type: %s !", type));
+            case ALERT_BOLT:
+                return "alert";
+            case ALERT_PUBLISH_BOLT:
+                return "publisher";
+            case SPOUT:
+                return "spout";
+            case STREAM_ROUTER_BOLT:
+                return "router";
+            default:
+                throw new RuntimeException(String.format("unexpected metadata type: %s !", type));
         }
     }
 
@@ -107,7 +100,7 @@ public class ZKMetadataChangeNotifyService extends AbstractMetadataChangeNotifyS
 
     @Override
     public void onNewConfig(ConfigValue value) {
-        LOG.info("Metadata changed {}",value);
+        LOG.info("Metadata changed {}", value);
 
         if (client == null) {
             LOG.error("OnNewConfig trigger, but metadata service client is null. Metadata type {}", type);
@@ -126,42 +119,42 @@ public class ZKMetadataChangeNotifyService extends AbstractMetadataChangeNotifyS
         }
         Map<String, StreamDefinition> sds = getStreams(state.getStreamSnapshots());
         switch (type) {
-        case ALERT_BOLT:
-            // we might query metadata service query get metadata snapshot and StreamDefinition
-            AlertBoltSpec alertSpec = state.getAlertSpecs().get(topologyId);
-            if (alertSpec == null) {
-                LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
-            } else {
-                prePopulate(alertSpec, state.getPolicySnapshots());
-                notifyAlertBolt(alertSpec, sds);
-            }
-            break;
-        case ALERT_PUBLISH_BOLT:
-            PublishSpec pubSpec = state.getPublishSpecs().get(topologyId);
-            if (pubSpec == null) {
-                LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
-            } else {
-                notifyAlertPublishBolt(pubSpec, sds);
-            }
-            break;
-        case SPOUT:
-            SpoutSpec spoutSpec = state.getSpoutSpecs().get(topologyId);
-            if (spoutSpec == null) {
-                LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
-            } else {
-                notifySpout(spoutSpec, sds);
-            }
-            break;
-        case STREAM_ROUTER_BOLT:
-            RouterSpec gSpec = state.getGroupSpecs().get(topologyId);
-            if (gSpec == null) {
-                LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
-            } else {
-                notifyStreamRouterBolt(gSpec, sds);
-            }
-            break;
-        default:
-            LOG.error("unexpected metadata type: {} ", type);
+            case ALERT_BOLT:
+                // we might query metadata service query get metadata snapshot and StreamDefinition
+                AlertBoltSpec alertSpec = state.getAlertSpecs().get(topologyId);
+                if (alertSpec == null) {
+                    LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
+                } else {
+                    prePopulate(alertSpec, state.getPolicySnapshots());
+                    notifyAlertBolt(alertSpec, sds);
+                }
+                break;
+            case ALERT_PUBLISH_BOLT:
+                PublishSpec pubSpec = state.getPublishSpecs().get(topologyId);
+                if (pubSpec == null) {
+                    LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
+                } else {
+                    notifyAlertPublishBolt(pubSpec, sds);
+                }
+                break;
+            case SPOUT:
+                SpoutSpec spoutSpec = state.getSpoutSpecs().get(topologyId);
+                if (spoutSpec == null) {
+                    LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
+                } else {
+                    notifySpout(spoutSpec, sds);
+                }
+                break;
+            case STREAM_ROUTER_BOLT:
+                RouterSpec gSpec = state.getGroupSpecs().get(topologyId);
+                if (gSpec == null) {
+                    LOG.error(" alert spec for version {} not found for topology {} !", version, topologyId);
+                } else {
+                    notifyStreamRouterBolt(gSpec, sds);
+                }
+                break;
+            default:
+                LOG.error("unexpected metadata type: {} ", type);
         }
     }
 

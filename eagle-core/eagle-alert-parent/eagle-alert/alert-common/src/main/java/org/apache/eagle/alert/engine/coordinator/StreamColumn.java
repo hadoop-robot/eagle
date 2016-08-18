@@ -18,7 +18,6 @@ package org.apache.eagle.alert.engine.coordinator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class StreamColumn implements Serializable {
 
     public String toString() {
         return String.format("StreamColumn=name[%s], type=[%s], defaultValue=[%s], required=[%s]", name, type,
-                defaultValue, required);
+            defaultValue, required);
     }
 
     public String getName() {
@@ -62,7 +61,7 @@ public class StreamColumn implements Serializable {
     }
 
     private void ensureDefaultValueType() {
-        if(this.getDefaultValue()!=null && (this.getDefaultValue() instanceof String) && this.getType() != Type.STRING){
+        if (this.getDefaultValue() != null && (this.getDefaultValue() instanceof String) && this.getType() != Type.STRING) {
             switch (this.getType()) {
                 case INT:
                     this.setDefaultValue(Integer.valueOf((String) this.getDefaultValue()));
@@ -81,7 +80,7 @@ public class StreamColumn implements Serializable {
                     break;
                 case OBJECT:
                     try {
-                        this.setDefaultValue(new ObjectMapper().readValue((String) this.getDefaultValue(),HashMap.class));
+                        this.setDefaultValue(new ObjectMapper().readValue((String) this.getDefaultValue(), HashMap.class));
                     } catch (IOException e) {
                         throw new IllegalArgumentException(e);
                     }
@@ -137,7 +136,7 @@ public class StreamColumn implements Serializable {
         }
     }
 
-    public static class StreamColumnTypeAdapter extends XmlAdapter<String,Type>{
+    public static class StreamColumnTypeAdapter extends XmlAdapter<String, Type> {
 
         @Override
         public Type unmarshal(String v) throws Exception {
@@ -150,7 +149,7 @@ public class StreamColumn implements Serializable {
         }
     }
 
-    public static class DefaultValueAdapter extends XmlAdapter<String,Object>{
+    public static class DefaultValueAdapter extends XmlAdapter<String, Object> {
         @Override
         public Object unmarshal(String v) throws Exception {
             return v;

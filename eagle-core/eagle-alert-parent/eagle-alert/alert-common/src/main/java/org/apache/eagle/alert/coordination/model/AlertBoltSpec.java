@@ -16,18 +16,17 @@
  */
 package org.apache.eagle.alert.coordination.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * The alert specification for topology bolts.
- * 
+ *
  * @since Apr 29, 2016
  */
 public class AlertBoltSpec {

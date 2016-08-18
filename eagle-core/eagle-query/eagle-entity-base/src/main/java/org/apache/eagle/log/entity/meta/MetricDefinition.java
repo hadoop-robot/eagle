@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity.meta;
 
 import org.apache.hadoop.io.Writable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

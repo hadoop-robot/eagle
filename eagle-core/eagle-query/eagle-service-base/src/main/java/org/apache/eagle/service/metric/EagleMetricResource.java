@@ -19,16 +19,15 @@ package org.apache.eagle.service.metric;
 import org.apache.eagle.log.entity.GenericCreateAPIResponseEntity;
 import org.apache.eagle.log.entity.GenericEntityWriter;
 import org.apache.eagle.log.entity.GenericMetricEntity;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Path(EagleMetricResource.METRIC_URL_PATH)
 public class EagleMetricResource {

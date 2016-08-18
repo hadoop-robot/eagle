@@ -23,12 +23,10 @@ import org.apache.eagle.service.topology.resource.impl.TopologyMgmtResourceImpl;
 import org.apache.eagle.service.topology.resource.impl.TopologyStatus;
 
 import javax.ws.rs.*;
-
 import java.util.List;
 
 /**
  * @since May 5, 2016
- *
  */
 @Path("/alert")
 @Produces("application/json")

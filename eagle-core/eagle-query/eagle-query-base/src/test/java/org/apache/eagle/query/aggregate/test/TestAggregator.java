@@ -18,7 +18,6 @@ package org.apache.eagle.query.aggregate.test;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.*;
-
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.ObjectMapper;

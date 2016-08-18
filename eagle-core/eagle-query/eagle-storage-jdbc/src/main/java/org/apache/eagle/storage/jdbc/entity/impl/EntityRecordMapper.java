@@ -19,7 +19,6 @@ package org.apache.eagle.storage.jdbc.entity.impl;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
-
 import org.apache.torque.TorqueException;
 import org.apache.torque.criteria.CriteriaInterface;
 import org.apache.torque.om.mapper.RecordMapper;

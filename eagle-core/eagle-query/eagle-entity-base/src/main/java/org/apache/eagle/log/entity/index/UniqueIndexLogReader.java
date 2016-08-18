@@ -20,7 +20,6 @@ import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.HBaseInternalLogHelper;
 import org.apache.eagle.log.entity.InternalLog;
 import org.apache.eagle.log.entity.meta.IndexDefinition;
-
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTableFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;

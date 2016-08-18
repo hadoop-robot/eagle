@@ -19,18 +19,18 @@ package org.apache.eagle.alert.utils;
 public class StreamIdConversion {
     public final static String STREAM_ID_TEMPLATE = "stream_%s_to_%s";
     public final static String STREAM_ID_NUM_TEMPLATE = "stream_%s";
-    public static String generateStreamIdBetween(String sourceId, String targetId){
-        return String.format(STREAM_ID_TEMPLATE,sourceId,targetId);
+
+    public static String generateStreamIdBetween(String sourceId, String targetId) {
+        return String.format(STREAM_ID_TEMPLATE, sourceId, targetId);
     }
 
     /**
      * Hard-coded stream format in stream_${partitionNum}
      *
-     *
      * @param partitionNum
      * @return
      */
-    public static String generateStreamIdByPartition(int partitionNum){
-        return String.format(STREAM_ID_NUM_TEMPLATE,partitionNum);
+    public static String generateStreamIdByPartition(int partitionNum) {
+        return String.format(STREAM_ID_NUM_TEMPLATE, partitionNum);
     }
 }

@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity.repo;
 
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-
 import org.junit.Assert;
 import org.junit.Test;
 

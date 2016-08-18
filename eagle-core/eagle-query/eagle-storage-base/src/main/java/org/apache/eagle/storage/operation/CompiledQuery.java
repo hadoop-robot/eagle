@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.operation;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.SearchCondition;
@@ -25,8 +26,6 @@ import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.timeseries.SortOption;
 import org.apache.eagle.storage.exception.QueryCompileException;
-
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

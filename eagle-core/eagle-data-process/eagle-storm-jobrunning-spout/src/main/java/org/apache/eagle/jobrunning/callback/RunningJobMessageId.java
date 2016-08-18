@@ -17,9 +17,8 @@
 
 package org.apache.eagle.jobrunning.callback;
 
-import org.apache.eagle.jobrunning.common.JobConstants;
-
 import com.google.common.base.Objects;
+import org.apache.eagle.jobrunning.common.JobConstants;
 
 public class RunningJobMessageId {
     public String jobID;

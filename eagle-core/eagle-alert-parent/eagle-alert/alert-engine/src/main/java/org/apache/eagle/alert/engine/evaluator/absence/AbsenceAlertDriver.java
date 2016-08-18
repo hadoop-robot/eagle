@@ -31,22 +31,22 @@ public class AbsenceAlertDriver {
     private AbsenceWindowProcessor processor;
     private AbsenceWindowGenerator windowGenerator;
 
-    public AbsenceAlertDriver(List<Object> expectedAttrs, AbsenceWindowGenerator windowGenerator){
+    public AbsenceAlertDriver(List<Object> expectedAttrs, AbsenceWindowGenerator windowGenerator) {
         this.expectedAttrs = expectedAttrs;
         this.windowGenerator = windowGenerator;
     }
 
-    public void process(List<Object> appearAttrs, long occurTime){
+    public void process(List<Object> appearAttrs, long occurTime) {
         // initialize window
-        if(processor == null){
+        if (processor == null) {
             processor = nextProcessor(occurTime);
             LOG.info("initialized a new window {}", processor);
         }
         processor.process(appearAttrs, occurTime);
         AbsenceWindowProcessor.OccurStatus status = processor.checkStatus();
         boolean expired = processor.checkExpired();
-        if(expired){
-            if(status == AbsenceWindowProcessor.OccurStatus.absent){
+        if (expired) {
+            if (status == AbsenceWindowProcessor.OccurStatus.absent) {
                 // send alert
                 LOG.info("this is an alert");
                 // figure out next window and set the new window
@@ -58,10 +58,11 @@ public class AbsenceAlertDriver {
 
     /**
      * calculate absolute time range based on current timestamp
+     *
      * @param currTime milliseconds
      * @return
      */
-    private AbsenceWindowProcessor nextProcessor(long currTime){
+    private AbsenceWindowProcessor nextProcessor(long currTime) {
         AbsenceWindow window = windowGenerator.nextWindow(currTime);
         return new AbsenceWindowProcessor(expectedAttrs, window);
     }

@@ -16,14 +16,13 @@
  */
 package org.apache.eagle.query.aggregate.timeseries;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.EntityCreationListener;
 import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.IllegalAggregateFieldTypeException;
 import org.apache.eagle.query.parser.TokenConstant;
-
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

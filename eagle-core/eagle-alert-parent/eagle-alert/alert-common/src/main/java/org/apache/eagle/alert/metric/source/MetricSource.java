@@ -20,5 +20,6 @@ import com.codahale.metrics.MetricRegistry;
  */
 public interface MetricSource {
     String name();
+
     MetricRegistry registry();
 }

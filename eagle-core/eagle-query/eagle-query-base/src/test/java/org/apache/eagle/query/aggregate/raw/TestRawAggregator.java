@@ -19,7 +19,6 @@ package org.apache.eagle.query.aggregate.raw;
 import org.apache.eagle.common.ByteUtil;
 import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

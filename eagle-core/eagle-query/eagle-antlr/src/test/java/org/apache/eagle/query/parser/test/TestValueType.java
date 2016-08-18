@@ -18,7 +18,6 @@ package org.apache.eagle.query.parser.test;
 
 import org.apache.eagle.query.parser.TokenConstant;
 import org.apache.eagle.query.parser.TokenType;
-
 import org.junit.Assert;
 import org.junit.Test;
 

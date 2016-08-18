@@ -16,11 +16,10 @@
  */
 package org.apache.eagle.alert.coordination.model;
 
-import java.util.Map;
-
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.google.common.base.Objects;
+import java.util.Map;
 
 /**
  * @since Apr 5, 2016
@@ -78,6 +77,7 @@ public class Kafka2TupleMetadata {
     public String getTopic() {
         return this.topic;
     }
+
     public String getSchemeCls() {
         return this.schemeCls;
     }

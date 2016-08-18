@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.jdbc;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
@@ -25,8 +26,6 @@ import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.operation.RawQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-
-import org.apache.commons.lang.time.StopWatch;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

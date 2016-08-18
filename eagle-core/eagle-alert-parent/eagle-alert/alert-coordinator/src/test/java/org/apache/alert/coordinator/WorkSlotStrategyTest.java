@@ -16,11 +16,6 @@
  */
 package org.apache.alert.coordinator;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.alert.coordinator.mock.TestTopologyMgmtService;
 import org.apache.eagle.alert.coordination.model.WorkSlot;
 import org.apache.eagle.alert.coordination.model.internal.MonitoredStream;
@@ -37,10 +32,13 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * 
  * @since Apr 27, 2016
- *
  */
 public class WorkSlotStrategyTest {
 
@@ -54,7 +52,7 @@ public class WorkSlotStrategyTest {
         partition.setType(StreamPartition.Type.GLOBAL);
         partition.setStreamId("s1");
         partition.setColumns(Arrays.asList("f1", "f2"));
-        
+
         StreamGroup group = new StreamGroup();
         group.addStreamPartition(partition);
 
@@ -148,7 +146,7 @@ public class WorkSlotStrategyTest {
             Assert.assertEquals(5, queue.getWorkingSlots().size());
             Assert.assertEquals(2, context.getTopologies().size());
             Assert.assertEquals(2, context.getTopologyUsages().size());
-            
+
             String topo2 = queue.getWorkingSlots().get(0).getTopologyName();
             String bolt2 = queue.getWorkingSlots().get(0).getBoltId();
             for (WorkSlot ws : queue.getWorkingSlots()) {

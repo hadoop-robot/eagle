@@ -17,6 +17,11 @@
 
 package org.apache.eagle.jobrunning.storm;
 
+import backtype.storm.spout.SpoutOutputCollector;
+import backtype.storm.task.TopologyContext;
+import backtype.storm.topology.OutputFieldsDeclarer;
+import backtype.storm.topology.base.BaseRichSpout;
+import backtype.storm.tuple.Fields;
 import org.apache.eagle.job.JobFilter;
 import org.apache.eagle.job.JobFilterByPartition;
 import org.apache.eagle.job.JobPartitioner;
@@ -29,12 +34,6 @@ import org.apache.eagle.jobrunning.crawler.JobContext;
 import org.apache.eagle.jobrunning.crawler.RunningJobCrawler;
 import org.apache.eagle.jobrunning.crawler.RunningJobCrawlerImpl;
 import org.apache.eagle.jobrunning.zkres.JobRunningZKStateManager;
-
-import backtype.storm.spout.SpoutOutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichSpout;
-import backtype.storm.tuple.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +61,7 @@ public class JobRunningSpout extends BaseRichSpout {
     /**
      * mostly this constructor signature is for unit test purpose as you can put customized interceptor here.
      *
-     * @param config RunningJobCrawlConfig
+     * @param config      RunningJobCrawlConfig
      * @param interceptor JobRunningSpoutCollectorInterceptor
      */
     public JobRunningSpout(RunningJobCrawlConfig config, JobRunningSpoutCollectorInterceptor interceptor) {

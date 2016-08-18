@@ -21,7 +21,6 @@ import org.apache.eagle.dataproc.core.EagleOutputCollector;
 import org.apache.eagle.dataproc.core.ValuesArray;
 import org.apache.eagle.jobrunning.common.JobConstants.ResourceType;
 import org.apache.eagle.jobrunning.crawler.JobContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -41,15 +41,15 @@ public class JDBCDataSourceProvider implements Provider<DataSource> {
         datasource.setUrl(config.getUrl());
         datasource.setConnectionProperties(config.getConnectionProperties());
         LOGGER.info("Register JDBCDataSourceShutdownHook");
-        Runtime.getRuntime().addShutdownHook(new Thread("JDBCDataSourceShutdownHook"){
+        Runtime.getRuntime().addShutdownHook(new Thread("JDBCDataSourceShutdownHook") {
             @Override
             public void run() {
                 try {
                     LOGGER.info("Shutting down data source");
                     datasource.close();
                 } catch (SQLException e) {
-                    LOGGER.error("SQLException: {}",e.getMessage(),e);
-                    throw new IllegalStateException("Failed to close datasource",e);
+                    LOGGER.error("SQLException: {}", e.getMessage(), e);
+                    throw new IllegalStateException("Failed to close datasource", e);
                 }
             }
         });

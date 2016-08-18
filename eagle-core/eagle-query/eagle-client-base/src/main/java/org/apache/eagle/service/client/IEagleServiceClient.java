@@ -16,10 +16,9 @@
  */
 package org.apache.eagle.service.client;
 
+import com.sun.jersey.api.client.Client;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
-
-import com.sun.jersey.api.client.Client;
 
 import java.io.Closeable;
 import java.io.IOException;

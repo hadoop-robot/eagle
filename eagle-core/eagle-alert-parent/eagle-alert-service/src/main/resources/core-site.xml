@@ -17,8 +17,8 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-	<property>
+    <property>
         <name>fs.defaultFS</name>
         <value>hdfs://server.eagle.apache.org:8020</value>
-	</property>
+    </property>
 </configuration>

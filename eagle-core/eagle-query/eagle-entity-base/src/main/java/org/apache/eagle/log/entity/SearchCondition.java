@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.query.parser.ORExpression;
-
 import org.apache.hadoop.hbase.filter.Filter;
 
 import java.util.List;

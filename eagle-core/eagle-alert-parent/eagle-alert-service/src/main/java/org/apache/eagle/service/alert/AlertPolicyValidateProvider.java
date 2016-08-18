@@ -16,21 +16,21 @@
  */
 package org.apache.eagle.service.alert;
 
-import java.util.List;
-
-import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.Module;
+import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible=true)
+import java.util.List;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AlertPolicyValidateProvider {
-	public String type;
+    public String type;
 
-	public abstract GenericServiceAPIResponseEntity<String> validate();
-	
-	public abstract String PolicyType();
-	
-	public abstract List<Module> BindingModules();
+    public abstract GenericServiceAPIResponseEntity<String> validate();
+
+    public abstract String PolicyType();
+
+    public abstract List<Module> BindingModules();
 }

@@ -1,8 +1,7 @@
 package org.apache.eagle.alert.engine.evaluator;
 
-import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
-
 import backtype.storm.metric.api.MultiCountMetric;
+import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

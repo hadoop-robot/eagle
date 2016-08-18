@@ -32,8 +32,8 @@ public interface RunningJobCallback extends Serializable {
      * this is called when running job resource is ready.
      *
      * @param jobContext jobContext
-     * @param type type
-     * @param objects objects
+     * @param type       type
+     * @param objects    objects
      */
     void onJobRunningInformation(JobContext jobContext, JobConstants.ResourceType type, List<Object> objects);
 }

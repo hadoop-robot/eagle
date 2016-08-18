@@ -16,9 +16,8 @@
  */
 package org.apache.eagle.service.generic;
 
-import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 import com.google.inject.Singleton;
+import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ser.FilterProvider;
 

@@ -23,7 +23,6 @@ import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
 
 import java.util.Map;
-import java.util.Set;
 
 public class JdbcEntityDefinition {
     private final EntityDefinition internal;

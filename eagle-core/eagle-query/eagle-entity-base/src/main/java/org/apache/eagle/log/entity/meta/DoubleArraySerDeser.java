@@ -42,7 +42,8 @@ public class DoubleArraySerDeser implements EntitySerDeser<double[]> {
         return values;
     }
 
-    /** Serialize double object.
+    /**
+     * Serialize double object.
      *
      * @param obj double object
      * @return byte array

@@ -16,15 +16,6 @@
  */
 package org.apache.alert.coordinator.mock;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.apache.eagle.alert.coordination.model.Kafka2TupleMetadata;
 import org.apache.eagle.alert.coordination.model.ScheduleState;
 import org.apache.eagle.alert.coordination.model.SpoutSpec;
@@ -35,12 +26,15 @@ import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamingCluster;
 import org.apache.eagle.alert.service.IMetadataServiceClient;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
+
 /**
  * According to metadata servic client semantic, change to the interface returned value should not direclty change the
  * states.
- * 
- * @since May 5, 2016
  *
+ * @since May 5, 2016
  */
 @SuppressWarnings("serial")
 public class InMemMetadataServiceClient implements IMetadataServiceClient {
@@ -73,7 +67,7 @@ public class InMemMetadataServiceClient implements IMetadataServiceClient {
     public List<PolicyDefinition> listPolicies() {
         return Collections.unmodifiableList(policies);
     }
-    
+
     public void removePolicy(int idx) {
         policies.remove(idx);
     }

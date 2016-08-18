@@ -22,7 +22,6 @@ import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
-
 import org.junit.Test;
 
 import java.io.IOException;

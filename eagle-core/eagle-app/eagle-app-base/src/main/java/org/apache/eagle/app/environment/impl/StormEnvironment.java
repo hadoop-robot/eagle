@@ -29,6 +29,6 @@ public class StormEnvironment extends AbstractEnvironment {
     }
 
     public StormStreamSink getStreamSink(String streamId, Config config) {
-        return ((StormStreamSink) streamSink().getSink(streamId,config));
+        return ((StormStreamSink) streamSink().getSink(streamId, config));
     }
 }

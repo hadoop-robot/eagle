@@ -21,7 +21,6 @@ import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.base.taggedlog.NoSuchRowException;
 import org.apache.eagle.log.entity.InternalLog;
-
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HTableFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;
@@ -95,7 +94,7 @@ public class HBaseLogByRowkeyReader implements Closeable {
 
     /**
      * Here all qualifiers' values goes into qualifierValues of InternalLog as given a row, we can't differentiate it's a tag or a field
-     *.
+     * .
      *
      * @param rowkey rowkey
      * @return InternalLog

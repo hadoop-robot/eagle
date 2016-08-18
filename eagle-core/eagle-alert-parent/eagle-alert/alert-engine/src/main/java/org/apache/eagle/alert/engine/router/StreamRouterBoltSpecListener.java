@@ -19,10 +19,10 @@
 
 package org.apache.eagle.alert.engine.router;
 
-import java.util.Map;
-
 import org.apache.eagle.alert.coordination.model.RouterSpec;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
+
+import java.util.Map;
 
 /**
  * Since 5/1/16.

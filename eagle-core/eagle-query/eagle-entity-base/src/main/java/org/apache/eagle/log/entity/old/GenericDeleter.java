@@ -24,7 +24,6 @@ import org.apache.eagle.log.entity.meta.EntityConstants;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.meta.IndexDefinition;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

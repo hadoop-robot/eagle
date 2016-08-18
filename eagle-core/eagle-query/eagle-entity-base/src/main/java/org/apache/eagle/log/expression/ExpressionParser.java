@@ -21,7 +21,6 @@ package org.apache.eagle.log.expression;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.EntityQualifierUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import parsii.eval.Expression;
@@ -73,8 +72,7 @@ public class ExpressionParser {
 
     /**
      * @param exprStr expression string in format like: <code>(max(a, b)* min(a, b)) / abs(a-b+c-d)</code>.
-     *
-     * @throws ParseException ParseException
+     * @throws ParseException         ParseException
      * @throws ParsiiInvalidException ParsiiInvalidException
      */
     public ExpressionParser(String exprStr) throws ParseException, ParsiiInvalidException {
@@ -187,7 +185,7 @@ public class ExpressionParser {
      * @param expr expression string
      * @return ExpressionParser
      * @throws ParsiiInvalidException ParsiiInvalidException
-     * @throws ParseException ParseException
+     * @throws ParseException         ParseException
      */
     public static ExpressionParser parse(String expr) throws ParsiiInvalidException, ParseException {
         if (expr == null) {

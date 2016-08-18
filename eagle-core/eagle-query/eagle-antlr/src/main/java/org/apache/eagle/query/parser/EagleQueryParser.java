@@ -16,12 +16,10 @@
  */
 package org.apache.eagle.query.parser;
 
-import org.apache.eagle.query.antlr.generated.EagleFilterLexer;
-import org.apache.eagle.query.antlr.generated.EagleFilterParser;
-
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-
+import org.apache.eagle.query.antlr.generated.EagleFilterLexer;
+import org.apache.eagle.query.antlr.generated.EagleFilterParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

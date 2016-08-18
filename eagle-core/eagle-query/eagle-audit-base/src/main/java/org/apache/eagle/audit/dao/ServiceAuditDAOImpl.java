@@ -17,15 +17,13 @@
 
 package org.apache.eagle.audit.dao;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.eagle.audit.common.AuditConstants;
 import org.apache.eagle.audit.entity.GenericAuditEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.service.client.EagleServiceConnector;
 import org.apache.eagle.service.client.IEagleServiceClient;
 import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
-
-import org.apache.commons.lang.time.DateUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

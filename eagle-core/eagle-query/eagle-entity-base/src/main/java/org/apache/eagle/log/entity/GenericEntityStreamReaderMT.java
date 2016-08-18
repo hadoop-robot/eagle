@@ -21,8 +21,6 @@ import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +84,7 @@ public class GenericEntityStreamReaderMT extends StreamReader {
      * default to 2 threads.
      *
      * @param serviceName serviceName
-     * @param condition condition
+     * @param condition   condition
      */
     public GenericEntityStreamReaderMT(String serviceName, SearchCondition condition) throws Exception {
         this(serviceName, condition, 2);

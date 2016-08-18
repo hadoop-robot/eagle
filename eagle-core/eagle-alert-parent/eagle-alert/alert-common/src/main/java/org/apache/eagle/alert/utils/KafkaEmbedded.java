@@ -16,14 +16,13 @@
  */
 package org.apache.eagle.alert.utils;
 
-import java.io.File;
-import java.util.Properties;
-
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.curator.test.InstanceSpec;
+
+import java.io.File;
+import java.util.Properties;
 
 public class KafkaEmbedded {
 

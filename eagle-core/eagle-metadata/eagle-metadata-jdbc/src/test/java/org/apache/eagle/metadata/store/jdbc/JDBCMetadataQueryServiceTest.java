@@ -23,14 +23,14 @@ import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
-public class JDBCMetadataQueryServiceTest extends JDBCMetadataTestBase{
+public class JDBCMetadataQueryServiceTest extends JDBCMetadataTestBase {
     @Inject
     JDBCMetadataQueryService queryService;
 
     @Test
     public void testQuery() throws SQLException {
-        List<Integer> result = queryService.query("SELECT 7",(resultSet) -> resultSet.getInt(1));
-        Assert.assertEquals(1,result.size());
-        Assert.assertEquals(7,result.get(0).intValue());
+        List<Integer> result = queryService.query("SELECT 7", (resultSet) -> resultSet.getInt(1));
+        Assert.assertEquals(1, result.size());
+        Assert.assertEquals(7, result.get(0).intValue());
     }
 }

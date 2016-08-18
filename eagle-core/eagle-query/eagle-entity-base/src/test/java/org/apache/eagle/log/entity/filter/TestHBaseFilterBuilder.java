@@ -22,12 +22,9 @@ import org.apache.eagle.log.entity.test.TestLogAPIEntity;
 import org.apache.eagle.query.parser.EagleQueryParseException;
 import org.apache.eagle.query.parser.EagleQueryParser;
 import org.apache.eagle.query.parser.ORExpression;
-
 import org.apache.hadoop.hbase.filter.Filter;
-
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.RowFilter;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

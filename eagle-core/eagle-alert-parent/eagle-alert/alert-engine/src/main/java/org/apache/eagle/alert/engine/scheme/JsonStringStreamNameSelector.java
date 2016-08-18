@@ -19,16 +19,16 @@
 
 package org.apache.eagle.alert.engine.scheme;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.eagle.alert.coordination.model.StreamNameSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * A strategy to get stream name from message tuple.
- * 
+ * <p>
  * Since 5/5/16.
  */
 public class JsonStringStreamNameSelector implements StreamNameSelector {
@@ -70,5 +70,5 @@ public class JsonStringStreamNameSelector implements StreamNameSelector {
         }
         return "defaultStringStream";
     }
-    
+
 }

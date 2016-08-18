@@ -20,10 +20,9 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.apache.eagle.app.service.ApplicationContext;
-import org.apache.eagle.app.service.ApplicationOperations;
 import org.apache.eagle.app.service.ApplicationManagementService;
+import org.apache.eagle.app.service.ApplicationOperations;
 import org.apache.eagle.app.service.ApplicationProviderService;
 import org.apache.eagle.app.spi.ApplicationProvider;
 import org.apache.eagle.metadata.exceptions.EntityNotFoundException;
@@ -50,10 +49,10 @@ public class ApplicationManagementServiceImpl implements ApplicationManagementSe
 
     @Inject
     public ApplicationManagementServiceImpl(
-            Config config,
-            SiteEntityService siteEntityService,
-            ApplicationProviderService applicationProviderService,
-            ApplicationEntityService applicationEntityService){
+        Config config,
+        SiteEntityService siteEntityService,
+        ApplicationProviderService applicationProviderService,
+        ApplicationEntityService applicationEntityService) {
         this.config = config;
         this.siteEntityService = siteEntityService;
         this.applicationProviderService = applicationProviderService;
@@ -62,12 +61,12 @@ public class ApplicationManagementServiceImpl implements ApplicationManagementSe
 
     @Override
     public ApplicationEntity install(ApplicationOperations.InstallOperation operation) throws EntityNotFoundException {
-        Preconditions.checkNotNull(operation.getSiteId(),"siteId is null");
-        Preconditions.checkNotNull(operation.getAppType(),"appType is null");
+        Preconditions.checkNotNull(operation.getSiteId(), "siteId is null");
+        Preconditions.checkNotNull(operation.getAppType(), "appType is null");
         SiteEntity siteEntity = siteEntityService.getBySiteId(operation.getSiteId());
-        Preconditions.checkNotNull(siteEntity,"Site with ID: "+operation.getSiteId()+" is not found");
+        Preconditions.checkNotNull(siteEntity, "Site with ID: " + operation.getSiteId() + " is not found");
         ApplicationDesc appDesc = applicationProviderService.getApplicationDescByType(operation.getAppType());
-        Preconditions.checkNotNull("Application with TYPE: "+operation.getAppType()+" is not found");
+        Preconditions.checkNotNull("Application with TYPE: " + operation.getAppType() + " is not found");
         ApplicationEntity applicationEntity = new ApplicationEntity();
         applicationEntity.setDescriptor(appDesc);
         applicationEntity.setSite(siteEntity);
@@ -84,31 +83,31 @@ public class ApplicationManagementServiceImpl implements ApplicationManagementSe
         ApplicationProvider provider = applicationProviderService.getApplicationProviderByType(operation.getAppType());
 
         List<Property> propertyList = provider.getApplicationDesc().getConfiguration().getProperties();
-        for(Property p : propertyList){
+        for (Property p : propertyList) {
             appConfig.put(p.getName(), p.getValue());
         }
-        if(operation.getConfiguration() != null) {
+        if (operation.getConfiguration() != null) {
             appConfig.putAll(operation.getConfiguration());
         }
         applicationEntity.setConfiguration(appConfig);
         ApplicationContext applicationContext = new ApplicationContext(
-                applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
-                applicationEntity,config);
+            applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
+            applicationEntity, config);
         applicationContext.onInstall();
         return applicationEntityService.create(applicationEntity);
     }
 
     @Override
     public ApplicationEntity uninstall(ApplicationOperations.UninstallOperation operation) {
-        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(),operation.getAppId());
+        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(), operation.getAppId());
         ApplicationContext applicationContext = new ApplicationContext(
-                applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
-                applicationEntity,config);
+            applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
+            applicationEntity, config);
         // TODO: Check status, skip stop if already STOPPED
         try {
             applicationContext.onStop();
-        }catch (Throwable throwable){
-            LOGGER.error(throwable.getMessage(),throwable);
+        } catch (Throwable throwable) {
+            LOGGER.error(throwable.getMessage(), throwable);
         }
         applicationContext.onUninstall();
         return applicationEntityService.delete(applicationEntity);
@@ -116,20 +115,20 @@ public class ApplicationManagementServiceImpl implements ApplicationManagementSe
 
     @Override
     public ApplicationEntity start(ApplicationOperations.StartOperation operation) {
-        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(),operation.getAppId());
+        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(), operation.getAppId());
         ApplicationContext applicationContext = new ApplicationContext(
-                applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
-                applicationEntity,config);
+            applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
+            applicationEntity, config);
         applicationContext.onStart();
         return applicationEntity;
     }
 
     @Override
     public ApplicationEntity stop(ApplicationOperations.StopOperation operation) {
-        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(),operation.getAppId());
+        ApplicationEntity applicationEntity = applicationEntityService.getByUUIDOrAppId(operation.getUuid(), operation.getAppId());
         ApplicationContext applicationContext = new ApplicationContext(
-                applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
-                applicationEntity,config);
+            applicationProviderService.getApplicationProviderByType(applicationEntity.getDescriptor().getType()).getApplication(),
+            applicationEntity, config);
         applicationContext.onStop();
         return applicationEntity;
     }

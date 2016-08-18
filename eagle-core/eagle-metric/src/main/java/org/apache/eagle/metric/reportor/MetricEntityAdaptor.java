@@ -35,8 +35,7 @@ public class MetricEntityAdaptor {
             entity.setTags(metricName.tags);
             entity.setTimestamp(metricName.timestamp);
             return entity;
-        }
-        else if (metric instanceof EagleGaugeMetric) {
+        } else if (metric instanceof EagleGaugeMetric) {
             EagleGaugeMetric gauge = (EagleGaugeMetric)metric;
             GenericMetricEntity entity = new GenericMetricEntity();
             entity.setPrefix(metricName.metricName);

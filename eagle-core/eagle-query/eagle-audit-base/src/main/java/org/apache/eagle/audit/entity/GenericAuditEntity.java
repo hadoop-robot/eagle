@@ -17,15 +17,13 @@
 
 package org.apache.eagle.audit.entity;
 
-import static org.apache.eagle.audit.common.AuditConstants.*;
-
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
-
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import static org.apache.eagle.audit.common.AuditConstants.*;
 
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)

@@ -16,13 +16,12 @@
  */
 package org.apache.eagle.alert.engine.coordinator;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 /**
  * @since Apr 5, 2016
- *
  */
 public class StreamingCluster {
     public static enum StreamingType {

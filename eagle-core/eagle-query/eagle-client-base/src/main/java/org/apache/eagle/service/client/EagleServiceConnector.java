@@ -17,9 +17,8 @@
 
 package org.apache.eagle.service.client;
 
-import org.apache.eagle.common.config.EagleConfigConstants;
-
 import com.typesafe.config.Config;
+import org.apache.eagle.common.config.EagleConfigConstants;
 
 import java.io.Serializable;
 

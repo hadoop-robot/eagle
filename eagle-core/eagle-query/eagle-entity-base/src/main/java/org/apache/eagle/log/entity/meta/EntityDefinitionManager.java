@@ -19,11 +19,9 @@ package org.apache.eagle.log.entity.meta;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.repo.EntityRepositoryScanner;
-
 import org.mockito.cglib.beans.BeanGenerator;
 import org.mockito.cglib.core.NamingPolicy;
 import org.mockito.cglib.core.Predicate;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

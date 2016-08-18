@@ -30,33 +30,33 @@ public abstract class AbstractEnvironment implements Environment {
     private final static String DEFAULT_APPLICATIONS_SINK_TYPE = KafkaStreamSink.Provider.class.getName();
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractEnvironment.class);
 
-    public AbstractEnvironment(Config config){
+    public AbstractEnvironment(Config config) {
         this.config = config;
         this.sinkProvider = loadStreamSinkProvider();
     }
 
-    private StreamSinkProvider loadStreamSinkProvider(){
+    private StreamSinkProvider loadStreamSinkProvider() {
         String sinkProviderClassName = config.hasPath(APPLICATIONS_SINK_TYPE_PROPS_KEY) ?
-                config.getString(APPLICATIONS_SINK_TYPE_PROPS_KEY) : DEFAULT_APPLICATIONS_SINK_TYPE;
+            config.getString(APPLICATIONS_SINK_TYPE_PROPS_KEY) : DEFAULT_APPLICATIONS_SINK_TYPE;
         try {
             Class<?> sinkProviderClass = Class.forName(sinkProviderClassName);
-            if(!StreamSinkProvider.class.isAssignableFrom(sinkProviderClass)){
-                throw new IllegalStateException(sinkProviderClassName+ "is not assignable from "+StreamSinkProvider.class.getCanonicalName());
+            if (!StreamSinkProvider.class.isAssignableFrom(sinkProviderClass)) {
+                throw new IllegalStateException(sinkProviderClassName + "is not assignable from " + StreamSinkProvider.class.getCanonicalName());
             }
-            StreamSinkProvider instance =  (StreamSinkProvider) sinkProviderClass.newInstance();
-            LOGGER.info("Loaded {}",instance);
+            StreamSinkProvider instance = (StreamSinkProvider) sinkProviderClass.newInstance();
+            LOGGER.info("Loaded {}", instance);
             return instance;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            LOGGER.error(e.getMessage(),e);
-            throw new IllegalStateException(e.getMessage(),e.getCause());
+            LOGGER.error(e.getMessage(), e);
+            throw new IllegalStateException(e.getMessage(), e.getCause());
         }
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(this.getClass())
-                .append(this.config()).build();
+            .append(this.getClass())
+            .append(this.config()).build();
     }
 
     @Override

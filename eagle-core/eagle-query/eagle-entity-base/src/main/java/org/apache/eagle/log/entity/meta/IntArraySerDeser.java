@@ -44,7 +44,8 @@ public class IntArraySerDeser implements EntitySerDeser<int[]> {
         return values;
     }
 
-    /** serialize in array as byte array.
+    /**
+     * serialize in array as byte array.
      *
      * @param obj int array
      * @return byte array serialized

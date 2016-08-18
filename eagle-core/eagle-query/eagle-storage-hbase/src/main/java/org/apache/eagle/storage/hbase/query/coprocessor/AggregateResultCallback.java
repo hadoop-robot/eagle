@@ -17,7 +17,6 @@
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-
 import org.apache.hadoop.hbase.client.coprocessor.Batch;
 
 /**

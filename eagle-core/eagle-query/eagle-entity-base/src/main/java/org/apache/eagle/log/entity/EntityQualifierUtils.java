@@ -16,14 +16,12 @@
  */
 package org.apache.eagle.log.entity;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
 import org.apache.eagle.log.entity.meta.Qualifier;
-
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.hadoop.hbase.KeyValue;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,7 +78,7 @@ public class EntityQualifierUtils {
      * Map[Display Name,Double Value].
      *
      * @param map double bytes map
-     * @param ed entity definition
+     * @param ed  entity definition
      * @return Map[String, Double]
      */
     public static Map<String, Double> bytesMapToDoubleMap(Map<String, byte[]> map, EntityDefinition ed) {
@@ -147,7 +145,7 @@ public class EntityQualifierUtils {
      * - http://en.wikipedia.org/wiki/Double-precision_floating-point_format
      *
      * @param value field value in query string
-     * @param type field type
+     * @param type  field type
      * @return field value
      */
     public static Object convertStringToObject(String value, Class<?> type) {

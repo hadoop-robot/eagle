@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * ModifyResult.
+ *
  * @since 3/18/15
  */
 public class ModifyResult<I> extends Result {

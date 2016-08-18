@@ -33,6 +33,7 @@ public interface AttributeResolvable<R extends GenericAttributeResolveRequest, V
 
     /**
      * validate request
+     *
      * @throws BadAttributeResolveRequestException
      */
     void validateRequest(R request) throws BadAttributeResolveRequestException;

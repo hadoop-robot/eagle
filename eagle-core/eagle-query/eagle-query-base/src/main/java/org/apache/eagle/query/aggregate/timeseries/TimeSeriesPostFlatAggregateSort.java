@@ -17,12 +17,7 @@
 package org.apache.eagle.query.aggregate.timeseries;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TimeSeriesPostFlatAggregateSort {
     // private static final Logger logger =

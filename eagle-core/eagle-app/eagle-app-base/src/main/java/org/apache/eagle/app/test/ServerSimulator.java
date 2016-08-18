@@ -29,32 +29,28 @@ import java.util.Map;
  */
 public abstract class ServerSimulator {
     /**
-     *
      * @param appType
      */
     public abstract void start(String appType);
 
     /**
-     *
      * @param appType
      * @param appConfig
      */
-    public abstract void start(String appType, Map<String,Object> appConfig);
+    public abstract void start(String appType, Map<String, Object> appConfig);
 
     /**
-     *
      * @param appProviderClass
      */
     public abstract void start(Class<? extends ApplicationProvider> appProviderClass);
 
     /**
-     *
      * @param appProviderClass
      * @param appConfig
      */
-    public abstract void start(Class<? extends ApplicationProvider> appProviderClass, Map<String,Object> appConfig) throws Exception;
+    public abstract void start(Class<? extends ApplicationProvider> appProviderClass, Map<String, Object> appConfig) throws Exception;
 
-    public static ServerSimulator getInstance(){
+    public static ServerSimulator getInstance() {
         return Guice.createInjector(new AppTestGuiceModule()).getInstance(ServerSimulator.class);
     }
 
@@ -62,7 +58,7 @@ public abstract class ServerSimulator {
      * @param modules additional modules
      * @return ServerSimulator instance
      */
-    public static ServerSimulator getInstance(Module ... modules){
+    public static ServerSimulator getInstance(Module... modules) {
         List<Module> contextModules = Arrays.asList(modules);
         contextModules.add(new AppTestGuiceModule());
         return Guice.createInjector(contextModules).getInstance(ServerSimulator.class);

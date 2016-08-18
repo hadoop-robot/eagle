@@ -37,7 +37,7 @@ public class ParsiiUnknowVariableException extends Exception {
      * ParsiiUnknowVariableException.
      *
      * @param message message
-     * @param cause cause
+     * @param cause   cause
      */
     public ParsiiUnknowVariableException(String message, Throwable cause) {
         super(message, cause);

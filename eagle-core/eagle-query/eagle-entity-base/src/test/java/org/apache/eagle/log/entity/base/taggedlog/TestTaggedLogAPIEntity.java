@@ -17,12 +17,9 @@
 package org.apache.eagle.log.entity.base.taggedlog;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 import org.apache.eagle.log.entity.meta.Column;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-
 import org.junit.Assert;
 import org.junit.Test;
 

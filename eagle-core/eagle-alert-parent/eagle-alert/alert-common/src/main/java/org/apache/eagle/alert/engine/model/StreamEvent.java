@@ -29,7 +29,6 @@ import java.util.Objects;
 
 /**
  * @since Apr 5, 2016
- *
  */
 public class StreamEvent implements Serializable {
     private static final long serialVersionUID = 2765116509856609763L;
@@ -39,15 +38,16 @@ public class StreamEvent implements Serializable {
     private long timestamp;
     private String metaVersion;
 
-    public StreamEvent(){}
+    public StreamEvent() {
+    }
 
-    public StreamEvent(String streamId,long timestamp,Object[] data){
+    public StreamEvent(String streamId, long timestamp, Object[] data) {
         this.setStreamId(streamId);
         this.setTimestamp(timestamp);
         this.setData(data);
     }
 
-    public StreamEvent(String streamId,long timestamp,Object[] data,String metaVersion){
+    public StreamEvent(String streamId, long timestamp, Object[] data, String metaVersion) {
         this.setStreamId(streamId);
         this.setTimestamp(timestamp);
         this.setData(data);
@@ -93,10 +93,12 @@ public class StreamEvent implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) return true;
-        if(obj instanceof StreamEvent){
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof StreamEvent) {
             StreamEvent another = (StreamEvent) obj;
-            return Objects.equals(this.streamId,another.streamId) && this.timestamp == another.timestamp && Arrays.deepEquals(this.data,another.data);
+            return Objects.equals(this.streamId, another.streamId) && this.timestamp == another.timestamp && Arrays.deepEquals(this.data, another.data);
         }
         return false;
     }
@@ -104,7 +106,7 @@ public class StreamEvent implements Serializable {
     @Override
     public String toString() {
         List<String> dataStrings = new ArrayList<>();
-        if(this.getData() != null) {
+        if (this.getData() != null) {
             for (Object obj : this.getData()) {
                 if (obj != null) {
                     dataStrings.add(obj.toString());
@@ -113,17 +115,17 @@ public class StreamEvent implements Serializable {
                 }
             }
         }
-        return String.format("StreamEvent[stream=%S,timestamp=%s,data=[%s],metaVersion=%s]",this.getStreamId(), DateTimeUtil.millisecondsToHumanDateWithMilliseconds(this.getTimestamp()), StringUtils.join(dataStrings,","), this.getMetaVersion());
+        return String.format("StreamEvent[stream=%S,timestamp=%s,data=[%s],metaVersion=%s]", this.getStreamId(), DateTimeUtil.millisecondsToHumanDateWithMilliseconds(this.getTimestamp()), StringUtils.join(dataStrings, ","), this.getMetaVersion());
     }
 
-    public static StreamEventBuilder Builder(){
+    public static StreamEventBuilder Builder() {
         return new StreamEventBuilder();
     }
 
     /**
      * @return cloned new event object
      */
-    public StreamEvent copy(){
+    public StreamEvent copy() {
         StreamEvent newEvent = new StreamEvent();
         newEvent.setTimestamp(this.getTimestamp());
         newEvent.setData(this.getData());
@@ -132,7 +134,7 @@ public class StreamEvent implements Serializable {
         return newEvent;
     }
 
-    public void copyFrom(StreamEvent event){
+    public void copyFrom(StreamEvent event) {
         this.setTimestamp(event.getTimestamp());
         this.setData(event.getData());
         this.setStreamId(event.getStreamId());
@@ -144,7 +146,7 @@ public class StreamEvent implements Serializable {
      * @param streamDefinition
      * @return
      */
-    public Object[] getData(StreamDefinition streamDefinition,List<String> column) {
+    public Object[] getData(StreamDefinition streamDefinition, List<String> column) {
         ArrayList<Object> result = new ArrayList<>(column.size());
         for (String colName : column) {
             result.add(this.getData()[streamDefinition.getColumnIndex(colName)]);
@@ -152,7 +154,7 @@ public class StreamEvent implements Serializable {
         return result.toArray();
     }
 
-    public Object[] getData(StreamDefinition streamDefinition,String ... column) {
+    public Object[] getData(StreamDefinition streamDefinition, String... column) {
         ArrayList<Object> result = new ArrayList<>(column.length);
         for (String colName : column) {
             result.add(this.getData()[streamDefinition.getColumnIndex(colName)]);

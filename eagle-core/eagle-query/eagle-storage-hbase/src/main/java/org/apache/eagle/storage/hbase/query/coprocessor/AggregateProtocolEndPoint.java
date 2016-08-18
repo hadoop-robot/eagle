@@ -16,6 +16,9 @@
  */
 package org.apache.eagle.storage.hbase.query.coprocessor;
 
+import com.google.protobuf.RpcCallback;
+import com.google.protobuf.RpcController;
+import com.google.protobuf.Service;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.*;
@@ -26,10 +29,6 @@ import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.RawAggregator;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.storage.hbase.query.coprocessor.generated.AggregateProtos;
-
-import com.google.protobuf.RpcCallback;
-import com.google.protobuf.RpcController;
-import com.google.protobuf.Service;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.Coprocessor;
 import org.apache.hadoop.hbase.CoprocessorEnvironment;
@@ -244,7 +243,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
                         LOG.warn("Empty batch of KeyValue");
                     }
                 }
-            } 
+            }
             while (hasMoreRows);
         } catch (IOException ex) {
             LOG.error(ex.getMessage(), ex);
@@ -353,7 +352,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
             ResponseConverter.setControllerException(controller, e);
         }
     }
-    
+
     @Override
     public void aggregate(RpcController controller, AggregateProtos.AggregateRequest request, RpcCallback<AggregateProtos.AggregateResult> done) {
         AggregateResult result = null;
@@ -373,7 +372,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
             throw new RuntimeException("Failed to convert result to PB-based message", e);
         }
     }
-    
+
     @Override
     public AggregateResult aggregate(EntityDefinition entityDefinition, Scan scan, List<String> groupbyFields, List<byte[]> aggregateFuncTypes, List<String> aggregatedFields) throws IOException {
         //  LOG.info("Using coprocessor instance: "+this);
@@ -381,7 +380,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
         String serviceName = entityDefinition.getService();
         LOG.info(this.getLogHeader() + " raw group aggregate on service: " + serviceName + " by: " + groupbyFields
             + " func: " + AggregateFunctionType.fromBytesList(aggregateFuncTypes) + " fields: " + aggregatedFields);
-        
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("SCAN: " + scan.toJSON());
         }
@@ -401,7 +400,7 @@ public class AggregateProtocolEndPoint extends AggregateProtos.AggregateProtocol
 
         return result;
     }
-    
+
     /**
      * Aggregate RPC through copprocessor.
      * TODO: refactor time series aggregator to remove dependency of business logic entity class

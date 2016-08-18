@@ -117,7 +117,6 @@ public class GroupbyKey implements Writable {
      * Serialize the fields of this object to <code>out</code>.
      *
      * @param out <code>DataOuput</code> to serialize this object into.
-     *
      * @throws java.io.IOException IOException
      */
     @Override
@@ -132,7 +131,6 @@ public class GroupbyKey implements Writable {
      * existing object where possible.</p>
      *
      * @param in <code>DataInput</code> to deseriablize this object from.
-     *
      * @throws java.io.IOException IOException
      */
     @Override

@@ -16,11 +16,11 @@
  */
 package org.apache.eagle.alert.engine.router;
 
-import java.util.List;
-
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamPartition;
 import org.apache.eagle.alert.engine.router.impl.BasicStreamRoutePartitioner;
+
+import java.util.List;
 
 public class StreamRoutePartitionFactory {
     /**

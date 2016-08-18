@@ -1,13 +1,12 @@
 package org.apache.eagle.alert.metric.sink;
 
-import java.util.concurrent.TimeUnit;
-
+import com.codahale.metrics.MetricRegistry;
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.metric.reporter.KafkaReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codahale.metrics.MetricRegistry;
-import com.typesafe.config.Config;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,17 +24,18 @@ import com.typesafe.config.Config;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class KafkaSink implements MetricSink{
+public class KafkaSink implements MetricSink {
     private KafkaReporter reporter;
     private final static Logger LOG = LoggerFactory.getLogger(KafkaSink.class);
+
     @Override
     public void prepare(Config config, MetricRegistry registry) {
         LOG.debug("Preparing kafka-sink");
         KafkaReporter.Builder builder = KafkaReporter.forRegistry(registry)
-                .topic(config.getString("topic"))
-                .config(config);
+            .topic(config.getString("topic"))
+            .config(config);
 
-        if(config.hasPath("tags")){
+        if (config.hasPath("tags")) {
             builder.addFields(config.getConfig("tags").root().unwrapped());
         }
 
@@ -46,7 +46,7 @@ public class KafkaSink implements MetricSink{
     @Override
     public void start(long period, TimeUnit unit) {
         LOG.info("Starting");
-        reporter.start(period,unit);
+        reporter.start(period, unit);
     }
 
     @Override

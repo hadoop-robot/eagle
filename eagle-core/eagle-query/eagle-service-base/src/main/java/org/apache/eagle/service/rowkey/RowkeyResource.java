@@ -26,16 +26,15 @@ import org.apache.eagle.log.entity.InternalLog;
 import org.apache.eagle.log.entity.old.GenericDeleter;
 import org.apache.eagle.log.entity.old.HBaseLogByRowkeyReader;
 import org.apache.eagle.service.common.EagleExceptionWrapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 @Deprecated
 @Path("rowkey")

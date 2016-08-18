@@ -16,11 +16,11 @@
  */
 package org.apache.eagle.alert.metric.sink;
 
-import java.util.concurrent.TimeUnit;
-
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.typesafe.config.Config;
+
+import java.util.concurrent.TimeUnit;
 
 public class JmxSink implements MetricSink {
     private JmxReporter reporter;

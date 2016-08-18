@@ -20,7 +20,6 @@ import org.apache.eagle.query.aggregate.raw.GroupbyKey;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.GroupbyValue;
 import org.apache.eagle.query.aggregate.raw.WritableList;
-
 import org.apache.hadoop.io.Writable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

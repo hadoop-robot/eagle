@@ -19,7 +19,6 @@ package org.apache.eagle.metadata.model;
 import org.apache.eagle.metadata.persistence.PersistenceEntity;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +37,8 @@ public class ApplicationEntity extends PersistenceEntity {
      */
     private ApplicationDesc descriptor;
 
-    private Map<String,Object> configuration = new HashMap<>();
-    private Map<String,String> context = new HashMap<>();
+    private Map<String, Object> configuration = new HashMap<>();
+    private Map<String, String> context = new HashMap<>();
     private List<StreamDesc> streams;
     private Mode mode = Mode.CLUSTER;
     private Status status = Status.INITIALIZED;
@@ -79,10 +78,10 @@ public class ApplicationEntity extends PersistenceEntity {
     @Override
     public void ensureDefault() {
         super.ensureDefault();
-        if(this.appId == null){
-            this.appId = String.format("EAGLE_APP[TYPE=%s,SITE=%s]",this.getDescriptor().getType(),this.getSite().getSiteId());
+        if (this.appId == null) {
+            this.appId = String.format("EAGLE_APP[TYPE=%s,SITE=%s]", this.getDescriptor().getType(), this.getSite().getSiteId());
         }
-        if(this.status == null){
+        if (this.status == null) {
             this.status = Status.INITIALIZED;
         }
     }
@@ -119,7 +118,7 @@ public class ApplicationEntity extends PersistenceEntity {
         this.streams = streams;
     }
 
-    public static enum Status{
+    public static enum Status {
         INITIALIZED("INITIALIZED"),
         STARTING("STARTING"),
         RUNNING("RUNNING"),
@@ -127,7 +126,8 @@ public class ApplicationEntity extends PersistenceEntity {
         STOPPED("STOPPED");
 
         private final String status;
-        Status(String status){
+
+        Status(String status) {
             this.status = status;
         }
 
@@ -137,12 +137,12 @@ public class ApplicationEntity extends PersistenceEntity {
         }
     }
 
-    public static enum Mode{
+    public static enum Mode {
         LOCAL("LOCAL"),
         CLUSTER("CLUSTER");
         private final String name;
 
-        Mode(String name){
+        Mode(String name) {
             this.name = name;
         }
 

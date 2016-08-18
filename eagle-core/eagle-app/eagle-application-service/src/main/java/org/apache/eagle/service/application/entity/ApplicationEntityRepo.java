@@ -21,7 +21,7 @@ package org.apache.eagle.service.application.entity;
 
 import org.apache.eagle.log.entity.repo.EntityRepository;
 
-public class ApplicationEntityRepo  extends EntityRepository {
+public class ApplicationEntityRepo extends EntityRepository {
     public ApplicationEntityRepo() {
         this.registerEntity(TopologyDescriptionEntity.class);
         this.registerEntity(TopologyExecutionEntity.class);

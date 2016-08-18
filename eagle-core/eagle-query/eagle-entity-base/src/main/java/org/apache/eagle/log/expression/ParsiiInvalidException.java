@@ -39,7 +39,7 @@ public class ParsiiInvalidException extends Exception {
      * ParsiiInvalidException.
      *
      * @param message message
-     * @param cause cause
+     * @param cause   cause
      */
     public ParsiiInvalidException(String message, Throwable cause) {
         super(message, cause);

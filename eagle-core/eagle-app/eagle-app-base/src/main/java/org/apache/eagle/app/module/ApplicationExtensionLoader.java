@@ -26,11 +26,12 @@ import org.slf4j.LoggerFactory;
 
 public class ApplicationExtensionLoader {
     private final static Logger LOGGER = LoggerFactory.getLogger(ApplicationExtensionLoader.class);
-    public static ModuleRegistry load(Module ... context){
+
+    public static ModuleRegistry load(Module... context) {
         LOGGER.info("Loading application extension modules");
         ModuleRegistry registry = new ModuleRegistryImpl();
-        Guice.createInjector(context).getInstance(ApplicationProviderService.class).getProviders().forEach((provider)->{
-            LOGGER.info("Registering modules from {}",provider);
+        Guice.createInjector(context).getInstance(ApplicationProviderService.class).getProviders().forEach((provider) -> {
+            LOGGER.info("Registering modules from {}", provider);
             provider.register(registry);
         });
         return registry;

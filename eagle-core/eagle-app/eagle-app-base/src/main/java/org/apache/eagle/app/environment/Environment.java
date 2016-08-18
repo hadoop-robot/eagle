@@ -24,7 +24,8 @@ import java.io.Serializable;
 /**
  * Execution Environment Context
  */
-public interface Environment extends Serializable{
+public interface Environment extends Serializable {
     Config config();
+
     StreamSinkProvider streamSink();
 }

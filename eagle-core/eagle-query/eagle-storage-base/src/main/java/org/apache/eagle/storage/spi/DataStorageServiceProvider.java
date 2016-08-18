@@ -26,12 +26,14 @@ import org.apache.eagle.storage.DataStorage;
 public interface DataStorageServiceProvider<T extends DataStorage> {
     /**
      * Get storage type.
+     *
      * @return unique storage type
      */
     String getType();
 
     /**
      * Get Storage Instance.
+     *
      * @return storage instance
      */
     T getStorage();

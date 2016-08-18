@@ -26,7 +26,7 @@ import java.util.Map;
 public class ApplicationRawEntity extends PersistenceEntity {
     private String siteUuid;
     private String appType;
-    private Map<String,Map> configuration;
+    private Map<String, Map> configuration;
     private long createdTime;
     private long modifiedTime;
 

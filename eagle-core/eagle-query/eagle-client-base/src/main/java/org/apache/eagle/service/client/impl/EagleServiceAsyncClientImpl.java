@@ -22,7 +22,6 @@ import org.apache.eagle.service.client.EagleServiceAsyncClient;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.EagleServiceSingleEntityQueryRequest;
 import org.apache.eagle.service.client.IEagleServiceClient;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -20,11 +20,7 @@ import org.apache.eagle.common.ByteUtil;
 import org.apache.eagle.log.entity.meta.EntityConstants;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 
 public class RowkeyBuilder {

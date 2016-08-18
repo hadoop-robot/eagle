@@ -20,7 +20,6 @@ import org.apache.eagle.log.entity.meta.DoubleSerDeser;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
 import org.apache.eagle.log.entity.meta.IntSerDeser;
 import org.apache.eagle.log.entity.meta.LongSerDeser;
-
 import org.junit.Assert;
 import org.junit.Test;
 

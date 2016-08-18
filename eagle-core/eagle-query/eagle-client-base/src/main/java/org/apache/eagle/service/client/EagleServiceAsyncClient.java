@@ -31,8 +31,8 @@ import java.util.concurrent.Future;
  */
 public interface EagleServiceAsyncClient extends Closeable {
     /**
-     * @param <E> Entity Type
-     * @param entities Entities
+     * @param <E>         Entity Type
+     * @param entities    Entities
      * @param serviceName serviceName
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
@@ -40,9 +40,9 @@ public interface EagleServiceAsyncClient extends Closeable {
         throws IOException, EagleServiceClientException;
 
     /**
-     * @param entities Entities
+     * @param entities    Entities
      * @param entityClass entityClass
-     * @param <E> Entity Type
+     * @param <E>         Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities, final Class<E> entityClass)
@@ -50,7 +50,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> create(final List<E> entities)
@@ -58,7 +58,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities)
@@ -66,7 +66,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final String serviceName)
@@ -74,7 +74,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> delete(final List<E> entities, final Class<E> entityClass)
@@ -91,7 +91,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities)
@@ -99,7 +99,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final String serviceName)
@@ -107,7 +107,7 @@ public interface EagleServiceAsyncClient extends Closeable {
 
     /**
      * @param entities Entities
-     * @param <E> Entity Type
+     * @param <E>      Entity Type
      * @return Future[GenericServiceAPIResponseEntity[String]]
      */
     <E extends TaggedLogAPIEntity> Future<GenericServiceAPIResponseEntity<String>> update(final List<E> entities, final Class<E> entityClass)

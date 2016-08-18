@@ -20,7 +20,6 @@ import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
 
 /**
  * @since May 25, 2016
- *
  */
 public class VersionedStreamDefinition {
     private String version;

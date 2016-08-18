@@ -18,7 +18,6 @@ package org.apache.eagle.log.entity.test;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -27,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @Prefix("entityut")
 @Service("TestLogAPIEntity")
 @TimeSeries(false)
-@Indexes({@Index(name = "jobIdIndex1", columns = {"jobID"}, unique = true), @Index(name = "jobIdNonIndex2", columns = {"hostname"}, unique = false)})
+@Indexes( {@Index(name = "jobIdIndex1", columns = {"jobID"}, unique = true), @Index(name = "jobIdNonIndex2", columns = {"hostname"}, unique = false)})
 public class TestLogAPIEntity extends TaggedLogAPIEntity {
     @Column("a")
     private int field1;

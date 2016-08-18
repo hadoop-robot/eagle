@@ -16,17 +16,12 @@
  */
 package org.apache.eagle.alert.coordination.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.eagle.alert.coordination.model.internal.MonitoredStream;
 import org.apache.eagle.alert.coordination.model.internal.PolicyAssignment;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
+
+import java.util.*;
 
 /**
  * A global wise of schedule status <br/>
@@ -36,10 +31,8 @@ import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
  * <br/>
  * The solution is in metadata resource, have specs/monitoredStreams/policy
  * assignments stored in different table/collections with tage version.
- * 
- * 
- * @since Apr 26, 2016
  *
+ * @since Apr 26, 2016
  */
 public class ScheduleState {
 
@@ -68,15 +61,15 @@ public class ScheduleState {
         this.generateTime = String.valueOf(new Date().getTime());
     }
 
-    public ScheduleState(String version, 
-            Map<String, SpoutSpec> topoSpoutSpecsMap,
-            Map<String, RouterSpec> groupSpecsMap, 
-            Map<String, AlertBoltSpec> alertSpecsMap,
-            Map<String, PublishSpec> pubMap, 
-            Collection<PolicyAssignment> assignments,
-            Collection<MonitoredStream> monitoredStreams, 
-            Collection<PolicyDefinition> definitions,
-            Collection<StreamDefinition> streams) {
+    public ScheduleState(String version,
+                         Map<String, SpoutSpec> topoSpoutSpecsMap,
+                         Map<String, RouterSpec> groupSpecsMap,
+                         Map<String, AlertBoltSpec> alertSpecsMap,
+                         Map<String, PublishSpec> pubMap,
+                         Collection<PolicyAssignment> assignments,
+                         Collection<MonitoredStream> monitoredStreams,
+                         Collection<PolicyDefinition> definitions,
+                         Collection<StreamDefinition> streams) {
         this.spoutSpecs = topoSpoutSpecsMap;
         this.groupSpecs = groupSpecsMap;
         this.alertSpecs = alertSpecsMap;
@@ -113,7 +106,7 @@ public class ScheduleState {
         for (PolicyDefinition def : definitions) {
             this.policySnapshots.add(new VersionedPolicyDefinition(version, def));
         }
-        for (StreamDefinition sd :streams) {
+        for (StreamDefinition sd : streams) {
             this.streamSnapshots.add(new VersionedStreamDefinition(version, sd));
         }
     }

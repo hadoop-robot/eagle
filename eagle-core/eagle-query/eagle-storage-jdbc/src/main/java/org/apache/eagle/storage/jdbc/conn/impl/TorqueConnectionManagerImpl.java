@@ -16,12 +16,11 @@
  */
 package org.apache.eagle.storage.jdbc.conn.impl;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.conn.ConnectionConfig;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManager;
-
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
 import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.slf4j.Logger;

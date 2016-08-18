@@ -1,10 +1,10 @@
 package org.apache.eagle.alert.metric.sink;
 
-import java.util.concurrent.TimeUnit;
-
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.typesafe.config.Config;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -24,13 +24,14 @@ import com.typesafe.config.Config;
  */
 public class ConsoleSink implements MetricSink {
     private ConsoleReporter reporter;
+
     @Override
     public void prepare(Config config, MetricRegistry registry) {
         reporter = ConsoleReporter.forRegistry(registry).build();
     }
 
     @Override
-    public void start(long period,TimeUnit unit) {
+    public void start(long period, TimeUnit unit) {
         reporter.start(period, unit);
     }
 

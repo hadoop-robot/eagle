@@ -21,9 +21,9 @@ import java.util.Set;
 
 /**
  * @since Mar 24, 2016 Logically one unit topology consists of S spouts, G
- *        groupby bolts, A alertBolts normally S=1 Physically each spout is
- *        composed of s spout nodes, each groupby bolt is composed of g groupby
- *        nodes, and each alert bolt is composed of a alert nodes
+ * groupby bolts, A alertBolts normally S=1 Physically each spout is
+ * composed of s spout nodes, each groupby bolt is composed of g groupby
+ * nodes, and each alert bolt is composed of a alert nodes
  */
 public class Topology {
 

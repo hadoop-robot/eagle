@@ -17,8 +17,8 @@
 package org.apache.eagle.service.hbase;
 
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 @Ignore
 public class TestHBaseBase {
@@ -30,7 +30,7 @@ public class TestHBaseBase {
     }
 
     @Test
-    @Ignore(value="get rid of false failures")
+    @Ignore(value = "get rid of false failures")
     public void test() {
 
     }

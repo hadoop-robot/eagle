@@ -17,15 +17,12 @@
 
 package org.apache.eagle.query.parser;
 
-import org.apache.eagle.query.antlr.generated.EagleFilterListener;
-import org.apache.eagle.query.antlr.generated.EagleFilterParser;
-
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-
 import org.apache.commons.lang.StringEscapeUtils;
-
+import org.apache.eagle.query.antlr.generated.EagleFilterListener;
+import org.apache.eagle.query.antlr.generated.EagleFilterParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -17,7 +17,6 @@
 package org.apache.eagle.query.aggregate.raw;
 
 import org.apache.eagle.common.ByteUtil;
-
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Writable;
@@ -66,7 +65,6 @@ public class GroupbyValue implements Writable {
     public WritableList<DoubleWritable> getValue() {
         return this.value;
     }
-
 
 
     public DoubleWritable get(int index) {

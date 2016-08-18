@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.jdbc.entity.impl;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManager;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
@@ -24,8 +25,6 @@ import org.apache.eagle.storage.jdbc.criteria.impl.PrimaryKeyCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntitySerDeserHelper;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityWriter;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
-
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.ConstraintViolationException;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.om.ObjectKey;

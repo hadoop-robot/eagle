@@ -34,19 +34,19 @@ public class JDBCMetadataTestBase {
     private DataSource dataSource;
 
     @Before
-    public void setUp(){
-        injector = Guice.createInjector(new JDBCMetadataStore(),new CommonGuiceModule());
+    public void setUp() {
+        injector = Guice.createInjector(new JDBCMetadataStore(), new CommonGuiceModule());
         injector.injectMembers(this);
     }
 
     @After
     public void after() throws SQLException {
-        if(dataSource!=null){
+        if (dataSource != null) {
             ((BasicDataSource) dataSource).close();
         }
     }
 
-    public Injector injector(){
+    public Injector injector() {
         return injector;
     }
 }

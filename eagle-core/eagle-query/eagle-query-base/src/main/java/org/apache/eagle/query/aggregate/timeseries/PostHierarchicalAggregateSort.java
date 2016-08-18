@@ -16,11 +16,7 @@
  */
 package org.apache.eagle.query.aggregate.timeseries;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class PostHierarchicalAggregateSort {
 
@@ -32,7 +28,6 @@ public class PostHierarchicalAggregateSort {
 
     /**
      * sort aggregated results with sort options.
-     *
      */
     public static HierarchicalAggregateEntity sort(HierarchicalAggregateEntity result, List<SortOption> sortOptions) {
         SortedSet<Map.Entry<String, HierarchicalAggregateEntity>> tmp = sortByValue(result, sortOptions);

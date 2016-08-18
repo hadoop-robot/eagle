@@ -17,11 +17,9 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.common.config.EagleConfigFactory;
-
 import org.apache.hadoop.hbase.client.HTableFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

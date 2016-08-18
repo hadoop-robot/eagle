@@ -22,7 +22,7 @@ public interface TaggedLogObjectMapper {
     /**
      * when read, business logic should convert schema-less key/value into business object based on its own schema.
      *
-     * @param entity TaggedLogAPIEntity
+     * @param entity          TaggedLogAPIEntity
      * @param qualifierValues qualifier bytes value map
      */
     public void populateQualifierValues(TaggedLogAPIEntity entity, Map<String, byte[]> qualifierValues);

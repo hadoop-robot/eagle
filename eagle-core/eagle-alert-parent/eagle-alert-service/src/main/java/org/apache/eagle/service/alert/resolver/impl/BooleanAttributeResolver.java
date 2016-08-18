@@ -16,9 +16,9 @@
  */
 package org.apache.eagle.service.alert.resolver.impl;
 
+import org.apache.eagle.service.alert.resolver.AttributeResolvable;
 import org.apache.eagle.service.alert.resolver.AttributeResolveException;
 import org.apache.eagle.service.alert.resolver.GenericAttributeResolveRequest;
-import org.apache.eagle.service.alert.resolver.AttributeResolvable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.List;
 /**
  * @since 6/16/15
  */
-public class BooleanAttributeResolver implements AttributeResolvable<GenericAttributeResolveRequest,String> {
+public class BooleanAttributeResolver implements AttributeResolvable<GenericAttributeResolveRequest, String> {
     @Override
     public List<String> resolve(GenericAttributeResolveRequest request) throws AttributeResolveException {
         return Arrays.asList("true", "false");
     }
 
     @Override
-    public void validateRequest(GenericAttributeResolveRequest request){
+    public void validateRequest(GenericAttributeResolveRequest request) {
     }
 
     @Override

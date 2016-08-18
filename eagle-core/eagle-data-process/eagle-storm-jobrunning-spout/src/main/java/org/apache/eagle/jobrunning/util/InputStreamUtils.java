@@ -18,7 +18,6 @@
 package org.apache.eagle.jobrunning.util;
 
 import org.apache.eagle.jobrunning.common.JobConstants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

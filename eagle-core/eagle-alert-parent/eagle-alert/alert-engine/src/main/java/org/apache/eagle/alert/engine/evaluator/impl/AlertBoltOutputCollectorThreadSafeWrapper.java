@@ -16,27 +16,26 @@
  */
 package org.apache.eagle.alert.engine.evaluator.impl;
 
+import backtype.storm.task.OutputCollector;
+import org.apache.eagle.alert.engine.AlertStreamCollector;
+import org.apache.eagle.alert.engine.model.AlertStreamEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.eagle.alert.engine.AlertStreamCollector;
-import org.apache.eagle.alert.engine.model.AlertStreamEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import backtype.storm.task.OutputCollector;
-
 /**
  * <h2>Thread Safe Mechanism</h2>
  * <ul>
  * <li>
- *     emit() method is thread-safe enough to be called anywhere asynchronously in multi-thread
+ * emit() method is thread-safe enough to be called anywhere asynchronously in multi-thread
  * </li>
  * <li>
- *     flush() method must be called synchronously, because Storm OutputCollector is not thread-safe
+ * flush() method must be called synchronously, because Storm OutputCollector is not thread-safe
  * </li>
  * </ul>
  */
@@ -48,37 +47,39 @@ public class AlertBoltOutputCollectorThreadSafeWrapper implements AlertStreamCol
     private final AutoAlertFlusher flusher;
     private final static int MAX_ALERT_DELAY_SECS = 10;
 
-    public AlertBoltOutputCollectorThreadSafeWrapper(OutputCollector outputCollector){
+    public AlertBoltOutputCollectorThreadSafeWrapper(OutputCollector outputCollector) {
         this.delegate = outputCollector;
         this.queue = new LinkedBlockingQueue<>();
         this.flusher = new AutoAlertFlusher(this);
-        this.flusher.setName(Thread.currentThread().getName()+"-alertFlusher");
+        this.flusher.setName(Thread.currentThread().getName() + "-alertFlusher");
         this.flusher.start();
     }
 
-    private static class AutoAlertFlusher extends Thread{
+    private static class AutoAlertFlusher extends Thread {
         private final AlertBoltOutputCollectorThreadSafeWrapper collector;
         private boolean stopped = false;
         private final static Logger LOG = LoggerFactory.getLogger(AutoAlertFlusher.class);
 
-        private AutoAlertFlusher(AlertBoltOutputCollectorThreadSafeWrapper collector){
+        private AutoAlertFlusher(AlertBoltOutputCollectorThreadSafeWrapper collector) {
             this.collector = collector;
         }
 
         @Override
         public void run() {
             LOG.info("Starting");
-            while(!this.stopped){
-                if(System.currentTimeMillis() - collector.lastFlushTime.get() >= MAX_ALERT_DELAY_SECS * 1000L){
+            while (!this.stopped) {
+                if (System.currentTimeMillis() - collector.lastFlushTime.get() >= MAX_ALERT_DELAY_SECS * 1000L) {
                     this.collector.flush();
                 }
                 try {
                     Thread.sleep(5000);
-                } catch (InterruptedException ignored) {}
+                } catch (InterruptedException ignored) {
+                }
             }
             LOG.info("Stopped");
         }
-        public void shutdown(){
+
+        public void shutdown() {
             LOG.info("Stopping");
             this.stopped = true;
         }
@@ -86,6 +87,7 @@ public class AlertBoltOutputCollectorThreadSafeWrapper implements AlertStreamCol
 
     /**
      * Emit method can be called in multi-thread
+     *
      * @param event
      */
     @Override
@@ -93,7 +95,7 @@ public class AlertBoltOutputCollectorThreadSafeWrapper implements AlertStreamCol
         try {
             queue.put(event);
         } catch (InterruptedException e) {
-            LOG.error(e.getMessage(),e);
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -102,7 +104,7 @@ public class AlertBoltOutputCollectorThreadSafeWrapper implements AlertStreamCol
      */
     @Override
     public void flush() {
-        if(!queue.isEmpty()) {
+        if (!queue.isEmpty()) {
             List<AlertStreamEvent> events = new ArrayList<>();
             queue.drainTo(events);
             events.forEach((event) -> delegate.emit(Arrays.asList(event.getStreamId(), event)));

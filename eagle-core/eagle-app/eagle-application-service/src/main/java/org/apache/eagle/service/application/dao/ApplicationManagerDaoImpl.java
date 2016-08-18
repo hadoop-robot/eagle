@@ -35,13 +35,13 @@ public class ApplicationManagerDaoImpl implements ApplicationManagerDAO {
     @Override
     public String loadTopologyExecutionStatus(String site, String application, String topology) {
         String query = String.format("%s[@site=\"%s\" AND @application=\"%s\" AND @topology=\"%s\"]{*}", Constants.TOPOLOGY_EXECUTION_SERVICE_ENDPOINT_NAME, site, application, topology);
-        GenericServiceAPIResponseEntity<TopologyExecutionEntity> response = resource.search(query,  null, null, Integer.MAX_VALUE, null, false, false, 0L, 0, false, 0, null, false);
-        if(!response.isSuccess()) {
+        GenericServiceAPIResponseEntity<TopologyExecutionEntity> response = resource.search(query, null, null, Integer.MAX_VALUE, null, false, false, 0L, 0, false, 0, null, false);
+        if (!response.isSuccess()) {
             LOG.error(response.getException());
             return null;
         }
         List<TopologyExecutionEntity> list = response.getObj();
-        if(list == null || list.size() != 1) {
+        if (list == null || list.size() != 1) {
             LOG.error("ERROR: fetching 0 or more than 1 topology execution entities");
             return null;
         }
@@ -53,10 +53,10 @@ public class ApplicationManagerDaoImpl implements ApplicationManagerDAO {
         int ret = 0;
         String query = String.format("%s[@site=\"%s\" AND @application=\"%s\" AND @topology=\"%s\" AND (@status=\"%s\" OR @status=\"%s\")]{*}", Constants.TOPOLOGY_OPERATION_SERVICE_ENDPOINT_NAME, site, application, topology, TopologyOperationEntity.OPERATION_STATUS.INITIALIZED, TopologyOperationEntity.OPERATION_STATUS.PENDING);
         GenericServiceAPIResponseEntity<TopologyExecutionEntity> response = resource.search(query, null, null, Integer.MAX_VALUE, null, false, false, 0L, 0, false, 0, null, false);
-        if(!response.isSuccess()) {
+        if (!response.isSuccess()) {
             throw new Exception(response.getException());
         }
-        if(response.getObj() != null && response.getObj().size() != 0) {
+        if (response.getObj() != null && response.getObj().size() != 0) {
             ret = response.getObj().size();
         }
         return ret;
@@ -64,7 +64,7 @@ public class ApplicationManagerDaoImpl implements ApplicationManagerDAO {
 
     @Override
     public GenericServiceAPIResponseEntity createOperation(List<TopologyOperationEntity> entities) throws Exception {
-        if(entities.size() == 0) {
+        if (entities.size() == 0) {
             LOG.info("TopologyOperationEntity set is empty.");
         }
         GenericServiceAPIResponseEntity response = resource.updateEntities(entities, Constants.TOPOLOGY_OPERATION_SERVICE_ENDPOINT_NAME);
@@ -73,15 +73,15 @@ public class ApplicationManagerDaoImpl implements ApplicationManagerDAO {
 
     @Override
     public GenericServiceAPIResponseEntity deleteTopology(String topology) {
-        String topologyQuery = Constants.TOPOLOGY_DESCRIPTION_SERVICE_ENDPOINT_NAME+ "[@topology=\"" + topology + "\"]{*}";
+        String topologyQuery = Constants.TOPOLOGY_DESCRIPTION_SERVICE_ENDPOINT_NAME + "[@topology=\"" + topology + "\"]{*}";
         String executionQuery = Constants.TOPOLOGY_EXECUTION_SERVICE_ENDPOINT_NAME + "[@topology=\"" + topology + "\"]{*}";
         int pageSize = Integer.MAX_VALUE;
 
         GenericServiceAPIResponseEntity response = resource.deleteByQuery(topologyQuery, null, null, pageSize, null, false, false, 0L, 0, true, 0, null, false);
-        if(response.isSuccess()) {
+        if (response.isSuccess()) {
             response = resource.deleteByQuery(executionQuery, null, null, pageSize, null, false, false, 0L, 0, true, 0, null, false);
         }
-        if(!response.isSuccess()) {
+        if (!response.isSuccess()) {
             LOG.error(response.getException());
         }
         return response;

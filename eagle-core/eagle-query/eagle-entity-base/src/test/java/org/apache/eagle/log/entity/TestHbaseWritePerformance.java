@@ -17,10 +17,8 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.common.config.EagleConfigFactory;
-
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
-
 import org.junit.Test;
 
 import java.io.IOException;

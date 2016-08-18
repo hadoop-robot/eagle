@@ -16,6 +16,9 @@
  */
 package org.apache.eagle.service.generic;
 
+import com.sun.jersey.api.json.JSONWithPadding;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
@@ -27,20 +30,16 @@ import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.query.aggregate.timeseries.*;
 import org.apache.eagle.service.common.EagleExceptionWrapper;
 import org.apache.eagle.storage.hbase.query.GenericQueryBuilder;
-
-import com.sun.jersey.api.json.JSONWithPadding;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import java.util.*;
 
 @Path("list")
 public class ListQueryResource {
@@ -190,6 +189,7 @@ public class ListQueryResource {
 
     /**
      * <b>TODO</b> remove the legacy deprecated implementation of listQueryWithoutCoprocessor.
+     *
      * @see #listQuery(String, String, String, int, String, boolean, boolean, long, int, boolean, int, String, Boolean)
      */
     @GET

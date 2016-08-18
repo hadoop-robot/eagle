@@ -31,6 +31,7 @@ import java.nio.charset.Charset;
  */
 public class DynamicJarPathFinder {
     private final static Logger LOG = LoggerFactory.getLogger(DynamicJarPathFinder.class);
+
     /**
      * If the provided class has been loaded from a jar file that is on the local file system, will find the absolute path to that jar file.
      *
@@ -40,12 +41,15 @@ public class DynamicJarPathFinder {
      *                               other custom classloading device).
      */
     public static String findPathJar(Class<?> context) throws IllegalStateException {
-        if (context == null) context = DynamicJarPathFinder.class;
+        if (context == null) {
+            context = DynamicJarPathFinder.class;
+        }
         String rawName = context.getName();
         String classFileName;
-    /* rawName is something like package.name.ContainingClass$ClassName. We need to turn this into ContainingClass$ClassName.class. */ {
+    /* rawName is something like package.name.ContainingClass$ClassName. We need to turn this into ContainingClass$ClassName.class. */
+        {
             int idx = rawName.lastIndexOf('.');
-            classFileName = (idx == -1 ? rawName : rawName.substring(idx+1)) + ".class";
+            classFileName = (idx == -1 ? rawName : rawName.substring(idx + 1)) + ".class";
         }
 
         String uri = context.getResource(classFileName).toString();
@@ -56,12 +60,14 @@ public class DynamicJarPathFinder {
             int idx = uri.indexOf(':');
             String protocol = idx == -1 ? "(unknown)" : uri.substring(0, idx);
             throw new IllegalStateException("This class has been loaded remotely via the " + protocol +
-                    " protocol. Only loading from a jar on the local file system is supported.");
+                " protocol. Only loading from a jar on the local file system is supported.");
         }
 
         int idx = uri.indexOf('!');
         //As far as I know, the if statement below can't ever trigger, so it's more of a sanity check thing.
-        if (idx == -1) throw new IllegalStateException("You appear to have loaded this class from a local jar file, but I can't make sense of the URL!");
+        if (idx == -1) {
+            throw new IllegalStateException("You appear to have loaded this class from a local jar file, but I can't make sense of the URL!");
+        }
 
         try {
             String fileName = URLDecoder.decode(uri.substring("jar:file:".length(), idx), Charset.defaultCharset().name());
@@ -74,21 +80,24 @@ public class DynamicJarPathFinder {
     /**
      * Similar to JarPathFinder, but not make sure the path must valid jar.
      *
-     * @see DynamicJarPathFinder#findPathJar(Class)
      * @return the class path contains the context class
+     * @see DynamicJarPathFinder#findPathJar(Class)
      */
     public static String findPath(Class<?> context) throws IllegalStateException {
-        if (context == null) context = DynamicJarPathFinder.class;
+        if (context == null) {
+            context = DynamicJarPathFinder.class;
+        }
         String rawName = context.getName();
         String classFileName;
-    /* rawName is something like package.name.ContainingClass$ClassName. We need to turn this into ContainingClass$ClassName.class. */ {
+    /* rawName is something like package.name.ContainingClass$ClassName. We need to turn this into ContainingClass$ClassName.class. */
+        {
             int idx = rawName.lastIndexOf('.');
-            classFileName = (idx == -1 ? rawName : rawName.substring(idx+1)) + ".class";
+            classFileName = (idx == -1 ? rawName : rawName.substring(idx + 1)) + ".class";
         }
 
         String uri = context.getResource(classFileName).toString();
         if (uri.startsWith("file:")) {
-            LOG.warn("This class has been loaded from a directory and not from a jar file: {}",uri);
+            LOG.warn("This class has been loaded from a directory and not from a jar file: {}", uri);
             String fileName = null;
             try {
                 fileName = URLDecoder.decode(uri.substring("file:".length(), uri.length()), Charset.defaultCharset().name());
@@ -102,7 +111,7 @@ public class DynamicJarPathFinder {
             int idx = uri.indexOf(':');
             String protocol = idx == -1 ? "(unknown)" : uri.substring(0, idx);
             throw new IllegalStateException("This class has been loaded remotely via the " + protocol +
-                    " protocol. Only loading from a jar on the local file system is supported.");
+                " protocol. Only loading from a jar on the local file system is supported.");
         }
 
         int idx = uri.indexOf('!');

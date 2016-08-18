@@ -17,24 +17,22 @@
 package org.apache.eagle.metadata.store.jdbc;
 
 /**
- *
- *
  * Configuration:
- *
+ * <p>
  * Prefix: <code>metadata.jdbc.*</code>
- *
+ * <p>
  * <code>
- *     metadata {
- *         jdbc {
- *             username = ""
- *             password = ""
- *             driverClassName = "org.h2.Driver"
- *             url = "jdbc:h2:./eagle"
- *             connectionProperties = "encoding=UTF8"
- *         }
- *     }
+ * metadata {
+ * jdbc {
+ * username = ""
+ * password = ""
+ * driverClassName = "org.h2.Driver"
+ * url = "jdbc:h2:./eagle"
+ * connectionProperties = "encoding=UTF8"
+ * }
+ * }
  * </code>
- *
+ * <p>
  * https://commons.apache.org/proper/commons-dbcp/configuration.html
  */
 public class JDBCDataSourceConfig {
@@ -92,6 +90,6 @@ public class JDBCDataSourceConfig {
     @Override
     public String toString() {
         return String.format("%s { \n driverClassName=%s \n url=%s \n connectionProperties=%s \n username=%s \n password=*****\n}",
-                CONFIG_PREFIX,driverClassName,url,username,connectionProperties);
+            CONFIG_PREFIX, driverClassName, url, username, connectionProperties);
     }
 }

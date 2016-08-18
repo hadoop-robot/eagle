@@ -20,14 +20,12 @@ import org.apache.eagle.common.ByteUtil;
 import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
-
 import org.apache.hadoop.hbase.client.HTableFactory;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +43,7 @@ import java.util.Map;
  * <li><code>close</code>: Close HBase connection</li>
  * </ol>
  * .
+ *
  * @param <T> Reader entity class type
  */
 public abstract class AbstractHBaseLogReader<T> implements LogReader<T> {
@@ -191,7 +190,8 @@ public abstract class AbstractHBaseLogReader<T> implements LogReader<T> {
      * <li><b>Nov 19th, 2014</b>: Fix for out put all qualifiers</li>
      * </ul>
      * .
-     * @param s1 scan
+     *
+     * @param s1     scan
      * @param filter filter
      */
     protected void workaroundHBASE2198(Scan s1, Filter filter) {

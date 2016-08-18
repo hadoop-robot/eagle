@@ -21,7 +21,6 @@ import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
 import org.apache.eagle.service.client.impl.ConcurrentSender;
 import org.apache.eagle.service.client.impl.EagleServiceClientImpl;
-
 import org.junit.Assert;
 import org.junit.Test;
 

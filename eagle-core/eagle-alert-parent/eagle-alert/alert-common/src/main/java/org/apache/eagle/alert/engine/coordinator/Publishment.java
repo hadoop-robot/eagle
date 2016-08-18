@@ -16,15 +16,14 @@
  */
 package org.apache.eagle.alert.engine.coordinator;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 /**
  * @since Apr 11, 2016
- *
  */
 public class Publishment {
 
@@ -89,8 +88,8 @@ public class Publishment {
         if (obj instanceof Publishment) {
             Publishment p = (Publishment) obj;
             return (Objects.equals(name, p.getName()) && Objects.equals(type, p.getType())
-                    && Objects.equals(dedupIntervalMin, p.getDedupIntervalMin())
-                    && Objects.equals(policyIds, p.getPolicyIds()) && properties.equals(p.getProperties()));
+                && Objects.equals(dedupIntervalMin, p.getDedupIntervalMin())
+                && Objects.equals(policyIds, p.getPolicyIds()) && properties.equals(p.getProperties()));
         }
         return false;
     }
@@ -98,14 +97,14 @@ public class Publishment {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(name).append(type).append(dedupIntervalMin).append(policyIds)
-                .append(properties).build();
+            .append(properties).build();
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Publishment[name:").append(name).append(",type:").append(type).append(",policyId:")
-                .append(policyIds).append(",properties:").append(properties);
+            .append(policyIds).append(",properties:").append(properties);
         return sb.toString();
     }
 

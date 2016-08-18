@@ -61,7 +61,7 @@ public interface ServiceAuditDAO {
      * Retrieve all audits specific to a service and specific to a userID.
      *
      * @param serviceName serviceName
-     * @param userID userID
+     * @param userID      userID
      * @return List[GenericAuditEntity]
      * @throws Exception Exception
      */
@@ -71,7 +71,7 @@ public interface ServiceAuditDAO {
      * Retrieve all audits specific to a service and specific to an action.
      *
      * @param serviceName serviceName
-     * @param action action
+     * @param action      action
      * @return List[GenericAuditEntity]
      * @throws Exception Exception
      */

@@ -16,41 +16,26 @@
  */
 package org.apache.alert.coordinator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.alert.coordinator.mock.InMemMetadataServiceClient;
 import org.apache.eagle.alert.coordination.model.Kafka2TupleMetadata;
 import org.apache.eagle.alert.coordination.model.ScheduleState;
 import org.apache.eagle.alert.coordination.model.Tuple2StreamMetadata;
 import org.apache.eagle.alert.coordination.model.WorkSlot;
-import org.apache.eagle.alert.coordination.model.internal.MonitoredStream;
-import org.apache.eagle.alert.coordination.model.internal.PolicyAssignment;
-import org.apache.eagle.alert.coordination.model.internal.StreamGroup;
-import org.apache.eagle.alert.coordination.model.internal.StreamWorkSlotQueue;
-import org.apache.eagle.alert.coordination.model.internal.Topology;
+import org.apache.eagle.alert.coordination.model.internal.*;
 import org.apache.eagle.alert.coordinator.IScheduleContext;
 import org.apache.eagle.alert.coordinator.model.AlertBoltUsage;
 import org.apache.eagle.alert.coordinator.model.TopologyUsage;
 import org.apache.eagle.alert.coordinator.provider.ScheduleContextBuilder;
-import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
+import org.apache.eagle.alert.engine.coordinator.*;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition.Definition;
-import org.apache.eagle.alert.engine.coordinator.Publishment;
-import org.apache.eagle.alert.engine.coordinator.StreamColumn;
 import org.apache.eagle.alert.engine.coordinator.StreamColumn.Type;
-import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
-import org.apache.eagle.alert.engine.coordinator.StreamPartition;
-import org.apache.eagle.alert.engine.coordinator.StreamSortSpec;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.*;
+
 /**
  * @since May 5, 2016
- *
  */
 public class ScheduleContextBuilderTest {
 
@@ -72,7 +57,7 @@ public class ScheduleContextBuilderTest {
         String alertBolt2 = TOPO1 + "-alert-" + "2";
         for (AlertBoltUsage u : usages.get(TOPO1).getAlertUsages().values()) {
             if (u.getBoltId().equals(alertBolt0) || u.getBoltId().equals(alertBolt1)
-                    || u.getBoltId().equals(alertBolt2)) {
+                || u.getBoltId().equals(alertBolt2)) {
                 Assert.assertEquals(1, u.getPolicies().size());
                 Assert.assertTrue(u.getPolicies().contains(TEST_POLICY_1));
                 Assert.assertEquals(1, u.getPartitions().size());

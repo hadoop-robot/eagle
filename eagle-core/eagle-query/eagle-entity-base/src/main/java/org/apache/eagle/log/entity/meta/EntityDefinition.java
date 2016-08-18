@@ -19,9 +19,7 @@ package org.apache.eagle.log.entity.meta;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericMetricEntity;
 import org.apache.eagle.log.entity.GenericMetricShadowEntity;
-
 import org.apache.hadoop.io.Writable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

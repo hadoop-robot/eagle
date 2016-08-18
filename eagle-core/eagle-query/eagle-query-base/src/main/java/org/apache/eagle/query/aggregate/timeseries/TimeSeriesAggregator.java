@@ -20,7 +20,6 @@ import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyAggregatable;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -17,6 +17,7 @@
 
 package org.apache.eagle.jobrunning.crawler;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.job.JobFilter;
 import org.apache.eagle.jobrunning.callback.RunningJobCallback;
@@ -27,8 +28,6 @@ import org.apache.eagle.jobrunning.config.RunningJobCrawlConfig;
 import org.apache.eagle.jobrunning.util.JobUtils;
 import org.apache.eagle.jobrunning.yarn.model.AppInfo;
 import org.apache.eagle.jobrunning.zkres.JobRunningZKStateManager;
-
-import org.apache.commons.lang.time.DateUtils;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;

@@ -16,15 +16,15 @@
  */
 package org.apache.eagle.alert.utils;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ZookeeperEmbedded {
     private TestingServer server;

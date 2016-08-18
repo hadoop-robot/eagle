@@ -1,10 +1,10 @@
 package org.apache.eagle.alert.engine.evaluator;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

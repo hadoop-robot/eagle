@@ -24,6 +24,7 @@ import java.util.Map;
 public interface StreamNameSelector {
     /**
      * field name to value mapping
+     *
      * @param tuple
      * @return
      */

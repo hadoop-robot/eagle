@@ -1,10 +1,10 @@
 package org.apache.eagle.alert.config;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

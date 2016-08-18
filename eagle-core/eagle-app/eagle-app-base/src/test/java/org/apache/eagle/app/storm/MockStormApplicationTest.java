@@ -22,13 +22,13 @@ import org.junit.Test;
 
 public class MockStormApplicationTest {
     @Test
-    public void testGetConfigClass(){
+    public void testGetConfigClass() {
         MockStormApplication mockStormApplication = new MockStormApplication();
-        Assert.assertEquals(StormEnvironment.class,mockStormApplication.getEnvironmentType());
+        Assert.assertEquals(StormEnvironment.class, mockStormApplication.getEnvironmentType());
     }
 
     @Test
-    public void testRunApplicationWithSysConfig(){
+    public void testRunApplicationWithSysConfig() {
         new MockStormApplication().run();
     }
 }

@@ -17,7 +17,6 @@
 package org.apache.eagle.query.aggregate.test;
 
 import org.apache.eagle.query.aggregate.timeseries.GroupbyFieldsComparator;
-
 import org.junit.Assert;
 import org.junit.Test;
 

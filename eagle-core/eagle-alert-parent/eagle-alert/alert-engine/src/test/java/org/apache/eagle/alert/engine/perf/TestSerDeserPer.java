@@ -16,12 +16,9 @@
  */
 package org.apache.eagle.alert.engine.perf;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import org.apache.eagle.alert.engine.coordinator.StreamPartition;
 import org.apache.eagle.alert.engine.coordinator.StreamSortSpec;
 import org.apache.eagle.alert.engine.model.PartitionedEvent;
@@ -30,30 +27,33 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Since 5/13/16.
  */
 public class TestSerDeserPer {
     Object[] data = null;
+
     @Before
-    public void before(){
+    public void before() {
         int max = 100;
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<max; i++){
+        for (int i = 0; i < max; i++) {
             sb.append("a");
         }
-        data = new Object[]{sb.toString()};
+        data = new Object[] {sb.toString()};
     }
 
     @Test
-    public void testSerDeserPerf() throws Exception{
+    public void testSerDeserPerf() throws Exception {
         Kryo kryo = new Kryo();
         Output output = new Output(new FileOutputStream("/tmp/file.bin"));
-        for(int i=0; i<1000; i++){
+        for (int i = 0; i < 1000; i++) {
             kryo.writeObject(output, constructPE());
         }
         output.close();
@@ -63,7 +63,7 @@ public class TestSerDeserPer {
         Assert.assertTrue(someObject.getData().length == 1);
     }
 
-    private PartitionedEvent constructPE(){
+    private PartitionedEvent constructPE() {
         StreamEvent e = new StreamEvent();
         e.setStreamId("testStreamId");
         e.setTimestamp(1463159382000L);
@@ -86,10 +86,10 @@ public class TestSerDeserPer {
     }
 
     @Test
-    public void testSerDeserPerf2() throws Exception{
+    public void testSerDeserPerf2() throws Exception {
         Kryo kryo = new Kryo();
         Output output = new Output(new FileOutputStream("/tmp/file2.bin"));
-        for(int i=0; i<1000; i++){
+        for (int i = 0; i < 1000; i++) {
             kryo.writeObject(output, constructNewPE());
         }
         output.close();
@@ -99,7 +99,7 @@ public class TestSerDeserPer {
         Assert.assertTrue(someObject.getData().length == 1);
     }
 
-    private NewPartitionedEvent constructNewPE(){
+    private NewPartitionedEvent constructNewPE() {
         NewPartitionedEvent pe = new NewPartitionedEvent();
         pe.setStreamId("testStreamId");
         pe.setTimestamp(1463159382000L);
@@ -117,10 +117,10 @@ public class TestSerDeserPer {
     }
 
     @Test
-    public void testSerDeserPerf3() throws Exception{
+    public void testSerDeserPerf3() throws Exception {
         Kryo kryo = new Kryo();
         Output output = new Output(new FileOutputStream("/tmp/file3.bin"));
-        for(int i=0; i<1000; i++){
+        for (int i = 0; i < 1000; i++) {
             kryo.writeObject(output, constructNewPE2());
         }
         output.close();
@@ -130,7 +130,7 @@ public class TestSerDeserPer {
         Assert.assertTrue(someObject.getData().length == 1);
     }
 
-    private NewPartitionedEvent2 constructNewPE2(){
+    private NewPartitionedEvent2 constructNewPE2() {
         NewPartitionedEvent2 pe = new NewPartitionedEvent2();
         pe.setStreamId(100);
         pe.setTimestamp(1463159382000L);
@@ -160,10 +160,10 @@ public class TestSerDeserPer {
         private long partitionKey;
 
         // sort spec
-        private String windowPeriod="";
+        private String windowPeriod = "";
         private long windowMargin = 30 * 1000;
 
-        public NewPartitionedEvent(){
+        public NewPartitionedEvent() {
         }
 
         public String getStreamId() {
@@ -247,7 +247,7 @@ public class TestSerDeserPer {
         private long windowPeriod;
         private long windowMargin = 30 * 1000;
 
-        public NewPartitionedEvent2(){
+        public NewPartitionedEvent2() {
         }
 
         public int getStreamId() {

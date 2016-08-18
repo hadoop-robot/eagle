@@ -21,23 +21,19 @@ package org.apache.eagle.service.application.entity;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
 import org.apache.eagle.policy.common.Constants;
-
 import org.apache.eagle.service.application.AppManagerConstants;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.HashMap;
-import java.util.Map;
 
-
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Table("eagle_metadata")
 @ColumnFamily("f")
 @Prefix("topologyExecution")
 @Service(Constants.TOPOLOGY_EXECUTION_SERVICE_ENDPOINT_NAME)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @TimeSeries(false)
-@Tags({"site", "application", "topology"})
+@Tags( {"site", "application", "topology"})
 public class TopologyExecutionEntity extends TaggedLogAPIEntity {
     @Column("a")
     private String fullName;

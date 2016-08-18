@@ -18,7 +18,6 @@ package org.apache.eagle.storage.hbase.query.coprocessor;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
-
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 

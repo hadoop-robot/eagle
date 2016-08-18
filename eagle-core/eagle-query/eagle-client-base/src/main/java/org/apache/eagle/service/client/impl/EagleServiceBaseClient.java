@@ -16,6 +16,12 @@
  */
 package org.apache.eagle.service.client.impl;
 
+import com.sun.jersey.api.client.AsyncWebResource;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
 import org.apache.eagle.common.Base64;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
@@ -25,14 +31,6 @@ import org.apache.eagle.service.client.EagleServiceAsyncClient;
 import org.apache.eagle.service.client.EagleServiceClientException;
 import org.apache.eagle.service.client.IEagleServiceClient;
 import org.apache.eagle.service.client.security.SecurityConstants;
-
-import com.sun.jersey.api.client.AsyncWebResource;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.URLConnectionClientHandler;
-
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
@@ -41,13 +39,13 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.MediaType;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 
 public abstract class EagleServiceBaseClient implements IEagleServiceClient {
     public static final String SERVICE_NAME = "serviceName";
@@ -220,12 +218,12 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
      * Send HTTP POST request with entities and serviceName.
      *
      * @param resourceURL resourceURL
-     * @param entities entities
+     * @param entities    entities
      * @param serviceName serviceName
      * @return GenericServiceAPIResponseEntity[String]
-     * @throws JsonMappingException JsonMappingException
+     * @throws JsonMappingException    JsonMappingException
      * @throws JsonGenerationException JsonGenerationException
-     * @throws IOException IOException
+     * @throws IOException             IOException
      */
     @SuppressWarnings("unchecked")
     protected GenericServiceAPIResponseEntity<String> postEntitiesWithService(
@@ -242,12 +240,12 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
      * Send HTTP PUT request with entities and serviceName.
      *
      * @param resourceURL resourceURL
-     * @param entities entities
+     * @param entities    entities
      * @param serviceName serviceName
      * @return GenericServiceAPIResponseEntity[String]
-     * @throws JsonMappingException JsonMappingException
+     * @throws JsonMappingException    JsonMappingException
      * @throws JsonGenerationException JsonGenerationException
-     * @throws IOException IOException
+     * @throws IOException             IOException
      */
     @SuppressWarnings("unchecked")
     protected GenericServiceAPIResponseEntity<String> putEntitiesWithService(
@@ -335,7 +333,6 @@ public abstract class EagleServiceBaseClient implements IEagleServiceClient {
         }
         this.isStopped = true;
     }
-
 
 
     protected void checkNotNull(Object obj, String name) throws EagleServiceClientException {

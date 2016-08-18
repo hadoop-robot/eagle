@@ -16,9 +16,9 @@
  */
 package org.apache.eagle.alert.engine.router;
 
-import java.util.List;
-
 import org.apache.eagle.alert.engine.model.StreamEvent;
+
+import java.util.List;
 
 public interface StreamRoutePartitioner {
     /**

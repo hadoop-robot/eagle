@@ -25,7 +25,6 @@ import org.apache.eagle.storage.jdbc.criteria.CriteriaBuilder;
 import org.apache.eagle.storage.jdbc.criteria.CriterionBuilder;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
-
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.criteria.Criterion;

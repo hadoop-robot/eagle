@@ -16,22 +16,22 @@
  */
 package org.apache.eagle.alert.coordination.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.eagle.alert.engine.coordinator.StreamPartition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * One RouteSpec means one rule mapping [streamId -> StreamPartition ->
  * PolicyExecutionQueue]
- *
+ * <p>
  * Key is StreamPartition
  */
 public class StreamRouterSpec {
     private String streamId;
     private StreamPartition partition; // The meta-data to build
-                                       // StreamPartitioner
+    // StreamPartitioner
     private List<PolicyWorkerQueue> targetQueue = new ArrayList<PolicyWorkerQueue>();
 
     public StreamPartition getPartition() {
@@ -70,6 +70,6 @@ public class StreamRouterSpec {
     @Override
     public String toString() {
         return String.format("StreamRouterSpec[streamId=%s,partition=%s, queue=[%s]]", this.getStreamId(),
-                this.getPartition(), this.getTargetQueue());
+            this.getPartition(), this.getTargetQueue());
     }
 }

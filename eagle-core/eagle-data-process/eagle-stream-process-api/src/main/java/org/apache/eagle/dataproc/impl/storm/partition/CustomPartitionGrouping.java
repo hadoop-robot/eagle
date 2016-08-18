@@ -19,11 +19,10 @@
 
 package org.apache.eagle.dataproc.impl.storm.partition;
 
-import org.apache.eagle.partition.PartitionStrategy;
-
 import backtype.storm.generated.GlobalStreamId;
 import backtype.storm.grouping.CustomStreamGrouping;
 import backtype.storm.task.WorkerTopologyContext;
+import org.apache.eagle.partition.PartitionStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.storage.jdbc.entity.impl;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.storage.jdbc.conn.ConnectionManagerFactory;
 import org.apache.eagle.storage.jdbc.conn.impl.TorqueStatementPeerImpl;
@@ -24,8 +25,6 @@ import org.apache.eagle.storage.jdbc.criteria.impl.QueryCriteriaBuilder;
 import org.apache.eagle.storage.jdbc.entity.JdbcEntityDeleter;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.operation.CompiledQuery;
-
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.sql.SqlBuilder;
 import org.slf4j.Logger;

@@ -18,12 +18,7 @@ package org.apache.eagle.query.aggregate.timeseries;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
+import java.util.*;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class HierarchicalAggregateEntity {

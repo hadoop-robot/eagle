@@ -26,7 +26,6 @@ import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
 import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.service.hbase.EmbeddedHbase;
-
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Assert;
 import org.junit.Ignore;

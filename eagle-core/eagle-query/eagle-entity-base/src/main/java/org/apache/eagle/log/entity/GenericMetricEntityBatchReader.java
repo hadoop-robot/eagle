@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

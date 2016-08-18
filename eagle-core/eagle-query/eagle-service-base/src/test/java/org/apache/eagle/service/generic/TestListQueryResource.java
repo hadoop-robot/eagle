@@ -29,7 +29,6 @@ import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.service.hbase.TestHBaseBase;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateClient;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateClientImpl;
-
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Scan;
 import org.junit.*;

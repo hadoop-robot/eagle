@@ -20,7 +20,6 @@ import org.apache.eagle.log.entity.EntityQualifierUtils;
 import org.apache.eagle.query.parser.*;
 import org.apache.eagle.storage.jdbc.criteria.CriterionBuilder;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
-
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criterion;
 import org.apache.torque.criteria.SqlEnum;

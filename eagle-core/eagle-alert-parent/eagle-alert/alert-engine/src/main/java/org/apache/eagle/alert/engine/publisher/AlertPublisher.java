@@ -1,12 +1,11 @@
 package org.apache.eagle.alert.engine.publisher;
 
 
-import java.io.Serializable;
-import java.util.Map;
-
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.engine.model.AlertStreamEvent;
 
-import com.typesafe.config.Config;
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -27,7 +26,10 @@ import com.typesafe.config.Config;
 public interface AlertPublisher extends AlertPublishListener, Serializable {
     @SuppressWarnings("rawtypes")
     void init(Config config, Map stormConfig);
+
     String getName();
+
     void nextEvent(AlertStreamEvent event);
+
     void close();
 }

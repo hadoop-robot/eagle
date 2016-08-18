@@ -18,10 +18,12 @@
 
 package org.apache.eagle.alert.engine.router;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.SimpleType;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.apache.eagle.alert.coordination.model.PublishSpec;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.engine.coordinator.Publishment;
@@ -35,12 +37,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.SimpleType;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Since 5/14/16.
@@ -62,13 +61,13 @@ public class TestAlertPublisherBolt {
         publisher.nextEvent(event1);
     }
 
-    private AlertStreamEvent create(String streamId){
+    private AlertStreamEvent create(String streamId) {
         AlertStreamEvent alert = new AlertStreamEvent();
         PolicyDefinition policy = new PolicyDefinition();
         policy.setName("policy1");
         alert.setPolicy(policy);
         alert.setCreatedTime(System.currentTimeMillis());
-        alert.setData(new Object[]{"field_1", 2, "field_3"});
+        alert.setData(new Object[] {"field_1", 2, "field_3"});
         alert.setStreamId(streamId);
         alert.setCreatedBy(this.toString());
         return alert;

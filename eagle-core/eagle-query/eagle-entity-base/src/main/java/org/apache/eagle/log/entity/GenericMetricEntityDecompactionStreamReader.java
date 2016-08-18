@@ -20,7 +20,6 @@ import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +39,10 @@ public class GenericMetricEntityDecompactionStreamReader extends StreamReader im
      * it makes sense that serviceName should not be provided while metric name should be provided as prefix.
      *
      * @param metricName metricName
-     * @param condition condition
+     * @param condition  condition
      * @throws InstantiationException InstantiationException
      * @throws IllegalAccessException IllegalAccessException
-     * @throws ParseException ParseException
+     * @throws ParseException         ParseException
      */
     public GenericMetricEntityDecompactionStreamReader(String metricName, SearchCondition condition) throws InstantiationException, IllegalAccessException, ParseException {
         ed = EntityDefinitionManager.getEntityByServiceName(serviceName);

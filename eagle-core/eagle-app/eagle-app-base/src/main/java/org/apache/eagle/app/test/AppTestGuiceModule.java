@@ -25,7 +25,7 @@ import org.apache.eagle.common.module.GlobalScope;
 import org.apache.eagle.common.module.ModuleRegistry;
 import org.apache.eagle.metadata.service.memory.MemoryMetadataStore;
 
-public class AppTestGuiceModule extends AbstractModule{
+public class AppTestGuiceModule extends AbstractModule {
     @Override
     protected void configure() {
         CommonGuiceModule common = new CommonGuiceModule();
@@ -34,7 +34,7 @@ public class AppTestGuiceModule extends AbstractModule{
         install(common);
         install(app);
         install(store);
-        ModuleRegistry registry =ApplicationExtensionLoader.load(common,app,store);
+        ModuleRegistry registry = ApplicationExtensionLoader.load(common, app, store);
         registry.getModules(store.getClass()).forEach(this::install);
         registry.getModules(GlobalScope.class).forEach(this::install);
         bind(ServerSimulator.class).to(ServerSimulatorImpl.class).in(Singleton.class);

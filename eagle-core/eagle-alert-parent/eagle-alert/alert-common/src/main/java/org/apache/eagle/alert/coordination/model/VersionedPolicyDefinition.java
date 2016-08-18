@@ -20,7 +20,6 @@ import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 
 /**
  * @since May 25, 2016
- *
  */
 public class VersionedPolicyDefinition {
     private String version;

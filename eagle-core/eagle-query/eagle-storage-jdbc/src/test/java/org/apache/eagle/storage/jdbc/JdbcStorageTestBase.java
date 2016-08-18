@@ -17,7 +17,6 @@
 package org.apache.eagle.storage.jdbc;
 
 import org.apache.eagle.storage.DataStorageManager;
-
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

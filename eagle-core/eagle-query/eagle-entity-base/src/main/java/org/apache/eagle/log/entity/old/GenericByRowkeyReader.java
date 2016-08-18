@@ -20,7 +20,6 @@ import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.base.taggedlog.TaggedLogObjectMapper;
 import org.apache.eagle.log.entity.InternalLog;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.log.entity.meta.EntityDefinition;
-
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;

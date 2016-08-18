@@ -17,11 +17,10 @@
 
 package org.apache.eagle.jobrunning.storm;
 
+import backtype.storm.spout.SpoutOutputCollector;
 import org.apache.eagle.dataproc.core.EagleOutputCollector;
 import org.apache.eagle.dataproc.core.ValuesArray;
 import org.apache.eagle.jobrunning.callback.RunningJobMessageId;
-
-import backtype.storm.spout.SpoutOutputCollector;
 
 import java.util.ArrayList;
 import java.util.List;

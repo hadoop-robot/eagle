@@ -19,7 +19,6 @@ package org.apache.eagle.query.aggregate.test;
 import org.apache.eagle.log.entity.test.TestEntity;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;

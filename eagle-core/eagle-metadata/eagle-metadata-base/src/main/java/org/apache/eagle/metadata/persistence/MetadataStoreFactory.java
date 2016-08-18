@@ -28,21 +28,21 @@ public class MetadataStoreFactory {
 
     private static MetadataStore instance;
 
-    public static MetadataStore getInstance(){
+    public static MetadataStore getInstance() {
         String metadataStoreClass = null;
-        if(instance == null) {
+        if (instance == null) {
             try {
                 Config config = ConfigFactory.load();
                 if (config.hasPath(METADATA_STORE_CONFIG_KEY)) {
                     metadataStoreClass = config.getString(METADATA_STORE_CONFIG_KEY);
-                    LOG.info("Using {} = {}",METADATA_STORE_CONFIG_KEY,metadataStoreClass);
-                }else{
+                    LOG.info("Using {} = {}", METADATA_STORE_CONFIG_KEY, metadataStoreClass);
+                } else {
                     metadataStoreClass = MemoryMetadataStore.class.getCanonicalName();
-                    LOG.info("{} is not set, using default {}",METADATA_STORE_CONFIG_KEY,metadataStoreClass);
+                    LOG.info("{} is not set, using default {}", METADATA_STORE_CONFIG_KEY, metadataStoreClass);
                 }
                 instance = (MetadataStore) Class.forName(metadataStoreClass).newInstance();
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                LOG.error("Failed to instantiate {}",metadataStoreClass,e);
+                LOG.error("Failed to instantiate {}", metadataStoreClass, e);
                 throw new RuntimeException(e.getMessage(), e.getCause());
             }
         }

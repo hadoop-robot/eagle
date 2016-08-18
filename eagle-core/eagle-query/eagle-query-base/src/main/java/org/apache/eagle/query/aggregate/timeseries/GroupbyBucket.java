@@ -21,7 +21,6 @@ import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.aggregate.raw.GroupbyKey;
 import org.apache.eagle.query.aggregate.raw.GroupbyKeyValue;
 import org.apache.eagle.query.aggregate.raw.GroupbyValue;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

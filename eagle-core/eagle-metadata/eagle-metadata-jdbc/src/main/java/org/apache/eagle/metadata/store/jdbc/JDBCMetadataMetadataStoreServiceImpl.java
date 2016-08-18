@@ -45,54 +45,65 @@ public class JDBCMetadataMetadataStoreServiceImpl implements JDBCMetadataQuerySe
         } catch (SQLException e) {
             throw e;
         } finally {
-            if(statement!=null) try {
-                statement.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
-            if(connection!=null) try {
-                connection.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
         }
     }
 
     @Override
     public boolean dropTable(String tableName) throws SQLException {
-        LOGGER.debug("Dropping table {}",tableName);
-        return execute(String.format("DROP TABLE %s",tableName));
+        LOGGER.debug("Dropping table {}", tableName);
+        return execute(String.format("DROP TABLE %s", tableName));
     }
 
     @Override
-    public <T, E extends Throwable> int insert(String insertSql, Collection<T> entities, ThrowableConsumer2<PreparedStatement,T, E> mapper) throws E, SQLException {
+    public <T, E extends Throwable> int insert(String insertSql, Collection<T> entities, ThrowableConsumer2<PreparedStatement, T, E> mapper) throws E, SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
-        try{
+        try {
             connection = dataSource.getConnection();
             statement = connection.prepareStatement(insertSql);
             connection.setAutoCommit(false);
-            for(T entity : entities){
-                mapper.accept(statement,entity);
+            for (T entity : entities) {
+                mapper.accept(statement, entity);
                 statement.addBatch();
             }
             int[] num = statement.executeBatch();
             connection.commit();
-            int sum = 0; for(int i:num) sum += i;
+            int sum = 0;
+            for (int i : num) {
+                sum += i;
+            }
             return sum;
-        } catch(SQLException ex){
+        } catch (SQLException ex) {
             LOGGER.error("Error to insert batch: {}", insertSql, ex);
             throw ex;
         } finally {
-            if(statement!=null) try {
-                statement.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
-            if(connection!=null) try {
-                connection.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
         }
     }
@@ -102,13 +113,13 @@ public class JDBCMetadataMetadataStoreServiceImpl implements JDBCMetadataQuerySe
         try {
             return dropTable(tableName);
         } catch (SQLException e) {
-            LOGGER.debug(e.getMessage(),e);
+            LOGGER.debug(e.getMessage(), e);
         }
         return true;
     }
 
     @Override
-    public <T,E extends Throwable> List<T> query(String sqlQuery, ThrowableFunction<ResultSet,T,E> mapper) throws SQLException,E {
+    public <T, E extends Throwable> List<T> query(String sqlQuery, ThrowableFunction<ResultSet, T, E> mapper) throws SQLException, E {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -117,26 +128,34 @@ public class JDBCMetadataMetadataStoreServiceImpl implements JDBCMetadataQuerySe
             statement = connection.prepareStatement(sqlQuery);
             resultSet = statement.executeQuery();
             List<T> result = new LinkedList<>();
-            while(resultSet.next()) result.add(mapper.apply(resultSet));
+            while (resultSet.next()) {
+                result.add(mapper.apply(resultSet));
+            }
             return result;
         } catch (SQLException e) {
             LOGGER.error("Error to query batch: {}", sqlQuery, e);
             throw e;
         } finally {
-            if(resultSet!=null) try{
-                resultSet.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
-            if(statement!=null) try {
-                statement.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
-            if(connection!=null) try {
-                connection.close();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(),e);
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
         }
     }

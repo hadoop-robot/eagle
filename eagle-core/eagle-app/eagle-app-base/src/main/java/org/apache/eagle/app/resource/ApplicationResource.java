@@ -38,9 +38,9 @@ public class ApplicationResource {
 
     @Inject
     public ApplicationResource(
-            ApplicationProviderService providerService,
-            ApplicationManagementService applicationManagementService,
-            ApplicationEntityService entityService){
+        ApplicationProviderService providerService,
+        ApplicationManagementService applicationManagementService,
+        ApplicationEntityService entityService) {
         this.providerService = providerService;
         this.applicationManagementService = applicationManagementService;
         this.entityService = entityService;
@@ -49,22 +49,22 @@ public class ApplicationResource {
     @GET
     @Path("/providers")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Collection<ApplicationDesc>> getApplicationDescs(){
+    public RESTResponse<Collection<ApplicationDesc>> getApplicationDescs() {
         return RESTResponse.async(providerService::getApplicationDescs).get();
     }
 
     @GET
     @Path("/providers/{type}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<ApplicationDesc> getApplicationDescByType(@PathParam("type") String type){
-        return RESTResponse.async(()->providerService.getApplicationDescByType(type)).get();
+    public RESTResponse<ApplicationDesc> getApplicationDescByType(@PathParam("type") String type) {
+        return RESTResponse.async(() -> providerService.getApplicationDescByType(type)).get();
     }
 
     @PUT
     @Path("/providers/reload")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Collection<ApplicationDesc>> reloadApplicationDescs(){
-        return RESTResponse.<Collection<ApplicationDesc>>async((response)-> {
+    public RESTResponse<Collection<ApplicationDesc>> reloadApplicationDescs() {
+        return RESTResponse.<Collection<ApplicationDesc>>async((response) -> {
             providerService.reload();
             response.message("Successfully reload application providers");
             response.data(providerService.getApplicationDescs());
@@ -73,8 +73,8 @@ public class ApplicationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Collection<ApplicationEntity>> getApplicationEntities(@QueryParam("siteId") String siteId){
-        return RESTResponse.async(()-> {
+    public RESTResponse<Collection<ApplicationEntity>> getApplicationEntities(@QueryParam("siteId") String siteId) {
+        return RESTResponse.async(() -> {
             if (siteId == null) {
                 return entityService.findAll();
             } else {
@@ -86,8 +86,8 @@ public class ApplicationResource {
     @GET
     @Path("/{appUuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<ApplicationEntity> getApplicationEntityByUUID(@PathParam("appUuid") String appUuid){
-        return RESTResponse.async(()->entityService.getByUUID(appUuid)).get();
+    public RESTResponse<ApplicationEntity> getApplicationEntityByUUID(@PathParam("appUuid") String appUuid) {
+        return RESTResponse.async(() -> entityService.getByUUID(appUuid)).get();
     }
 
     /**
@@ -102,10 +102,10 @@ public class ApplicationResource {
     @Path("/install")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<ApplicationEntity> installApplication(ApplicationOperations.InstallOperation operation){
-        return RESTResponse.<ApplicationEntity>async((response)-> {
+    public RESTResponse<ApplicationEntity> installApplication(ApplicationOperations.InstallOperation operation) {
+        return RESTResponse.<ApplicationEntity>async((response) -> {
             ApplicationEntity entity = applicationManagementService.install(operation);
-            response.message("Successfully installed application "+operation.getAppType()+" onto site "+operation.getSiteId());
+            response.message("Successfully installed application " + operation.getAppType() + " onto site " + operation.getSiteId());
             response.data(entity);
         }).get();
     }
@@ -124,10 +124,10 @@ public class ApplicationResource {
     @Path("/uninstall")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Void> uninstallApplication(ApplicationOperations.UninstallOperation operation){
-        return RESTResponse.<Void>async((response)-> {
+    public RESTResponse<Void> uninstallApplication(ApplicationOperations.UninstallOperation operation) {
+        return RESTResponse.<Void>async((response) -> {
             ApplicationEntity entity = applicationManagementService.uninstall(operation);
-            response.success(true).message("Successfully uninstalled application "+entity.getUuid());
+            response.success(true).message("Successfully uninstalled application " + entity.getUuid());
         }).get();
     }
 
@@ -137,17 +137,17 @@ public class ApplicationResource {
      * {
      *      uuid: APPLICATION_UUID
      * }
-     *operation
+     * operation
      * @param operation
      */
     @POST
     @Path("/start")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Void> startApplication(ApplicationOperations.StartOperation operation){
-        return RESTResponse.<Void>async((response)-> {
+    public RESTResponse<Void> startApplication(ApplicationOperations.StartOperation operation) {
+        return RESTResponse.<Void>async((response) -> {
             ApplicationEntity entity = applicationManagementService.start(operation);
-            response.success(true).message("Successfully started application "+entity.getUuid());
+            response.success(true).message("Successfully started application " + entity.getUuid());
         }).get();
     }
 
@@ -158,16 +158,17 @@ public class ApplicationResource {
      *      uuid: APPLICATION_UUID
      * }
      * </pre>
+     *
      * @param operation
      */
     @POST
     @Path("/stop")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public RESTResponse<Void> stopApplication(ApplicationOperations.StopOperation operation){
-        return RESTResponse.<Void>async((response)-> {
+    public RESTResponse<Void> stopApplication(ApplicationOperations.StopOperation operation) {
+        return RESTResponse.<Void>async((response) -> {
             ApplicationEntity entity = applicationManagementService.stop(operation);
-            response.success(true).message("Successfully stopped application "+entity.getUuid());
+            response.success(true).message("Successfully stopped application " + entity.getUuid());
         }).get();
     }
 }

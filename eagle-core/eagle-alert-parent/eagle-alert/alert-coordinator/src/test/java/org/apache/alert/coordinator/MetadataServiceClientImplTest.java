@@ -16,6 +16,8 @@
  */
 package org.apache.alert.coordinator;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.apache.eagle.alert.config.ConfigBusProducer;
 import org.apache.eagle.alert.config.ZKConfig;
 import org.apache.eagle.alert.config.ZKConfigBuilder;
@@ -25,12 +27,8 @@ import org.apache.eagle.alert.service.MetadataServiceClientImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-
 /**
  * @since May 9, 2016
- *
  */
 public class MetadataServiceClientImplTest {
 

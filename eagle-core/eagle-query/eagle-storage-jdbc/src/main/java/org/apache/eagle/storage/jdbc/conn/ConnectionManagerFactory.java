@@ -17,7 +17,6 @@
 package org.apache.eagle.storage.jdbc.conn;
 
 import org.apache.eagle.storage.jdbc.conn.impl.TorqueConnectionManagerImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

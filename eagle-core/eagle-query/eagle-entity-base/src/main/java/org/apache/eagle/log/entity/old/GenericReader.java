@@ -20,16 +20,11 @@ import org.apache.eagle.common.DateTimeUtil;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.base.taggedlog.TaggedLogObjectMapper;
 import org.apache.eagle.log.entity.InternalLog;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GenericReader {
     private static final Logger LOG = LoggerFactory.getLogger(GenericReader.class);

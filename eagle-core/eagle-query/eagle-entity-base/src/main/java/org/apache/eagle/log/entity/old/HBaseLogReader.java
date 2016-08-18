@@ -21,9 +21,7 @@ import org.apache.eagle.common.EagleBase64Wrapper;
 import org.apache.eagle.common.config.EagleConfigFactory;
 import org.apache.eagle.log.entity.InternalLog;
 import org.apache.eagle.log.entity.LogReader;
-
 import org.apache.hadoop.hbase.client.*;
-
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.RegexStringComparator;

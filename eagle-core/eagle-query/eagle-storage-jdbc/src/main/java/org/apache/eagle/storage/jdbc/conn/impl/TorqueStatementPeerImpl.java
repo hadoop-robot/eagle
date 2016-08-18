@@ -19,7 +19,6 @@ package org.apache.eagle.storage.jdbc.conn.impl;
 import org.apache.eagle.storage.jdbc.conn.ConnectionConfig;
 import org.apache.eagle.storage.jdbc.conn.PrimaryKeyBuilder;
 import org.apache.eagle.storage.jdbc.conn.StatementExecutor;
-
 import org.apache.torque.adapter.IDMethod;
 import org.apache.torque.map.TableMap;
 import org.apache.torque.util.BasePeerImpl;

@@ -23,7 +23,6 @@ import org.apache.eagle.log.entity.meta.EntitySerDeser;
 import org.apache.eagle.storage.jdbc.schema.serializer.DefaultJdbcSerDeser;
 import org.apache.eagle.storage.jdbc.schema.serializer.JdbcSerDeser;
 import org.apache.eagle.storage.jdbc.schema.serializer.MetricJdbcSerDeser;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,7 +86,7 @@ public class JdbcEntityDefinitionManager {
     }
 
     public static final JdbcSerDeser DEFAULT_JDBC_SERDESER = new DefaultJdbcSerDeser();
-    public static final  JdbcSerDeser METRIC_JDBC_SERDESER = new MetricJdbcSerDeser();
+    public static final JdbcSerDeser METRIC_JDBC_SERDESER = new MetricJdbcSerDeser();
     private static final Map<Class<?>, JdbcSerDeser> _columnTypeSerDeserMapping = new HashMap<Class<?>, JdbcSerDeser>();
 
     public static void registerJdbcSerDeser(Class<? extends EntitySerDeser> entitySerDeser, JdbcSerDeser serDeser) {

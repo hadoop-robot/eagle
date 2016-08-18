@@ -17,10 +17,8 @@
 package org.apache.eagle.query.parser.test;
 
 import org.apache.eagle.query.parser.*;
-
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -642,7 +640,6 @@ public class TestEagleQueryParser {
      * ("va\"lue","va,lue") => ["va\\\"lue","va,lue"]
      * </p>
      * .
-     *
      */
     @Test
     public void testEscapedQuotesString() {

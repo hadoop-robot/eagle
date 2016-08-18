@@ -1,9 +1,9 @@
 package org.apache.eagle.alert.engine.publisher;
 
-import java.util.Map;
-
 import org.apache.eagle.alert.coordination.model.PublishSpec;
 import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
+
+import java.util.Map;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

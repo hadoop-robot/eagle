@@ -36,7 +36,6 @@ import org.apache.eagle.query.aggregate.timeseries.TimeSeriesAggregator;
 import org.apache.eagle.query.aggregate.timeseries.TimeSeriesPostFlatAggregateSort;
 import org.apache.eagle.storage.hbase.query.coprocessor.AggregateResult;
 import org.apache.eagle.storage.hbase.query.coprocessor.impl.AggregateResultCallbackImpl;
-
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DoubleWritable;
 import org.slf4j.Logger;
@@ -211,7 +210,7 @@ public class GenericAggregateQuery implements GenericQuery {
     //   |_ FlatGroupAggregateQueryReader
     //  |_ TimeSeriesGroupAggregateQueryReader
     ///////////////////////////////////////////////////////////
-    
+
     /**
      * Factory method for {@link GroupAggregateQueryReader}.
      * <pre>
@@ -220,9 +219,9 @@ public class GenericAggregateQuery implements GenericQuery {
      * |_ {@link TimeSeriesGroupAggregateQueryReader}
      * </pre>
      *
-     * @param reader reader
+     * @param reader       reader
      * @param isTimeSeries isTimeSeries
-     * @return GroupAggregateQueryReader 
+     * @return GroupAggregateQueryReader
      * @throws IOException IOException
      */
     private GroupAggregateQueryReader buildGroupAggregateQueryReader(GenericAggregateReader reader, boolean isTimeSeries) throws IOException {

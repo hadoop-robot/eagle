@@ -22,7 +22,6 @@ import org.apache.eagle.query.aggregate.timeseries.HierarchicalAggregateEntity;
 import org.apache.eagle.query.aggregate.timeseries.HierarchicalAggregator;
 import org.apache.eagle.query.aggregate.timeseries.PostHierarchicalAggregateSort;
 import org.apache.eagle.query.aggregate.timeseries.SortOption;
-
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Assert;

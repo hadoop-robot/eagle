@@ -16,49 +16,46 @@
  */
 package org.apache.eagle.service.alert;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
+import com.fasterxml.jackson.databind.Module;
+import org.apache.eagle.dataproc.core.JsonSerDeserUtils;
+import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.eagle.dataproc.core.JsonSerDeserUtils;
-import org.apache.eagle.log.entity.GenericServiceAPIResponseEntity;
-import com.fasterxml.jackson.databind.Module;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ServiceLoader;
 
 @Path("/policy/validate")
 public class PolicyValidateResource {
-		
-	public static Logger LOG = LoggerFactory.getLogger(PolicyValidateResource.class);
-	
-	@SuppressWarnings({"rawtypes"})
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public GenericServiceAPIResponseEntity validatePolicy(String policyToValidate) {
+
+    public static Logger LOG = LoggerFactory.getLogger(PolicyValidateResource.class);
+
+    @SuppressWarnings( {"rawtypes"})
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public GenericServiceAPIResponseEntity validatePolicy(String policyToValidate) {
         ServiceLoader<AlertPolicyValidateProvider> loader = ServiceLoader.load(AlertPolicyValidateProvider.class);
         Iterator<AlertPolicyValidateProvider> iter = loader.iterator();
         List<Module> modules = new ArrayList<Module>();
-        while(iter.hasNext()) {
-        	AlertPolicyValidateProvider factory = iter.next();
+        while (iter.hasNext()) {
+            AlertPolicyValidateProvider factory = iter.next();
             LOG.info("Supported policy type : " + factory.PolicyType());
             modules.addAll(factory.BindingModules());
         }
         AlertPolicyValidateProvider policyValidate = null;
         try {
-        	policyValidate = JsonSerDeserUtils.deserialize(policyToValidate, AlertPolicyValidateProvider.class, modules);    		
-        }
-        catch (Exception ex) {
-        	LOG.error("Fail consutructing AlertPolicyValidateProvider ", ex);
+            policyValidate = JsonSerDeserUtils.deserialize(policyToValidate, AlertPolicyValidateProvider.class, modules);
+        } catch (Exception ex) {
+            LOG.error("Fail consutructing AlertPolicyValidateProvider ", ex);
         }
         return policyValidate.validate();
-	}
+    }
 }

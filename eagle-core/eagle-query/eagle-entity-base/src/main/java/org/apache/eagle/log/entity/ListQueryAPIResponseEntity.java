@@ -19,7 +19,8 @@ package org.apache.eagle.log.entity;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-/** ListQueryAPIResponseEntity.
+/**
+ * ListQueryAPIResponseEntity.
  * TODO: currently we disable firstTimestamp in response avoid breaking older client implementation,
  * but we may need to remove "firstTimestamp" from @JsonIgnoreProperties(ignoreUnknown = true,value={"firstTimestamp"}) to enable the feature later
  */

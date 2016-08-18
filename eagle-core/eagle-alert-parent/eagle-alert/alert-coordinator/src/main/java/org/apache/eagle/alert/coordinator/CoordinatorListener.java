@@ -16,29 +16,28 @@
  */
 package org.apache.eagle.alert.coordinator;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 /**
  * @since Jun 16, 2016
- *
  */
 public class CoordinatorListener implements ServletContextListener {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(CoordinatorListener.class);
-    
+
     public CoordinatorListener() {
     }
-    
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-    	LOG.info("start coordinator background tasks..");
+        LOG.info("start coordinator background tasks..");
         Coordinator.startSchedule();
     }
-    
+
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
     }

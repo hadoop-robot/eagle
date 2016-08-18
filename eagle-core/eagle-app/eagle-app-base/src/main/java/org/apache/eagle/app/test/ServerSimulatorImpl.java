@@ -38,7 +38,7 @@ public class ServerSimulatorImpl extends ServerSimulator {
     private final ApplicationResource applicationResource;
 
     @Inject
-    public ServerSimulatorImpl(Config config, SiteResource siteResource, ApplicationResource applicationResource){
+    public ServerSimulatorImpl(Config config, SiteResource siteResource, ApplicationResource applicationResource) {
         this.config = config;
         this.siteResource = siteResource;
         this.applicationResource = applicationResource;
@@ -54,23 +54,23 @@ public class ServerSimulatorImpl extends ServerSimulator {
         SiteEntity siteEntity = getUniqueSite();
         siteResource.createSite(siteEntity);
         Assert.assertNotNull(siteEntity.getUuid());
-        ApplicationOperations.InstallOperation installOperation = new ApplicationOperations.InstallOperation(siteEntity.getSiteId(),appType, ApplicationEntity.Mode.LOCAL);
+        ApplicationOperations.InstallOperation installOperation = new ApplicationOperations.InstallOperation(siteEntity.getSiteId(), appType, ApplicationEntity.Mode.LOCAL);
         installOperation.setConfiguration(appConfig);
         // Install application
         ApplicationEntity applicationEntity =
-                applicationResource.installApplication(installOperation).getData();
+            applicationResource.installApplication(installOperation).getData();
         // Start application
         applicationResource.startApplication(new ApplicationOperations.StartOperation(applicationEntity.getUuid()));
     }
 
     private final static AtomicInteger incr = new AtomicInteger();
 
-    private SiteEntity getUniqueSite(){
+    private SiteEntity getUniqueSite() {
         // Create local site
         SiteEntity siteEntity = new SiteEntity();
-        siteEntity.setSiteId("SIMULATED_SITE_"+incr.incrementAndGet());
+        siteEntity.setSiteId("SIMULATED_SITE_" + incr.incrementAndGet());
         siteEntity.setSiteName(siteEntity.getSiteId());
-        siteEntity.setDescription("Automatically generated unique simulation site "+siteEntity.getSiteId()+" (simulator: "+this+")");
+        siteEntity.setDescription("Automatically generated unique simulation site " + siteEntity.getSiteId() + " (simulator: " + this + ")");
         return siteEntity;
     }
 
@@ -83,10 +83,10 @@ public class ServerSimulatorImpl extends ServerSimulator {
     public void start(Class<? extends ApplicationProvider> appProviderClass, Map<String, Object> appConfig) {
         try {
             ApplicationProvider applicationProvider = appProviderClass.newInstance();
-            applicationProvider.prepare(new ApplicationProviderConfig(DynamicJarPathFinder.findPath(appProviderClass),appProviderClass),config);
-            start(applicationProvider.getApplicationDesc().getType(),appConfig);
+            applicationProvider.prepare(new ApplicationProviderConfig(DynamicJarPathFinder.findPath(appProviderClass), appProviderClass), config);
+            start(applicationProvider.getApplicationDesc().getType(), appConfig);
         } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalStateException(e.getMessage(),e);
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 }

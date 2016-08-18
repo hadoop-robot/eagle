@@ -17,10 +17,10 @@
 package org.apache.eagle.service.embedded.tomcat;
 
 public class TestEmbeddedServer {
-	
-	//@Test
-	public void test() throws Throwable{
-		String webappDirLocation = "../../../eagle-webservice/target/eagle-service";
-		EmbeddedServer.getInstance(webappDirLocation);
-	}
+
+    //@Test
+    public void test() throws Throwable {
+        String webappDirLocation = "../../../eagle-webservice/target/eagle-service";
+        EmbeddedServer.getInstance(webappDirLocation);
+    }
 }

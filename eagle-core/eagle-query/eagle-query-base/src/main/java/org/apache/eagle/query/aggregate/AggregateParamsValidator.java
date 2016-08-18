@@ -28,10 +28,10 @@ public class AggregateParamsValidator {
      * for example, for function=sum(numConfiguredMapSlots), numConfiguredMapSlots must occur in outputField
      * 3. groupby should be pre-appended with a root groupby field
      *
-     * @param outputTags outputTags
+     * @param outputTags   outputTags
      * @param outputFields outputFields
-     * @param groupbys groupbys
-     * @param functions functions
+     * @param groupbys     groupbys
+     * @param functions    functions
      * @throws IllegalArgumentException IllegalArgumentException
      */
     public static AggregateParams compileAggregateParams(List<String> outputTags, List<String> outputFields, List<String> groupbys, List<String> functions, List<String> sortFieldOrders)

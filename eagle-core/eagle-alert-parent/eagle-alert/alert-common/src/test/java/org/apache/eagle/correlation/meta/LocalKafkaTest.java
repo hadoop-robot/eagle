@@ -16,6 +16,7 @@ package org.apache.eagle.correlation.meta;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import kafka.admin.AdminUtils;
 import kafka.utils.ZKStringSerializer$;
 import org.I0Itec.zkclient.ZkClient;
@@ -27,7 +28,6 @@ import java.util.Properties;
 
 /**
  * @since Jun 3, 2016
- *
  */
 @Ignore
 public class LocalKafkaTest {

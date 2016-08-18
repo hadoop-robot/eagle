@@ -35,11 +35,11 @@ import java.util.stream.Collectors;
 
 /**
  * Managed Application Interface: org.apache.eagle.app.service.ApplicationContext
- *
+ * <p>
  * <ul>
- *     <li>Application Metadata Entity (Persistence): org.apache.eagle.metadata.model.ApplicationEntity</li>
- *     <li>Application Processing Logic (Execution): org.apache.eagle.app.Application</li>
- *     <li>Application Lifecycle Listener (Installation): org.apache.eagle.app.ApplicationLifecycle</li>
+ * <li>Application Metadata Entity (Persistence): org.apache.eagle.metadata.model.ApplicationEntity</li>
+ * <li>Application Processing Logic (Execution): org.apache.eagle.app.Application</li>
+ * <li>Application Lifecycle Listener (Installation): org.apache.eagle.app.ApplicationLifecycle</li>
  * </ul>
  */
 public class ApplicationContext implements Serializable, ApplicationLifecycle {
@@ -49,17 +49,17 @@ public class ApplicationContext implements Serializable, ApplicationLifecycle {
     private final ApplicationEntity metadata;
 
     /**
-     * @param metadata ApplicationEntity
+     * @param metadata    ApplicationEntity
      * @param application Application
      */
-    public ApplicationContext(Application application, ApplicationEntity metadata, Config envConfig){
-        Preconditions.checkNotNull(application,"Application is null");
-        Preconditions.checkNotNull(metadata,"ApplicationEntity is null");
+    public ApplicationContext(Application application, ApplicationEntity metadata, Config envConfig) {
+        Preconditions.checkNotNull(application, "Application is null");
+        Preconditions.checkNotNull(metadata, "ApplicationEntity is null");
         this.application = application;
         this.metadata = metadata;
-        this.runtime = ExecutionRuntimeManager.getInstance().getRuntime(application.getEnvironmentType(),envConfig);
-        Map<String,Object> executionConfig = metadata.getConfiguration();
-        if(executionConfig == null) {
+        this.runtime = ExecutionRuntimeManager.getInstance().getRuntime(application.getEnvironmentType(), envConfig);
+        Map<String, Object> executionConfig = metadata.getConfiguration();
+        if (executionConfig == null) {
             executionConfig = Collections.emptyMap();
         }
 
@@ -73,7 +73,7 @@ public class ApplicationContext implements Serializable, ApplicationLifecycle {
     @Override
     public void onInstall() {
         List<StreamDesc> streamDescCollection = metadata.getDescriptor().getStreams().stream().map((streamDefinition -> {
-            StreamSinkConfig streamSinkConfig = this.runtime.environment().streamSink().getSinkConfig(streamDefinition.getStreamId(),this.config);
+            StreamSinkConfig streamSinkConfig = this.runtime.environment().streamSink().getSinkConfig(streamDefinition.getStreamId(), this.config);
             StreamDesc streamDesc = new StreamDesc();
             streamDesc.setSchema(streamDefinition);
             streamDesc.setSink(streamSinkConfig);
@@ -90,12 +90,12 @@ public class ApplicationContext implements Serializable, ApplicationLifecycle {
 
     @Override
     public void onStart() {
-        this.runtime.start(this.application,this.config);
+        this.runtime.start(this.application, this.config);
     }
 
     @Override
     public void onStop() {
-        this.runtime.stop(this.application,this.config);
+        this.runtime.stop(this.application, this.config);
     }
 
     public ApplicationEntity getMetadata() {

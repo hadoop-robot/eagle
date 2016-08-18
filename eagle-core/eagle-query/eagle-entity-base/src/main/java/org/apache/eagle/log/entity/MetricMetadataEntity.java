@@ -18,7 +18,6 @@ package org.apache.eagle.log.entity;
 
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.*;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
@@ -27,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @Prefix("dmeta")
 @Service("MetricMetadataService")
 @TimeSeries(false)
-@Indexes({@Index(name = "Index_1_name", columns = {"name"}, unique = true)})
+@Indexes( {@Index(name = "Index_1_name", columns = {"name"}, unique = true)})
 public class MetricMetadataEntity extends TaggedLogAPIEntity {
 
     @Column("a")

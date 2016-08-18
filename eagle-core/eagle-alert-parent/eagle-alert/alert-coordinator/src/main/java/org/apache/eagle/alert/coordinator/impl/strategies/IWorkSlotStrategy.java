@@ -16,14 +16,13 @@
  */
 package org.apache.eagle.alert.coordinator.impl.strategies;
 
+import org.apache.eagle.alert.coordination.model.WorkSlot;
+
 import java.util.List;
 import java.util.Map;
 
-import org.apache.eagle.alert.coordination.model.WorkSlot;
-
 /**
  * @since Apr 27, 2016
- *
  */
 public interface IWorkSlotStrategy {
 

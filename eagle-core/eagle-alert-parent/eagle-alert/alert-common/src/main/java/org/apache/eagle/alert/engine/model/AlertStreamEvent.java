@@ -52,15 +52,15 @@ public class AlertStreamEvent extends StreamEvent {
     @Override
     public String toString() {
         List<String> dataStrings = new ArrayList<>(this.getData().length);
-        for(Object obj: this.getData()){
-            if(obj!=null) {
+        for (Object obj : this.getData()) {
+            if (obj != null) {
                 dataStrings.add(obj.toString());
-            }else{
+            } else {
                 dataStrings.add(null);
             }
         }
         return String.format("AlertStreamEvent[stream=%S,timestamp=%s,data=[%s], policy=%s, createdBy=%s, metaVersion=%s]",
-                this.getStreamId(), DateTimeUtil.millisecondsToHumanDateWithMilliseconds(this.getTimestamp()), StringUtils.join(dataStrings,","),this.getPolicy().getName(),this.getCreatedBy(),this.getMetaVersion());
+            this.getStreamId(), DateTimeUtil.millisecondsToHumanDateWithMilliseconds(this.getTimestamp()), StringUtils.join(dataStrings, ","), this.getPolicy().getName(), this.getCreatedBy(), this.getMetaVersion());
     }
 
     public String getCreatedBy() {

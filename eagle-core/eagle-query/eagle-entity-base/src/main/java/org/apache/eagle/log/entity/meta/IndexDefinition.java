@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.log.entity.meta;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.eagle.common.ByteUtil;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.RowkeyBuilder;
@@ -23,9 +24,6 @@ import org.apache.eagle.query.parser.ANDExpression;
 import org.apache.eagle.query.parser.AtomicExpression;
 import org.apache.eagle.query.parser.ComparisonOperator;
 import org.apache.eagle.query.parser.ORExpression;
-
-import org.apache.commons.beanutils.PropertyUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

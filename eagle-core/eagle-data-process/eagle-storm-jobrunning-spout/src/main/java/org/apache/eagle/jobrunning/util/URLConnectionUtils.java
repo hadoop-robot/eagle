@@ -20,17 +20,14 @@ package org.apache.eagle.jobrunning.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.*;
 import java.io.IOException;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-
-import javax.net.ssl.*;
 
 public final class URLConnectionUtils {
     //TODO: change some public method to private

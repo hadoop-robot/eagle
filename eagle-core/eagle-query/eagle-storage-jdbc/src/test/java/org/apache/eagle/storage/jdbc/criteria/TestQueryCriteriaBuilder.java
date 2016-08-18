@@ -24,7 +24,6 @@ import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinition;
 import org.apache.eagle.storage.jdbc.schema.JdbcEntityDefinitionManager;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.operation.RawQuery;
-
 import org.apache.torque.criteria.Criteria;
 import org.junit.Before;
 import org.junit.Test;

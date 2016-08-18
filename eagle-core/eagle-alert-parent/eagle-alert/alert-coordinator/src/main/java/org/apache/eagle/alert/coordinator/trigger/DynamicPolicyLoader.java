@@ -16,25 +16,20 @@
  */
 package org.apache.eagle.alert.coordinator.trigger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.base.Stopwatch;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
 import org.apache.eagle.alert.service.IMetadataServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Stopwatch;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Poll policy change and notify listeners
  */
-public class DynamicPolicyLoader implements Runnable{
+public class DynamicPolicyLoader implements Runnable {
     private static Logger LOG = LoggerFactory.getLogger(DynamicPolicyLoader.class);
 
     private IMetadataServiceClient client;
@@ -42,7 +37,7 @@ public class DynamicPolicyLoader implements Runnable{
     private Map<String, PolicyDefinition> cachedPolicies = new HashMap<>();
     private List<PolicyChangeListener> listeners = new ArrayList<>();
 
-    public DynamicPolicyLoader(IMetadataServiceClient client){
+    public DynamicPolicyLoader(IMetadataServiceClient client) {
         this.client = client;
     }
 
@@ -78,8 +73,8 @@ public class DynamicPolicyLoader implements Runnable{
 
             boolean policyChanged = false;
             if (addedPolicies.size() != 0 ||
-                    removedPolicies.size() != 0 ||
-                    reallyModifiedPolicies.size() != 0) {
+                removedPolicies.size() != 0 ||
+                reallyModifiedPolicies.size() != 0) {
                 policyChanged = true;
             }
 

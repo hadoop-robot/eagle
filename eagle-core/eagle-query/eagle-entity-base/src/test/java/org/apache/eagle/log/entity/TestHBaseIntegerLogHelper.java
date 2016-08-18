@@ -17,12 +17,10 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.common.ByteUtil;
-
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntityDefinitionManager;
 import org.apache.eagle.log.entity.test.TestTimeSeriesAPIEntity;
-
 import org.junit.Assert;
 import org.junit.Test;
 

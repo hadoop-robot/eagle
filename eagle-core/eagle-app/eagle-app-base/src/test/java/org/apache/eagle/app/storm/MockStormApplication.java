@@ -35,13 +35,14 @@ public class MockStormApplication extends StormApplication {
     public StormTopology execute(Config config, StormEnvironment environment) {
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("metric_spout", new RandomEventSpout(), config.getInt("spoutNum"));
-        builder.setBolt("sink_1",environment.getStreamSink("TEST_STREAM_1",config)).fieldsGrouping("metric_spout",new Fields("metric"));
-        builder.setBolt("sink_2",environment.getStreamSink("TEST_STREAM_2",config)).fieldsGrouping("metric_spout",new Fields("metric"));
+        builder.setBolt("sink_1", environment.getStreamSink("TEST_STREAM_1", config)).fieldsGrouping("metric_spout", new Fields("metric"));
+        builder.setBolt("sink_2", environment.getStreamSink("TEST_STREAM_2", config)).fieldsGrouping("metric_spout", new Fields("metric"));
         return builder.createTopology();
     }
 
     private class RandomEventSpout extends BaseRichSpout {
         private SpoutOutputCollector _collector;
+
         @Override
         public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
             _collector = spoutOutputCollector;
@@ -49,12 +50,13 @@ public class MockStormApplication extends StormApplication {
 
         @Override
         public void nextTuple() {
-            _collector.emit(Arrays.asList("disk.usage",System.currentTimeMillis(),"host_1",56.7));
-            _collector.emit(Arrays.asList("cpu.usage",System.currentTimeMillis(),"host_2",99.8));
+            _collector.emit(Arrays.asList("disk.usage", System.currentTimeMillis(), "host_1", 56.7));
+            _collector.emit(Arrays.asList("cpu.usage", System.currentTimeMillis(), "host_2", 99.8));
         }
+
         @Override
         public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-            outputFieldsDeclarer.declare(new Fields("metric","timestamp","source","value"));
+            outputFieldsDeclarer.declare(new Fields("metric", "timestamp", "source", "value"));
         }
     }
 }

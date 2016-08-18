@@ -18,7 +18,6 @@ package org.apache.eagle.log.entity.filter;
 
 import org.apache.eagle.query.parser.ComparisonOperator;
 import org.apache.eagle.query.parser.TokenType;
-
 import org.apache.hadoop.io.Writable;
 
 import java.io.DataInput;

@@ -22,7 +22,6 @@ import org.apache.eagle.storage.DataStorageBase;
 import org.apache.eagle.storage.operation.CompiledQuery;
 import org.apache.eagle.storage.result.ModifyResult;
 import org.apache.eagle.storage.result.QueryResult;
-
 import org.junit.Test;
 
 import java.io.IOException;

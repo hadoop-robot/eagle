@@ -17,7 +17,6 @@
 package org.apache.eagle.log.entity;
 
 import org.apache.eagle.log.entity.meta.Double2DArraySerDeser;
-
 import org.junit.Test;
 
 /**

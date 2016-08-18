@@ -16,10 +16,6 @@
  */
 package org.apache.eagle.alert.engine.publisher.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.eagle.alert.engine.codec.IEventSerializer;
 import org.apache.eagle.alert.engine.coordinator.StreamColumn;
 import org.apache.eagle.alert.engine.model.AlertStreamEvent;
@@ -27,9 +23,12 @@ import org.apache.eagle.alert.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @since Jul 9, 2016
- *
  */
 public class JsonEventSerializer implements IEventSerializer {
 

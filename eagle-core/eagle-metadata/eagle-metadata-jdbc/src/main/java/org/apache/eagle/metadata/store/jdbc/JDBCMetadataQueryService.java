@@ -27,7 +27,6 @@ import java.util.List;
 
 public interface JDBCMetadataQueryService {
     /**
-     *
      * @param sql
      * @return
      * @throws SQLException
@@ -35,7 +34,6 @@ public interface JDBCMetadataQueryService {
     boolean execute(String sql) throws SQLException;
 
     /**
-     *
      * @param tableName
      * @return
      * @throws SQLException
@@ -52,10 +50,9 @@ public interface JDBCMetadataQueryService {
      * @throws E
      * @throws SQLException
      */
-    <T, E extends Throwable> int insert(String insertSql, Collection<T> entities, ThrowableConsumer2<PreparedStatement,T,E> mapper) throws E, SQLException;
+    <T, E extends Throwable> int insert(String insertSql, Collection<T> entities, ThrowableConsumer2<PreparedStatement, T, E> mapper) throws E, SQLException;
 
     /**
-     *
      * @param tableName
      * @return
      * @throws SQLException
@@ -64,9 +61,9 @@ public interface JDBCMetadataQueryService {
 
     /**
      * @param querySql sql query text
-     * @param mapper result set to entity mapper
+     * @param mapper   result set to entity mapper
      * @param <T>
      * @return entity list
      */
-    <T,E extends Throwable> List<T> query(String querySql, ThrowableFunction<ResultSet,T,E> mapper) throws SQLException,E;
+    <T, E extends Throwable> List<T> query(String querySql, ThrowableFunction<ResultSet, T, E> mapper) throws SQLException, E;
 }

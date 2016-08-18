@@ -25,7 +25,6 @@ import org.apache.eagle.log.entity.test.TestLogAPIEntity;
 import org.apache.eagle.query.ListQueryCompiler;
 import org.apache.eagle.query.aggregate.AggregateFunctionType;
 import org.apache.eagle.query.parser.ORExpression;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +48,9 @@ public class TestListQueryCompiler {
         entityDef.setTimeSeries(true);
     }
 
-    /*********************************** Test Expression In List Query. *********************************/
+    /***********************************
+     * Test Expression In List Query.
+     *********************************/
 
     @Test
     public void testListQueryWithoutExpression() throws Exception {
@@ -118,7 +119,9 @@ public class TestListQueryCompiler {
         Assert.assertTrue(outputFields.contains("EXP{a + b}"));
     }
 
-    /*********************************** Test Expression In Group By Query.*********************************/
+    /***********************************
+     * Test Expression In Group By Query.
+     *********************************/
 
     @Test
     public void testGroupByQueryAggWithoutExpressionInAggFunc() throws Exception {
@@ -172,7 +175,9 @@ public class TestListQueryCompiler {
         Assert.assertTrue(aggFields.contains("count"));
     }
 
-    /*********************************** Test Expression In Sort Query. *********************************/
+    /***********************************
+     * Test Expression In Sort Query.
+     *********************************/
 
     @Test
     public void testSortQueryWithoutExpressionInSort() throws Exception {

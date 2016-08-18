@@ -18,7 +18,6 @@ package org.apache.eagle.storage.jdbc.criteria.impl;
 
 import org.apache.eagle.storage.jdbc.JdbcConstants;
 import org.apache.eagle.storage.jdbc.criteria.CriteriaBuilder;
-
 import org.apache.torque.ColumnImpl;
 import org.apache.torque.criteria.Criteria;
 import org.apache.torque.criteria.Criterion;

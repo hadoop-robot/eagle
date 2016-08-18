@@ -18,14 +18,13 @@
  */
 package org.apache.eagle.alert.engine.spout;
 
-import java.util.Properties;
-
 import kafka.admin.AdminUtils;
 import kafka.utils.ZKStringSerializer$;
-
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
 import org.slf4j.Logger;
+
+import java.util.Properties;
 
 /**
  * normally this is used in unit test for convenience
@@ -43,7 +42,7 @@ public class CreateTopicUtils {
 //        ZkUtils zkUtils = new ZkUtils(zkClient, zkConnection, false);
         if (!AdminUtils.topicExists(zkClient, topic)) {
             LOG.info("create topic " + topic + " with partitions " + partitions + ", and replicationFactor "
-                    + replicationFactor);
+                + replicationFactor);
             AdminUtils.createTopic(zkClient, topic, partitions, replicationFactor, new Properties());
         }
     }

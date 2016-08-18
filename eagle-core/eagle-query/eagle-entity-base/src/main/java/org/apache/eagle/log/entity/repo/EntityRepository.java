@@ -19,12 +19,7 @@ package org.apache.eagle.log.entity.repo;
 import org.apache.eagle.log.base.taggedlog.TaggedLogAPIEntity;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Entity repository is used to store entity definition class. Each domain should define its own entities. Eagle entity

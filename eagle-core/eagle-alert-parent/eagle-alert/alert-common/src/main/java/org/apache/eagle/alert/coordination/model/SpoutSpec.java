@@ -27,13 +27,13 @@ import java.util.Optional;
  * phase 1: kafka topic to tuple, controlled by Kafka2TupleMetadata, i.e. Scheme
  * phase 2: tuple to stream, controlled by Tuple2StreamMetadata, i.e. stream name selector etc.
  * phase 3: stream repartition, controlled by StreamRepartitionMetadata, i.e. groupby spec
- * @since Apr 18, 2016
  *
+ * @since Apr 18, 2016
  */
 public class SpoutSpec {
     private String version;
 
-//    private String spoutId;
+    //    private String spoutId;
     private String topologyId;
 
     // topicName -> kafka2TupleMetadata
@@ -43,14 +43,15 @@ public class SpoutSpec {
     // topicName -> list of StreamRepartitionMetadata, here it is list because one topic(data source) may spawn multiple streams.
     private Map<String, List<StreamRepartitionMetadata>> streamRepartitionMetadataMap = new HashMap<String, List<StreamRepartitionMetadata>>();
 
-    public SpoutSpec(){}
+    public SpoutSpec() {
+    }
 
     public SpoutSpec(
-            String topologyId,
+        String topologyId,
 //            String spoutId,
-            Map<String, List<StreamRepartitionMetadata>>  streamRepartitionMetadataMap,
-            Map<String, Tuple2StreamMetadata> tuple2StreamMetadataMap,
-            Map<String, Kafka2TupleMetadata>  kafka2TupleMetadataMap) {
+        Map<String, List<StreamRepartitionMetadata>> streamRepartitionMetadataMap,
+        Map<String, Tuple2StreamMetadata> tuple2StreamMetadataMap,
+        Map<String, Kafka2TupleMetadata> kafka2TupleMetadataMap) {
         this.topologyId = topologyId;
 //        this.spoutId = spoutId;
         this.streamRepartitionMetadataMap = streamRepartitionMetadataMap;
@@ -73,7 +74,7 @@ public class SpoutSpec {
         return streamRepartitionMetadataMap;
     }
 
-    public Map<String, Tuple2StreamMetadata> getTuple2StreamMetadataMap(){
+    public Map<String, Tuple2StreamMetadata> getTuple2StreamMetadataMap() {
         return this.tuple2StreamMetadataMap;
     }
 

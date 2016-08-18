@@ -16,6 +16,7 @@
  */
 package org.apache.eagle.log.entity.filter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.eagle.log.entity.EntityQualifierUtils;
 import org.apache.eagle.log.entity.meta.EntityDefinition;
 import org.apache.eagle.log.entity.meta.EntitySerDeser;
@@ -24,11 +25,8 @@ import org.apache.eagle.log.expression.ExpressionParser;
 import org.apache.eagle.log.expression.ParsiiInvalidException;
 import org.apache.eagle.query.parser.ComparisonOperator;
 import org.apache.eagle.query.parser.TokenType;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.io.WritableComparable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import parsii.tokenizer.ParseException;
@@ -141,7 +139,7 @@ public class BooleanExpressionComparator implements WritableComparable<List<KeyV
     /**
      * if(Double.isInfinite(leftValue) || Double.isInfinite(rightValue)) return false;
      *
-     * @param expr expression
+     * @param expr    expression
      * @param context evaluation context
      * @return evaluation result
      * @throws Exception evaluation exception

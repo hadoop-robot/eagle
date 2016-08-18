@@ -45,7 +45,7 @@ public class ConfigValue {
         this.value = value;
     }
 
-    public String toString(){
+    public String toString() {
         return "isValueVersionId: " + isValueVersionId + ", value: " + value;
     }
 }

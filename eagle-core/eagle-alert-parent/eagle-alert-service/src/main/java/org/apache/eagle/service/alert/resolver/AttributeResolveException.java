@@ -20,7 +20,15 @@ package org.apache.eagle.service.alert.resolver;
  * @since 6/16/15
  */
 public class AttributeResolveException extends Exception {
-    public AttributeResolveException(String s, Exception e) { super(s,e); }
-    public AttributeResolveException(Exception e) { super(e); }
-    public AttributeResolveException(String s) { super(s); }
+    public AttributeResolveException(String s, Exception e) {
+        super(s, e);
+    }
+
+    public AttributeResolveException(Exception e) {
+        super(e);
+    }
+
+    public AttributeResolveException(String s) {
+        super(s);
+    }
 }

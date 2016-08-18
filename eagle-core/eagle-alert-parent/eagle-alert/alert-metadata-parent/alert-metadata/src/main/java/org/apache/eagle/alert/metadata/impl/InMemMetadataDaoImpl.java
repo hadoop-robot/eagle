@@ -16,25 +16,13 @@
  */
 package org.apache.eagle.alert.metadata.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.function.Predicate;
-
 import com.google.inject.Inject;
+import com.typesafe.config.Config;
 import org.apache.eagle.alert.coordination.model.Kafka2TupleMetadata;
 import org.apache.eagle.alert.coordination.model.ScheduleState;
 import org.apache.eagle.alert.coordination.model.internal.PolicyAssignment;
 import org.apache.eagle.alert.coordination.model.internal.Topology;
-import org.apache.eagle.alert.engine.coordinator.PolicyDefinition;
-import org.apache.eagle.alert.engine.coordinator.Publishment;
-import org.apache.eagle.alert.engine.coordinator.PublishmentType;
-import org.apache.eagle.alert.engine.coordinator.StreamDefinition;
-import org.apache.eagle.alert.engine.coordinator.StreamingCluster;
+import org.apache.eagle.alert.engine.coordinator.*;
 import org.apache.eagle.alert.metadata.IMetadataDao;
 import org.apache.eagle.alert.metadata.MetadataUtils;
 import org.apache.eagle.alert.metadata.resource.Models;
@@ -42,14 +30,15 @@ import org.apache.eagle.alert.metadata.resource.OpResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.typesafe.config.Config;
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * In memory service for simple service start. Make all service API as
  * synchronized.
- * 
- * @since Apr 11, 2016
  *
+ * @since Apr 11, 2016
  */
 public class InMemMetadataDaoImpl implements IMetadataDao {
 
