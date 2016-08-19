@@ -29,15 +29,15 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * TrustAllSslSocketFactory.
+ * TrustAllSSLSocketFactory.
  */
-public class TrustAllSslSocketFactory extends SSLSocketFactory {
+public class TrustAllSSLSocketFactory extends SSLSocketFactory {
     private SSLSocketFactory socketFactory;
 
     /**
-     * TrustAllSslSocketFactory.
+     * TrustAllSSLSocketFactory.
      */
-    public TrustAllSslSocketFactory() {
+    public TrustAllSSLSocketFactory() {
         try {
             SSLContext ctx = SSLContext.getInstance("SSL");
             ctx.init(null, new TrustManager[] {new TrustAnyTrustManager() {
@@ -49,7 +49,7 @@ public class TrustAllSslSocketFactory extends SSLSocketFactory {
     }
 
     public static SocketFactory getDefault() {
-        return new TrustAllSslSocketFactory();
+        return new TrustAllSSLSocketFactory();
     }
 
     @Override

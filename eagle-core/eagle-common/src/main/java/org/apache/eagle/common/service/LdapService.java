@@ -115,7 +115,7 @@ public class LdapService {
         env.put(Context.SECURITY_PRINCIPAL, securityPrincipal);
         env.put(Context.SECURITY_CREDENTIALS, securityCredentials);
         env.put("java.naming.ldap.attributes.binary", "objectSID");
-        env.put("java.naming.ldap.factory.socket", "hadoop.eagle.common.service.TrustAllSslSocketFactory");
+        env.put("java.naming.ldap.factory.socket", "hadoop.eagle.common.service.TrustAllSSLSocketFactory");
 
         DirContext ctx = null;
         try {
@@ -271,7 +271,7 @@ public class LdapService {
                     uenv.put(Context.SECURITY_AUTHENTICATION, "simple");
                     uenv.put(Context.SECURITY_PRINCIPAL, userDN);
                     uenv.put(Context.SECURITY_CREDENTIALS, password);
-                    uenv.put("java.naming.ldap.factory.socket", "hadoop.eagle.common.service.TrustAllSslSocketFactory");
+                    uenv.put("java.naming.ldap.factory.socket", "hadoop.eagle.common.service.TrustAllSSLSocketFactory");
                     DirContext uctx = new InitialDirContext(uenv);
                     uctx.close();
 
